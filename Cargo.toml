@@ -21,8 +21,8 @@ anyhow = "1.0.89"
 env_logger = "0.11.5"
 futures = { version = "0.3.31", features = ["executor"] }
 # In your BaseBuster/Cargo.toml (or equivalent main project Cargo.toml)
-node-db = { version = "*" }
-pool-sync = { version = "*" }
+node-db = { path = "NodeDB" }
+pool-sync = { path = "PoolSync" }
 log = "0.4.22"
 petgraph = "0.8.1"
 rayon = "1.10.0"
@@ -54,5 +54,4 @@ revm = { version = "22.0.1", features = ["alloydb"] }
 reth-db = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.8", package = "reth-db" }
 reth-chainspec = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.8", package = "reth-chainspec" }
 reth-node-ethereum = { git = "https://github.com/paradigmxyz/reth",tag = "v1.3.8",  package = "reth-node-ethereum" }
-reth = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.8", package = "reth" }
-
+reth = { git = "https://github.com/paradigmxyz/reth",  tag = "v1.3.8",package = "reth" }
