@@ -10,7 +10,7 @@ use log::{debug, trace, warn};
 use pool_sync::PoolInfo;
 use revm::db::AccountState;
 use revm::primitives::{Log, KECCAK_EMPTY};
-use revm::primitives::{Account, AccountInfo, Bytecode};
+use revm::primitives::{Account, AccountInfo, Bytecode, Log, KECCAK_EMPTY};
 use revm::{Database, DatabaseCommit, DatabaseRef};
 use std::collections::HashMap;
 use std::collections::HashSet;
