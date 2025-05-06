@@ -3,6 +3,11 @@ FROM rust:latest AS builder
 # Set working directory
 WORKDIR /usr/src/app
 
+# Install minimal required system tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+build-essential clang cmake git libclang-dev libssl-dev llvm-dev pkg-config && \
+rm -rf /var/lib/apt/lists/*
+
 # Copy the whole repo
 COPY . .
 
