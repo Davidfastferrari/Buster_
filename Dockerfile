@@ -1,6 +1,6 @@
 # Use nightly Rust that supports edition2024
-# FROM rustlang/rust:nightly AS builder
-FROM rust:1.56.0  AS builder
+FROM rustlang/rust:nightly AS builder
+
 # Set working directory
 WORKDIR /usr/src/app
 
@@ -13,8 +13,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY . .
 
 # Optional: ensure nightly is used explicitly (safe measure)
-#RUN rustup override set nightly
+RUN rustup override set nightly
 
+# Build the project in release mode
+#RUN cargo build --release
 # Build the project in release mode
 RUN cargo build --release -p Buster_
 
