@@ -9,7 +9,7 @@ use std::sync::Arc;
 
 use crate::calculation::Calculator;
 use crate::events::Event;
-use crate::gen::FlashQuoter;
+use crate::gen_::FlashQuoter;
 use crate::market_state::MarketState;
 use crate::quoter::Quoter;
 use crate::AMOUNT;

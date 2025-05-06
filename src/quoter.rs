@@ -9,7 +9,7 @@ use revm::primitives::{ExecutionResult, TransactTo};
 use revm::Evm;
 use std::sync::Arc;
 
-use crate::gen::FlashQuoter;
+use crate::gen_::FlashQuoter;
 use crate::market_state::MarketState;
 use crate::AMOUNT;
 

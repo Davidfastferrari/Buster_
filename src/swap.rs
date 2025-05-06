@@ -1,5 +1,5 @@
-use crate::gen::FlashQuoter;
-use crate::gen::FlashSwap;
+use crate::gen_::FlashQuoter;
+use crate::gen_::FlashSwap;
 use crate::AMOUNT;
 use alloy::primitives::Address;
 use pool_sync::PoolType;

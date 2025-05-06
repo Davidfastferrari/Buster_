@@ -22,8 +22,8 @@ use std::sync::atomic::Ordering;
 use std::sync::atomic::AtomicBool;
 
 use crate::events::Event;
-use crate::gen::ERC20Token;
-use crate::gen::FlashQuoter;
+use crate::gen_::ERC20Token;
+use crate::gen_::FlashQuoter;
 use crate::state_db::{BlockStateDB, InsertionType};
 use crate::tracing::debug_trace_block;
 use crate::AMOUNT;

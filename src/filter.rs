@@ -1,5 +1,5 @@
-use crate::gen::ERC20Token::{self, approveCall};
-use crate::gen::{V2Aerodrome, V2Swap, V3Swap, V3SwapDeadline, V3SwapDeadlineTick};
+use crate::gen_::ERC20Token::{self, approveCall};
+use crate::gen_::{V2Aerodrome, V2Swap, V3Swap, V3SwapDeadline, V3SwapDeadlineTick};
 use crate::AMOUNT;
 use alloy::primitives::{address, Address, U160, U256};
 use alloy::sol_types::{SolCall, SolValue};
@@ -108,7 +108,7 @@ async fn get_top_volume_tokens(chain: Chain, num_results: usize) -> Result<Vec<A
 
     // write tokens to file
     create_dir_all("cache").unwrap();
-    write_addresses_to_file(&top_volume_tokens, &cache_file).unwrap();
+    write_addresses_to_file(&&top_volume_tokens, &cache_file).unwrap();
 
     Ok(top_volume_tokens)
 }

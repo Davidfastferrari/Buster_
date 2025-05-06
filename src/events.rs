@@ -4,7 +4,7 @@ use alloy::rpc::types::Header;
 use std::collections::HashSet;
 
 use crate::swap::SwapPath;
-use crate::gen::FlashQuoter::SwapParams;
+use crate::gen_::FlashQuoter::SwapParams;
 
 #[derive(Debug, Clone)]
 pub enum Event {

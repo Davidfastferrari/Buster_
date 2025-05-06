@@ -1,4 +1,5 @@
-FROM rust:latest AS builder
+FROM rust:1.77 AS builder
+
 
 # Set working directory
 WORKDIR /usr/src/app

@@ -1,6 +1,6 @@
 use crate::events::Event;
 use crate::gas_station::GasStation;
-use crate::gen::FlashSwap;
+use crate::gen_::FlashSwap;
 use alloy::eips::eip2718::Encodable2718;
 use alloy::hex;
 use alloy::network::{EthereumWallet, TransactionBuilder};
@@ -175,7 +175,7 @@ mod tx_signing_tests {
     use alloy::primitives::{address, U256};
     use alloy::providers::{Provider, ProviderBuilder};
     use env_logger;
-    use crate::gen::FlashQuoter;
+    use crate::gen_::FlashQuoter;
     use pool_sync::PoolType;
     use std::time::Instant;
     use crate::AMOUNT;
