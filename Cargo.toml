@@ -5,7 +5,6 @@ edition = "2024"
 
 [workspace]
 members = [
-    "Buster_",
     "NodeDB",
     "PoolSync",
 ]
