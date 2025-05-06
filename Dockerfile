@@ -17,7 +17,7 @@ RUN rustup override set nightly
 
 # Build the project in release mode
 RUN cargo build --release -p Buster_
-
+RUN cargo fix --allow-dirty --allow-staged
 # --- Optional: Create smaller runtime image if needed ---
 FROM debian:bullseye-slim
 
