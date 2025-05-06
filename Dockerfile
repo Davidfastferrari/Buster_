@@ -13,7 +13,7 @@ RUN cargo build --release
 FROM debian:bullseye-slim
 
 # Copy compiled binary
-COPY --from=builder /usr/src/app/target/release/BaseBuster /usr/local/bin/BaseBuster
+COPY --from=builder /usr/src/app/target/release/Buster_ /usr/local/bin/Buster_
 
 # Set the startup command
-CMD ["BaseBuster"]
+CMD ["Buster_"]

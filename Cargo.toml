@@ -1,11 +1,11 @@
 [package]
-name = "BaseBuster"
+name = "Buster_"
 version = "0.1.0"
 edition = "2024"
 
 [workspace]
 members = [
-    "BaseBuster",
+    "Buster_",
     "NodeDB",
     "PoolSync",
 ]
