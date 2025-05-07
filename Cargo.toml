@@ -17,18 +17,57 @@ verification = []
 
 [dependencies]
 alloy = { version = "0.15.4", features = ["full", "node-bindings", "providers", "rpc-client", "rpc-client-ipc", "rpc-types-debug", "rpc-types-trace", "eips"] }
-alloy-json-rpc = { version = ""0.15.4",git = "https://github.com/alloy-rs/alloy" }
-alloy-providers = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
-alloy-pubsub = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
-alloy-rpc-client = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
-alloy-rpc-trace-types = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
-alloy-rpc-types = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
-alloy-signer = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
-alloy-transport = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
-alloy-transport-http = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
-alloy-transport-ipc = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
-alloy-transport-ws = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
-anyhow = "1.0.89"
+alloy-chains = "^0.2"
+alloy-consensus = "^0.15"
+alloy-eips = "^0.15"
+alloy-json-rpc = "^0.15"
+alloy-network = "^0.15"
+alloy-network-primitives = "^0.15"
+alloy-node-bindings = "^0.15"
+alloy-primitives = "^1.0.0"
+alloy-pubsub = "^0.15 "
+alloy-rpc-client = "^0.15"
+alloy-rpc-types = "^0.15"
+alloy-rpc-types-admin = "^0.15"
+alloy-rpc-types-anvil = "^0.15"
+alloy-rpc-types-debug = "^0.15"
+alloy-rpc-types-engine = "^0.15"
+alloy-rpc-types-eth = "^0.15"
+alloy-rpc-types-trace = "^0.15"
+alloy-rpc-types-txpool = "^0.15"
+alloy-signer = "^0.15"
+alloy-sol-types = "^1.0.0"
+alloy-transport = "^0.15"
+alloy-transport-http = "^0.15"
+alloy-transport-ipc = "^0.15" 
+alloy-transport-ws = "^0.15"
+async-stream = "^0.3"
+async-trait = "^0.1"
+auto_impl = "^1.2"
+dashmap = "^6.0"
+either = "^1.15"
+futures = "^0.3"
+futures-utils-wasm = "^0.1"
+lru = "^0.13"
+pin-project = "^1.1"
+thiserror = "^2.0"
+tracing = "^0.1"
+url = "^2.5"
+alloy-consensus = "^0.15 "
+alloy-node-bindings = "^0.15"
+alloy-primitives = "^1.0.0"
+alloy-rlp = "^0.3.9"
+alloy-rpc-client = "^0.15"
+alloy-rpc-types-engine = "^0.15"
+alloy-serde = "^0.15" 
+alloy-signer = "^0.15"
+alloy-signer-local = "^0.15 "
+alloy-transport-http = "^0.15"
+ci_info = "0.14.14"
+http = "1.1.0"
+http-body-util = "0.1"
+itertools = "0.14"
+jsonrpsee = "^0.24"
 env_logger = "0.11.5"
 futures = { version = "0.3.31", features = ["executor"] }
 node-db = { path = "NodeDB" }
