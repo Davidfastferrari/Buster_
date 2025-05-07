@@ -60,7 +60,6 @@ eyre = "0.6.12"
 # Corrected revm dependency
 revm = { version = "21.0.0", features = ["alloydb"] }
 revm-inspectors = "0.20.1"
-
 # Your reth dependencies pinned properly
 reth-db = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.8", package = "reth-db" }
 reth-chainspec = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.8", package = "reth-chainspec" }
