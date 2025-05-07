@@ -1,6 +1,6 @@
 use alloy_network::Network;
 use alloy_primitives::{Address, U256};
-use alloy::providers::Provider::Provider;
+use alloy_provider::Provider::Provider;
 use alloy::transports::Transport;
 use log::{debug, info};
 use rayon::prelude::*;

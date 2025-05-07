@@ -2,7 +2,7 @@
 pub mod offchain_quote {
     use alloy_network::Ethereum;
     use pool_sync::{Pool, PoolInfo};
-    use alloy::providers::Provider::RootProvider;
+    use alloy_provider::Provider::RootProvider;
     use alloy_primitives::U256;
     use alloy::transports::http::{Client, Http};
     use std::sync::Arc;

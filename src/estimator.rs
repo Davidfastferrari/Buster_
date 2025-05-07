@@ -1,6 +1,6 @@
 use alloy_network::Network;
 use alloy_primitives::{Address, U256};
-use alloy::providers::Provider::Provider;
+use alloy_provider::Provider::Provider;
 use alloy::transports::Transport;
 use lazy_static::lazy_static;
 use pool_sync::{Pool, PoolInfo};
@@ -308,7 +308,7 @@ mod estimator_tests {
     use crate::swap::SwapStep;
     use alloy_network::Ethereum;
     use alloy_primitives::address;
-    use alloy::providers::Provider::{Provider, ProviderBuilder, RootProvider};
+    use alloy_provider::Provider::{Provider, ProviderBuilder, RootProvider};
     use alloy::transports::http::{Client, Http};
     use pool_sync::PoolType;
     use pool_sync::UniswapV2Pool;

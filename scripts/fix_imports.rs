@@ -27,13 +27,13 @@ fn fix_file(file_path: &Path) {
         // Alloy corrections windows command to run fix first: rustc scripts\fix_imports.rs -o fix_imports.exe  second: fix_imports.exe
         // .replace("alloy::rpc::client::Client", "alloy::rpc::client::Client")
         // .replace("alloy::rpc::types", "alloy::rpc::types")
-         .replace("alloy::providers::Provider", "alloy::providers::Provider");
+         .replace("alloy_provider::Provider", "alloy_provider::Provider");
         // .replace("alloy::primitives::Address", "alloy::primitives::Address")
         //    .replace("use alloy_primitives", "use alloy_primitives")
         //     .replace("use alloy_sol_types", "use alloy_sol_types")
         //     .replace("use alloy_rpc_types", "use alloy_rpc_types")
         //     .replace("use alloy_rpc_client", "use alloy_rpc_client")
-        //     .replace("use alloy::providers::Provider", "use alloy::providers::Provider")
+        //     .replace("use alloy_provider::Provider", "use alloy_provider::Provider")
         //     .replace("use alloy_network", "use alloy_network")
         //     .replace("use alloy_node_bindings", "use alloy_node_bindings")
         //     .replace("use alloy_eips", "use alloy_eips")

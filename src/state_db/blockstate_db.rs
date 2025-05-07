@@ -1,7 +1,7 @@
 use alloy_network::primitives::HeaderResponse;
 use alloy_network::{BlockResponse, Network};
 use alloy_primitives::{Address, BlockNumber, B256, U256};
-use alloy::providers::Provider::Provider;
+use alloy_provider::Provider::Provider;
 use alloy_rpc_types::trace::geth::AccountState as GethAccountState;
 use alloy_rpc_types::BlockId;
 use alloy::transports::{Transport, TransportError};

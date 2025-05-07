@@ -1,7 +1,7 @@
 #[cfg(test)]
 pub mod utils {
     use alloy_network::Ethereum;
-    use alloy::providers::Provider::{ProviderBuilder, RootProvider};
+    use alloy_provider::Provider::{ProviderBuilder, RootProvider};
     use alloy_sol_types::SolCall;
     use alloy::transports::http::{Client, Http};
     use pool_sync::*;
