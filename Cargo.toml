@@ -17,6 +17,7 @@ verification = []
 
 [dependencies]
 alloy = { version = "0.15.4", features = ["full", "node-bindings", "providers", "rpc-client", "rpc-client-ipc", "rpc-types-debug", "rpc-types-trace", "eips"] }
+alloy-provider = "0.15.4"
 alloy-chains = "^0.2"
 alloy-consensus = "^0.15"
 alloy-eips = "^0.15"
