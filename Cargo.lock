@@ -34,6 +34,7 @@ dependencies = [
  "alloy-transport-http 0.15.9",
  "alloy-transport-ipc 0.15.9",
  "alloy-transport-ws 0.15.9",
+ "anyhow",
  "async-stream",
  "async-trait",
  "auto_impl",
