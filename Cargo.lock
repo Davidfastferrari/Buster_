@@ -7,24 +7,59 @@ name = "Buster_"
 version = "0.1.0"
 dependencies = [
  "alloy",
+ "alloy-chains 0.2.0",
+ "alloy-consensus 0.15.9",
  "alloy-eips 0.15.9",
- "anyhow",
+ "alloy-json-rpc 0.15.9",
+ "alloy-network 0.15.9",
+ "alloy-network-primitives 0.15.9",
+ "alloy-node-bindings",
+ "alloy-primitives 1.1.0",
+ "alloy-pubsub 0.15.9",
+ "alloy-rpc-client 0.15.9",
+ "alloy-rpc-types 0.15.9",
+ "alloy-rpc-types-admin 0.15.9",
+ "alloy-rpc-types-anvil 0.15.9",
+ "alloy-rpc-types-debug 0.15.9",
+ "alloy-rpc-types-engine 0.15.9",
+ "alloy-rpc-types-eth 0.15.9",
+ "alloy-rpc-types-trace 0.15.9",
+ "alloy-rpc-types-txpool 0.15.9",
+ "alloy-serde 0.15.9",
+ "alloy-signer 0.15.9",
+ "alloy-signer-local 0.15.9",
+ "alloy-sol-types 1.1.0",
+ "alloy-transport 0.15.9",
+ "alloy-transport-http 0.15.9",
+ "alloy-transport-ipc 0.15.9",
+ "alloy-transport-ws 0.15.9",
+ "async-stream",
+ "async-trait",
+ "auto_impl",
  "bytes",
  "chrono",
+ "ci_info",
  "dashmap 6.1.0",
  "dotenv",
+ "either",
  "env_logger",
  "eyre",
  "foldhash",
  "futures",
+ "futures-utils-wasm",
+ "http",
  "http-body-util",
  "hyper",
  "hyper-tls",
  "hyper-util",
+ "itertools 0.14.0",
+ "jsonrpsee",
  "lazy_static",
  "log",
+ "lru 0.13.0",
  "node-db",
  "petgraph",
+ "pin-project",
  "pool-sync",
  "rayon",
  "reqwest",
@@ -38,8 +73,11 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2 0.10.9",
+ "thiserror 2.0.12",
  "tokio",
+ "tracing",
  "uniswap_v3_math",
+ "url",
  "zerocopy 0.8.25",
 ]
 
@@ -183,6 +221,7 @@ checksum = "7734aecfc58a597dde036e4c5cace2ae43e2f8bf3d406b022a1ef34da178dd49"
 dependencies = [
  "alloy-primitives 1.1.0",
  "num_enum",
+ "serde",
  "strum 0.27.1",
 ]
 
@@ -1205,6 +1244,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "alloy-rpc-types-admin"
+version = "0.15.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "101f1e456d6d5df131a6a64c5a840073f90f959ec7a83296d2dbec5f43ef92be"
+dependencies = [
+ "alloy-genesis 0.15.9",
+ "alloy-primitives 1.1.0",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "alloy-rpc-types-anvil"
 version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1350,6 +1401,7 @@ dependencies = [
  "alloy-rlp",
  "alloy-serde 0.15.9",
  "derive_more 2.0.1",
+ "jsonwebtoken",
  "rand 0.8.5",
  "serde",
  "strum 0.27.1",
@@ -3023,6 +3075,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "ci_info"
+version = "0.14.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "840dbb7bdd1f2c4d434d6b08420ef204e0bfad0ab31a07a80a1248d24cc6e38b"
+dependencies = [
+ "envmnt",
+]
+
+[[package]]
 name = "cipher"
 version = "0.4.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3949,6 +4010,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "envmnt"
+version = "0.10.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d73999a2b8871e74c8b8bc23759ee9f3d85011b24fafc91a4b3b5c8cc8185501"
+dependencies = [
+ "fsio",
+ "indexmap 1.9.3",
+]
+
+[[package]]
 name = "equivalent"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4189,6 +4260,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "76ee7a02da4d231650c7cea31349b889be2f45ddb3ef3032d2ec8185f6313fd2"
 dependencies = [
  "libc",
+]
+
+[[package]]
+name = "fsio"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f4944f16eb6a05b4b2b79986b4786867bb275f52882adea798f17cc2588f25b2"
+dependencies = [
+ "dunce",
 ]
 
 [[package]]
@@ -8340,7 +8420,7 @@ version = "1.3.8"
 source = "git+https://github.com/paradigmxyz/reth?tag=v1.3.8#44ab192899a898e2499ef20870629bb7a765f2a2"
 dependencies = [
  "alloy-primitives 0.8.25",
- "alloy-rpc-types-admin",
+ "alloy-rpc-types-admin 0.13.0",
  "auto_impl",
  "derive_more 2.0.1",
  "enr",
@@ -8917,7 +8997,7 @@ dependencies = [
  "alloy-primitives 0.8.25",
  "alloy-rlp",
  "alloy-rpc-types 0.13.0",
- "alloy-rpc-types-admin",
+ "alloy-rpc-types-admin 0.13.0",
  "alloy-rpc-types-beacon",
  "alloy-rpc-types-debug 0.13.0",
  "alloy-rpc-types-engine 0.13.0",
@@ -8986,7 +9066,7 @@ dependencies = [
  "alloy-json-rpc 0.13.0",
  "alloy-primitives 0.8.25",
  "alloy-rpc-types 0.13.0",
- "alloy-rpc-types-admin",
+ "alloy-rpc-types-admin 0.13.0",
  "alloy-rpc-types-anvil 0.13.0",
  "alloy-rpc-types-beacon",
  "alloy-rpc-types-debug 0.13.0",
