@@ -1,16 +1,16 @@
 use crate::events::Event;
 use crate::gas_station::GasStation;
 use crate::gen_::FlashSwap;
-use alloy::eips::eip2718::Encodable2718;
+use alloy_eips::eip2718::Encodable2718;
 use alloy::hex;
-use alloy::network::{EthereumWallet, TransactionBuilder};
-use alloy::primitives::{Address, FixedBytes};
-use alloy::primitives::Bytes as AlloyBytes;
-use alloy::providers::{Provider, ProviderBuilder, RootProvider};
-use alloy::rpc::types::TransactionRequest;
+use alloy_network::{EthereumWallet, TransactionBuilder};
+use alloy_primitives::{Address, FixedBytes};
+use alloy_primitives::Bytes as AlloyBytes;
+use alloy_providers::{Provider, ProviderBuilder, RootProvider};
+use alloy_rpc_types::TransactionRequest;
 use alloy::signers::k256::SecretKey;
 use alloy::signers::local::PrivateKeySigner;
-use alloy::sol_types::SolCall;
+use alloy_sol_types::SolCall;
 use alloy::transports::http::{Client as AlloyClient, Http};
 use log::info;
 use reqwest::Client;
@@ -172,8 +172,8 @@ impl TransactionSender {
 // Test transaction sending functionality
 #[cfg(test)]
 mod tx_signing_tests {
-    use alloy::primitives::{address, U256};
-    use alloy::providers::{Provider, ProviderBuilder};
+    use alloy_primitives::{address, U256};
+    use alloy_providers::{Provider, ProviderBuilder};
     use env_logger;
     use crate::gen_::FlashQuoter;
     use pool_sync::PoolType;

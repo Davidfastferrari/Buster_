@@ -1,4 +1,4 @@
-use alloy::providers::ProviderBuilder;
+use alloy_providers::ProviderBuilder;
 use log::info;
 use pool_sync::{Chain, Pool};
 use std::sync::mpsc;

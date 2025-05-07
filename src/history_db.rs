@@ -1,5 +1,5 @@
-use alloy::primitives::StorageKey;
-use alloy::primitives::{Address, B256, U256};
+use alloy_primitives::StorageKey;
+use alloy_primitives::{Address, B256, U256};
 use eyre::Result;
 use reth::api::NodeTypesWithDBAdapter;
 use reth::providers::providers::StaticFileProvider;

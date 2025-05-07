@@ -1,8 +1,8 @@
-use alloy::network::Network;
-use alloy::primitives::{address, Address, U256};
-use alloy::providers::{Provider, ProviderBuilder, RootProvider};
-use alloy::rpc::types::BlockNumberOrTag;
-use alloy::sol_types::{SolCall, SolValue};
+use alloy_network::Network;
+use alloy_primitives::{address, Address, U256};
+use alloy_providers::{Provider, ProviderBuilder, RootProvider};
+use alloy_rpc_types::BlockNumberOrTag;
+use alloy_sol_types::{SolCall, SolValue};
 use alloy::transports::http::{Client, Http};
 use alloy::transports::Transport;
 use anyhow::Result;

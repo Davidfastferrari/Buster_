@@ -1,8 +1,8 @@
 use crate::gen_::ERC20Token::{self, approveCall};
 use crate::gen_::{V2Aerodrome, V2Swap, V3Swap, V3SwapDeadline, V3SwapDeadlineTick};
 use crate::AMOUNT;
-use alloy::primitives::{address, Address, U160, U256};
-use alloy::sol_types::{SolCall, SolValue};
+use alloy_primitives::{address, Address, U160, U256};
+use alloy_sol_types::{SolCall, SolValue};
 use anyhow::Result;
 use lazy_static::lazy_static;
 use log::{info, debug};

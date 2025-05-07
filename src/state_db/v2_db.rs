@@ -1,7 +1,7 @@
 use super::BlockStateDB;
-use alloy::network::Network;
-use alloy::primitives::{Address, U256};
-use alloy::providers::Provider;
+use alloy_network::Network;
+use alloy_primitives::{Address, U256};
+use alloy_providers::Provider;
 use alloy::transports::Transport;
 use lazy_static::lazy_static;
 use log::trace;
@@ -116,12 +116,12 @@ where
 #[cfg(test)]
 mod test_db_v2 {
     use super::*;
-    use alloy::network::Ethereum;
-    use alloy::primitives::address;
-    use alloy::providers::ProviderBuilder;
-    use alloy::providers::RootProvider;
+    use alloy_network::Ethereum;
+    use alloy_primitives::address;
+    use alloy_providers::ProviderBuilder;
+    use alloy_providers::RootProvider;
     use alloy::sol;
-    use alloy::sol_types::{SolCall, SolValue};
+    use alloy_sol_types::{SolCall, SolValue};
     use alloy::transports::http::{Client, Http};
     use node_db::{NodeDB, InsertionType};
     use revm::primitives::{AccountInfo, Bytecode, TransactTo};

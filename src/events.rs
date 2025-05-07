@@ -1,6 +1,6 @@
-use alloy::primitives::Address;
-use alloy::primitives::U256;
-use alloy::rpc::types::Header;
+use alloy_primitives::Address;
+use alloy_primitives::U256;
+use alloy_rpc_types::Header;
 use std::collections::HashSet;
 
 use crate::swap::SwapPath;

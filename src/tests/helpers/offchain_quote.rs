@@ -1,9 +1,9 @@
 #[cfg(test)]
 pub mod offchain_quote {
-    use alloy::network::Ethereum;
+    use alloy_network::Ethereum;
     use pool_sync::{Pool, PoolInfo};
-    use alloy::providers::RootProvider;
-    use alloy::primitives::U256;
+    use alloy_providers::RootProvider;
+    use alloy_primitives::U256;
     use alloy::transports::http::{Client, Http};
     use std::sync::Arc;
     use std::time::Instant;

@@ -9,9 +9,9 @@ mod offchain_calculations {
     use crate::events::Event;
     use crate::gen::{ERC20Token, FlashQuoter};
     use crate::state_db::{BlockStateDB, InsertionType};
-    use alloy::primitives::{address, U256};
-    use alloy::providers::ProviderBuilder;
-    use alloy::sol_types::{SolCall, SolValue};
+    use alloy_primitives::{address, U256};
+    use alloy_providers::ProviderBuilder;
+    use alloy_sol_types::{SolCall, SolValue};
     use pool_sync::PoolType;
     use revm::primitives::keccak256;
     use revm::primitives::{AccountInfo, Bytecode, TransactTo};

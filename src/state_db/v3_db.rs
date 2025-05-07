@@ -1,7 +1,7 @@
 use super::BlockStateDB;
-use alloy::network::Network;
-use alloy::primitives::{keccak256, Address, Signed, Uint, I256, U160, U256};
-use alloy::providers::Provider;
+use alloy_network::Network;
+use alloy_primitives::{keccak256, Address, Signed, Uint, I256, U160, U256};
+use alloy_providers::Provider;
 use alloy::sol;
 use alloy::transports::Transport;
 use anyhow::Result;
@@ -276,9 +276,9 @@ where
 #[cfg(test)]
 mod v3_db_test {
     use super::*;
-    use alloy::primitives::address;
-    use alloy::primitives::aliases::I24;
-    use alloy::providers::ProviderBuilder;
+    use alloy_primitives::address;
+    use alloy_primitives::aliases::I24;
+    use alloy_providers::ProviderBuilder;
     use pool_sync::{TickInfo, UniswapV3Pool};
     use std::collections::HashMap;
 

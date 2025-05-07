@@ -1,17 +1,17 @@
 #[cfg(test)]
 pub mod utils {
-    use alloy::network::Ethereum;
-    use alloy::providers::{ProviderBuilder, RootProvider};
-    use alloy::sol_types::SolCall;
+    use alloy_network::Ethereum;
+    use alloy_providers::{ProviderBuilder, RootProvider};
+    use alloy_sol_types::SolCall;
     use alloy::transports::http::{Client, Http};
     use pool_sync::*;
     use std::sync::atomic::AtomicBool;
     use std::sync::Arc;
-    use alloy::sol_types::SolValue;
+    use alloy_sol_types::SolValue;
     use std::collections::HashMap;
     use tokio::sync::broadcast;
     use std::sync::mpsc;
-    use alloy::primitives::Address;
+    use alloy_primitives::Address;
     use revm::primitives::{address, U256, keccak256, TransactTo};
     use revm::Evm;
     use node_db::{NodeDB, InsertionType};

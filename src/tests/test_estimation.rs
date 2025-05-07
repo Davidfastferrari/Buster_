@@ -7,7 +7,7 @@ mod estimation {
     use crate::events::Event;
     use crate::graph::ArbGraph;
 
-    use alloy::primitives::address;
+    use alloy_primitives::address;
     use pool_sync::{Pool, PoolType, PoolInfo};
 
     // Manually compare swap path estimations to their calculated rate

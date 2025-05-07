@@ -1,5 +1,5 @@
 use crate::swap::{SwapPath, SwapStep};
-use alloy::primitives::Address;
+use alloy_primitives::Address;
 use petgraph::graph::UnGraph;
 use petgraph::prelude::*;
 use pool_sync::{BalancerV2Pool, CurveTriCryptoPool, Pool, PoolInfo};
