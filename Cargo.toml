@@ -16,18 +16,18 @@ debug = true
 verification = []
 
 [dependencies]
-alloy = { version = "0.1.0", features = ["full", "node-bindings", "providers", "rpc-client", "rpc-client-ipc", "rpc-types-debug", "rpc-types-trace", "eips"] }
-alloy-json-rpc = { version = "0.1.0",git = "https://github.com/alloy-rs/alloy" }
-alloy-providers = { version = "0.1.0",git = "https://github.com/alloy-rs/alloy" }
-alloy-pubsub = { version = "0.1.0",git = "https://github.com/alloy-rs/alloy" }
-alloy-rpc-client = { version = "0.1.0",git = "https://github.com/alloy-rs/alloy" }
-alloy-rpc-trace-types = { version = "0.1.0",git = "https://github.com/alloy-rs/alloy" }
-alloy-rpc-types = { version = "0.1.0",git = "https://github.com/alloy-rs/alloy" }
-alloy-signer = { version = "0.1.0",git = "https://github.com/alloy-rs/alloy" }
-alloy-transport = { version = "0.1.0",git = "https://github.com/alloy-rs/alloy" }
-alloy-transport-http = { version = "0.1.0",git = "https://github.com/alloy-rs/alloy" }
-alloy-transport-ipc = { version = "0.1.0",git = "https://github.com/alloy-rs/alloy" }
-alloy-transport-ws = { version = "0.1.0",git = "https://github.com/alloy-rs/alloy" }
+alloy = { version = "0.15.4", features = ["full", "node-bindings", "providers", "rpc-client", "rpc-client-ipc", "rpc-types-debug", "rpc-types-trace", "eips"] }
+alloy-json-rpc = { version = ""0.15.4",git = "https://github.com/alloy-rs/alloy" }
+alloy-providers = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
+alloy-pubsub = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
+alloy-rpc-client = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
+alloy-rpc-trace-types = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
+alloy-rpc-types = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
+alloy-signer = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
+alloy-transport = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
+alloy-transport-http = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
+alloy-transport-ipc = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
+alloy-transport-ws = { version = "0.15.4",git = "https://github.com/alloy-rs/alloy" }
 anyhow = "1.0.89"
 env_logger = "0.11.5"
 futures = { version = "0.3.31", features = ["executor"] }
