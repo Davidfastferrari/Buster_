@@ -6,7 +6,7 @@ use alloy::hex;
 use alloy_network::{EthereumWallet, TransactionBuilder};
 use alloy_primitives::{Address, FixedBytes};
 use alloy_primitives::Bytes as AlloyBytes;
-use alloy_providers::{Provider, ProviderBuilder, RootProvider};
+use alloy::providers::Provider::{Provider, ProviderBuilder, RootProvider};
 use alloy_rpc_types::TransactionRequest;
 use alloy::signers::k256::SecretKey;
 use alloy::signers::local::PrivateKeySigner;
@@ -173,7 +173,7 @@ impl TransactionSender {
 #[cfg(test)]
 mod tx_signing_tests {
     use alloy_primitives::{address, U256};
-    use alloy_providers::{Provider, ProviderBuilder};
+    use alloy::providers::Provider::{Provider, ProviderBuilder};
     use env_logger;
     use crate::gen_::FlashQuoter;
     use pool_sync::PoolType;

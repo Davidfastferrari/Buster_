@@ -1,7 +1,7 @@
 #[cfg(test)]
 pub mod onchain {
     use alloy_primitives::{address, U160, U256};
-    use alloy_providers::{ProviderBuilder, RootProvider};
+    use alloy::providers::Provider::{ProviderBuilder, RootProvider};
     use alloy_sol_types::{SolCall, SolValue};
     use alloy::transports::http::{Client, Http};
     use pool_sync::{Pool, PoolInfo, PoolType, UniswapV2Pool, UniswapV3Pool};

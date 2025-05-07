@@ -1,6 +1,6 @@
 use alloy_network::Network;
 use alloy_primitives::{Address, U256};
-use alloy_providers::Provider;
+use alloy::providers::Provider::Provider;
 use alloy::transports::Transport;
 use pool_sync::PoolType;
 use std::collections::HashSet;

@@ -1,7 +1,7 @@
 use alloy_network::Network;
 use alloy_primitives::Address;
-use alloy_providers::ext::DebugApi;
-use alloy_providers::Provider;
+use alloy::providers::Provider::ext::DebugApi;
+use alloy::providers::Provider::Provider;
 use alloy_rpc_types::trace::common::TraceResult;
 use alloy_rpc_types::trace::geth::{
     GethDebugBuiltInTracerType::PreStateTracer,

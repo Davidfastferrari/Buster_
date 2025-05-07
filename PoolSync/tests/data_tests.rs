@@ -4,8 +4,8 @@
 mod data_test {
     use crate::{Chain, PoolInfo, PoolSync};
     use alloy_primitives::U256;
-    use alloy_providers::ProviderBuilder;
-    use alloy_providers::RootProvider;
+    use alloy::providers::Provider::ProviderBuilder;
+    use alloy::providers::Provider::RootProvider;
     use alloy::transports::http::{Client, Http};
     use std::sync::Arc;
 

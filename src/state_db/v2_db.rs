@@ -1,7 +1,7 @@
 use super::BlockStateDB;
 use alloy_network::Network;
 use alloy_primitives::{Address, U256};
-use alloy_providers::Provider;
+use alloy::providers::Provider::Provider;
 use alloy::transports::Transport;
 use lazy_static::lazy_static;
 use log::trace;
@@ -118,8 +118,8 @@ mod test_db_v2 {
     use super::*;
     use alloy_network::Ethereum;
     use alloy_primitives::address;
-    use alloy_providers::ProviderBuilder;
-    use alloy_providers::RootProvider;
+    use alloy::providers::Provider::ProviderBuilder;
+    use alloy::providers::Provider::RootProvider;
     use alloy::sol;
     use alloy_sol_types::{SolCall, SolValue};
     use alloy::transports::http::{Client, Http};
