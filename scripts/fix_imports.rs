@@ -1,58 +1,43 @@
-use std::fs::{self, read_to_string};
+use std::fs;
 use std::path::Path;
-use std::io::Write;
 
-fn main() {
-    let src_path = "./"; // Change if you want to limit to src folders
-    walk_and_fix(Path::new(src_path));
+fn fix_imports(path: &Path) {
+    if let Ok(content) = fs::read_to_string(path) {
+        let fixed = content
+            .replace("// alloy::prelude removed, import manually", "// alloy::prelude removed, import manually")
+            .replace("use revm_interpreter::Evm", "use revm_interpreter::Evm")
+            .replace("use revm_database::db", "use revm_database::db")
+            .replace("use revm_primitives::AccountInfo", "use revm_primitives::AccountInfo")
+            .replace("use revm_primitives::ExecutionResult", "use revm_primitives::ExecutionResult")
+            .replace("use revm_primitives::TransactTo", "use revm_primitives::TransactTo")
+            .replace("use revm_bytecode::Bytecode", "use revm_bytecode::Bytecode")
+            .replace("use alloy_provider::Provider", "use alloy_provider::Provider")
+            .replace("use alloy_provider::RootProvider", "use alloy_provider::RootProvider")
+            .replace("use alloy_provider::ProviderBuilder", "use alloy_provider::ProviderBuilder")
+            .replace("use alloy_provider::IpcConnect", "use alloy_provider::IpcConnect")
+            .replace("use alloy_provider::ext", "use alloy_provider::ext");
+        
+        if fixed != content {
+            println!("Fixing {:?}", path);
+            fs::write(path, fixed).expect("Failed to write file");
+        }
+    }
 }
 
-fn walk_and_fix(dir: &Path) {
+fn walk_dirs(dir: &Path) {
     if dir.is_dir() {
-        for entry in fs::read_dir(dir).unwrap() {
-            let entry = entry.unwrap();
+        for entry in fs::read_dir(dir).expect("Cannot read directory") {
+            let entry = entry.expect("Cannot get entry");
             let path = entry.path();
             if path.is_dir() {
-                walk_and_fix(&path);
-            } else if path.extension().map_or(false, |e| e == "rs") {
-                fix_file(&path);
+                walk_dirs(&path);
+            } else if path.extension().map_or(false, |ext| ext == "rs") {
+                fix_imports(&path);
             }
         }
     }
 }
 
-fn fix_file(file_path: &Path) {
-    let content = read_to_string(file_path).expect("Failed to read file");
-    let fixed = content
-        // Alloy corrections windows command to run fix first: rustc scripts\fix_imports.rs -o fix_imports.exe  second: fix_imports.exe
-        // .replace("alloy::rpc::client::Client", "alloy::rpc::client::Client")
-        // .replace("alloy::rpc::types", "alloy::rpc::types")
-         .replace("alloy_provider::Provider", "alloy_provider::Provider");
-        // .replace("alloy::primitives::Address", "alloy::primitives::Address")
-        //    .replace("use alloy_primitives", "use alloy_primitives")
-        //     .replace("use alloy_sol_types", "use alloy_sol_types")
-        //     .replace("use alloy_rpc_types", "use alloy_rpc_types")
-        //     .replace("use alloy_rpc_client", "use alloy_rpc_client")
-        //     .replace("use alloy_provider::Provider", "use alloy_provider::Provider")
-        //     .replace("use alloy_network", "use alloy_network")
-        //     .replace("use alloy_node_bindings", "use alloy_node_bindings")
-        //     .replace("use alloy_eips", "use alloy_eips")
-        // Reth corrections
-        // .replace("reth::providers::Provider", "reth::providers::Provider")
-        // .replace("reth_db::database::Database", "reth_db::database::Database")
-        // .replace("reth::executor", "reth::executor")
-        // REVM corrections
-        // .replace("revm::db::Database", "revm::db::Database")
-        // .replace("revm::primitives::Bytecode", "revm::primitives::Bytecode")
-        // .replace("revm::primitives::Address", "revm::primitives::Address");
-
-    if fixed != content {
-        let mut file = fs::OpenOptions::new()
-            .write(true)
-            .truncate(true)
-            .open(file_path)
-            .expect("Failed to open file for writing");
-        file.write_all(fixed.as_bytes()).expect("Failed to write file");
-        println!("Fixed imports in: {:?}", file_path);
-    }
+fn main() {
+    walk_dirs(Path::new("./"));
 }

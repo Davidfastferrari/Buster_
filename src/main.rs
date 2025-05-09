@@ -1,4 +1,4 @@
-use alloy::prelude::*;
+// alloy::prelude removed, import manually::*;
 use alloy::{eips::{BlockId, BlockNumberOrTag}, primitives::U256, providers::Provider, rpc::types::{BlockTransactions, BlockTransactionsKind}};
 use anyhow::Result;
 use ignition::start_workers;

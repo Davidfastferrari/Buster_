@@ -1,7 +1,7 @@
 use super::BlockStateDB;
 use alloy_network::Network;
 use alloy_primitives::{Address, U256};
-use alloy_provider::Provider::Provider;
+use alloy_provider::Provider;
 use alloy::transports::Transport;
 use lazy_static::lazy_static;
 use log::trace;
@@ -118,20 +118,20 @@ mod test_db_v2 {
     use super::*;
     use alloy_network::Ethereum;
     use alloy_primitives::address;
-    use alloy_provider::Provider::ProviderBuilder;
-    use alloy_provider::Provider::RootProvider;
+    use alloy_provider::ProviderBuilder;
+    use alloy_provider::RootProvider;
     use alloy::sol;
     use alloy_sol_types::{SolCall, SolValue};
     use alloy::transports::http::{Client, Http};
     use node_db::{NodeDB, InsertionType};
     use revm::primitives::{AccountInfo, Bytecode, TransactTo};
-    use revm::db::{AlloyDB, CacheDB};
+    use revm_database::db::{AlloyDB, CacheDB};
     use crate::gen::FlashQuoter::{self, SwapStep};
     use log::LevelFilter;
     use revm::primitives::keccak256;
     use pool_sync::UniswapV2Pool;
 
-    use revm::Evm;
+    use revm_interpreter::Evm;
 
     /* 
     type QuoteEvm<'a> = Evm<

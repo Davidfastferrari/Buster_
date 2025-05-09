@@ -1,6 +1,6 @@
 use alloy_network::Network;
 use alloy_primitives::{Address, U256};
-use alloy_provider::Provider::Provider;
+use alloy_provider::Provider;
 use alloy::transports::Transport;
 use lazy_static::lazy_static;
 use pool_sync::{Pool, PoolInfo};

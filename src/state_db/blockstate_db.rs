@@ -1,14 +1,14 @@
 use alloy_network::primitives::HeaderResponse;
 use alloy_network::{BlockResponse, Network};
 use alloy_primitives::{Address, BlockNumber, B256, U256};
-use alloy_provider::Provider::Provider;
+use alloy_provider::Provider;
 use alloy_rpc_types::trace::geth::AccountState as GethAccountState;
 use alloy_rpc_types::BlockId;
 use alloy::transports::{Transport, TransportError};
 use anyhow::Result;
 use log::{debug, trace, warn};
 use pool_sync::PoolInfo;
-use revm::db::AccountState;
+use revm_database::db::AccountState;
 use revm::primitives::{Log, KECCAK_EMPTY};
 use revm::primitives::{Account, AccountInfo, Bytecode, Log, KECCAK_EMPTY};
 use revm::{Database, DatabaseCommit, DatabaseRef};

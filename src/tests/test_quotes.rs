@@ -10,12 +10,12 @@ mod offchain_calculations {
     use crate::gen::{ERC20Token, FlashQuoter};
     use crate::state_db::{BlockStateDB, InsertionType};
     use alloy_primitives::{address, U256};
-    use alloy_provider::Provider::ProviderBuilder;
+    use alloy_provider::ProviderBuilder;
     use alloy_sol_types::{SolCall, SolValue};
     use pool_sync::PoolType;
     use revm::primitives::keccak256;
     use revm::primitives::{AccountInfo, Bytecode, TransactTo};
-    use revm::Evm;
+    use revm_interpreter::Evm;
 
     // Test to make sure that the quoter contract works
     #[tokio::test(flavor = "multi_thread")]

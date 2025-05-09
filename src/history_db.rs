@@ -13,7 +13,7 @@ use reth::utils::open_db_read_only;
 use reth_chainspec::ChainSpecBuilder;
 use reth_db::{mdbx::DatabaseArguments, ClientVersion, DatabaseEnv};
 use reth_node_ethereum::EthereumNode;
-use revm::db::AccountState;
+use revm_database::db::AccountState;
 use revm::primitives::KECCAK_EMPTY;
 use revm::primitives::{Account, AccountInfo, Bytecode};
 use revm::{Database, DatabaseCommit, DatabaseRef};

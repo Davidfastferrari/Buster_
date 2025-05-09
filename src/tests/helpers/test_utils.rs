@@ -13,7 +13,7 @@ pub mod utils {
     use std::sync::mpsc;
     use alloy_primitives::Address;
     use revm::primitives::{address, U256, keccak256, TransactTo};
-    use revm::Evm;
+    use revm_interpreter::Evm;
     use node_db::{NodeDB, InsertionType};
 
     use super::super::contract_gen::ERC20;
