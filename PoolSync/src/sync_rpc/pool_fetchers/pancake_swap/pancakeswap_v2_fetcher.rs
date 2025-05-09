@@ -17,7 +17,7 @@ impl PoolFetcher for PancakeSwapV2Fetcher {
         PancakeSwapV2Factory::PairCreated::SIGNATURE
     }
 
-    fn log_to_address(&self, log: &Log) -> Address {
+    fn log_to_address(&self, log: &AlloyLog) -> Address {
         let decoded_log = PancakeSwapV2Factory::PairCreated::decode_log(log).unwrap();
         decoded_log.data.pair
     }
