@@ -1,6 +1,6 @@
 use crate::onchain::PancakeSwapV2Factory;
 use crate::{Chain, PoolFetcher};
-use alloy_primitives::Log;
+use alloy_primitives::Log as AlloyLog;
 use alloy_primitives::{address, Address};
 use alloy_sol_types::SolEvent;
 
