@@ -2,14 +2,14 @@ use super::Calculator;
 use alloy_primitives::{Address, address};
 use alloy::sol;
 use alloy_primitives::U256;
-//use revm::primitives::{ExecutionResult, TransactTo};
-//use alloy_sol_types::{SolCall, SolValue, SolStruct, SolInterface};
-//use revm_interpreter::Evm;
+use revm::primitives::{ExecutionResult, TransactTo};
+use alloy_sol_types::{SolCall, SolValue};
+use revm::interpreter::Evm;
 
 sol!(
     #[sol(rpc)]
     contract CurveOut {
-        function get_dy(uint256 i, uint256 j, uint256 dx) external view returs (uint256);
+        function get_dy(uint256 i, uint256 j, uint256 dx) external view returns (uint256);
     }
 );
 

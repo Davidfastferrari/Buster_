@@ -131,7 +131,7 @@ mod test_db_v2 {
     use revm::primitives::keccak256;
     use pool_sync::UniswapV2Pool;
 
-    use revm_interpreter::Evm;
+    use revm::interpreter::Evm;
 
     /* 
     type QuoteEvm<'a> = Evm<

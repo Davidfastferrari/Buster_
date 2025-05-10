@@ -11,7 +11,7 @@ use pool_sync::Pool;
 use pool_sync::PoolInfo;
 use revm::primitives::keccak256;
 use revm::primitives::{AccountInfo, Bytecode, TransactTo};
-use revm_interpreter::Evm;
+use revm::interpreter::Evm;
 use std::collections::HashSet;
 use std::sync::mpsc::Sender;
 use std::sync::Arc;

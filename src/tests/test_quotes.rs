@@ -15,7 +15,7 @@ mod offchain_calculations {
     use pool_sync::PoolType;
     use revm::primitives::keccak256;
     use revm::primitives::{AccountInfo, Bytecode, TransactTo};
-    use revm_interpreter::Evm;
+    use revm::interpreter::Evm;
 
     // Test to make sure that the quoter contract works
     #[tokio::test(flavor = "multi_thread")]
