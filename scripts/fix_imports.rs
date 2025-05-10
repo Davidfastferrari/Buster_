@@ -1,61 +1,44 @@
 use std::fs;
-use std::io::{self, Write};
 use std::path::Path;
 
-fn main() -> io::Result<()> {
-    let root_dir = "src"; // Your Rust project root
-
-    let mappings = [
-        // --- REVM Fixes ---
-        ("use revm::Evm;", "use revm::interpreter::Evm;"),
-        ("use revm_interpreter::Evm;", "use revm::interpreter::Evm;"),
-        ("use revm::primitives::ExecutionResult;", "use revm::primitives::execution_result::ExecutionResult;"),
-        ("use revm::primitives::TransactTo;", "use revm::primitives::transact_to::TransactTo;"),
-        ("use revm::db;", "use revm::database::*;"),
-        ("use revm_database::db;", "use revm::database::*;"),
-        ("use revm::inspector_handle_register;", "// TODO: inspector_handle_register was removed. Refactor to new Inspector API!"),
-
+fn fix_imports(path: &Path) {
+    if let Ok(content) = fs::read_to_string(path) {
+        let fixed = content
+            // Revm fixes
+        .replace("use revm::interpreter::Evm;", "use revm::interpreter::Evm;")
+        .replace("use revm::interpreter::Evm;", "use revm::interpreter::Evm;")
+        .replace("use revm::primitives::execution_result::ExecutionResult;", "use revm::primitives::execution_result::ExecutionResult;")
+        .replace("use revm::primitives::transact_to::TransactTo;", "use revm::primitives::transact_to::TransactTo;")
+        .replace("use revm::database::*;", "use revm::database::*;")
+        .replace("use revm::database::*;", "use revm::database::*;")
+        .replace("// TODO: inspector_handle_register was removed. Refactor to new Inspector API!", "// TODO: inspector_handle_register was removed. Refactor to new Inspector API!")
         // --- Alloy provider wrong usage (OPTIONAL placeholder if needed later) ---
-        ("use alloy_provider::Provider::Provider;", "use alloy_provider::Provider;"),
-        ("use alloy_provider::Provider::ProviderBuilder;", "use alloy_provider::ProviderBuilder;"),
-        ("use alloy_provider::Provider::RootProvider;", "use alloy_provider::RootProvider;"),
-        ("use alloy_provider::Provider::IpcConnect;", "use alloy_provider::IpcConnect;"),
-        ("use alloy_provider::Provider::ext;", "use alloy_provider::ext;"),
-    ];
-
-    process_dir(root_dir, &mappings)?;
-
-    Ok(())
-}
-
-fn process_dir<P: AsRef<Path>>(path: P, mappings: &[(&str, &str)]) -> io::Result<()> {
-    for entry in fs::read_dir(path)? {
-        let entry = entry?;
-        let path = entry.path();
-
-        if path.is_dir() {
-            process_dir(&path, mappings)?;
-        } else if path.extension().map_or(false, |ext| ext == "rs") {
-            fix_file(&path, mappings)?;
+        .replace("use alloy_provider::Provider;", "use alloy_provider::Provider;")
+        .replace("use alloy_provider::ProviderBuilder;", "use alloy_provider::ProviderBuilder;")
+        .replace("use alloy_provider::RootProvider;", "use alloy_provider::RootProvider;")
+        .replace("use alloy_provider::IpcConnect;", "use alloy_provider::IpcConnect;")
+        .replace("use alloy_provider::ext;", "use alloy_provider::ext;");
+        if fixed != content {
+            println!("Fixing {:?}", path);
+            fs::write(path, fixed).expect("Failed to write file");
         }
     }
-    Ok(())
 }
 
-fn fix_file<P: AsRef<Path>>(file_path: P, mappings: &[(&str, &str)]) -> io::Result<()> {
-    let file_path = file_path.as_ref();
-    let content = fs::read_to_string(file_path)?;
-
-    let mut new_content = content.clone();
-    for (old, new) in mappings {
-        new_content = new_content.replace(old, new);
+fn walk_dirs(dir: &Path) {
+    if dir.is_dir() {
+        for entry in fs::read_dir(dir).expect("Cannot read directory") {
+            let entry = entry.expect("Cannot get entry");
+            let path = entry.path();
+            if path.is_dir() {
+                walk_dirs(&path);
+            } else if path.extension().map_or(false, |ext| ext == "rs") {
+                fix_imports(&path);
+            }
+        }
     }
+}
 
-    if content != new_content {
-        let mut file = fs::File::create(file_path)?;
-        file.write_all(new_content.as_bytes())?;
-        println!("✅ Fixed: {:?}", file_path);
-    }
-
-    Ok(())
+fn main() {
+    walk_dirs(Path::new("./"));
 }
