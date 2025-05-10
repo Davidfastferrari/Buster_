@@ -3,19 +3,24 @@ use std::io::{self, Write};
 use std::path::Path;
 
 fn main() -> io::Result<()> {
-    let root_dir = "src";
+    let root_dir = "src"; // Your Rust project root
 
     let mappings = [
+        // --- REVM Fixes ---
         ("use revm::Evm;", "use revm::interpreter::Evm;"),
         ("use revm_interpreter::Evm;", "use revm::interpreter::Evm;"),
-        ("use revm::primitives::ExecutionResult;", "use revm::primitives::ExecutionResult;"),
-        ("use revm::primitives::TransactTo;", "use revm::primitives::TransactTo;"),
-        ("use revm::primitives::Account;", "use revm::primitives::Account;"),
-        ("use revm::primitives::AccountInfo;", "use revm::primitives::AccountInfo;"),
-        ("use revm::primitives::Bytecode;", "use revm::primitives::Bytecode;"),
-        ("use revm_database::db;", "use revm::database::*;"),
+        ("use revm::primitives::ExecutionResult;", "use revm::primitives::execution_result::ExecutionResult;"),
+        ("use revm::primitives::TransactTo;", "use revm::primitives::transact_to::TransactTo;"),
         ("use revm::db;", "use revm::database::*;"),
-        ("use revm::inspector_handle_register;", "// TODO: inspector_handle_register removed. Check Inspector API!"),
+        ("use revm_database::db;", "use revm::database::*;"),
+        ("use revm::inspector_handle_register;", "// TODO: inspector_handle_register was removed. Refactor to new Inspector API!"),
+
+        // --- Alloy provider wrong usage (OPTIONAL placeholder if needed later) ---
+        ("use alloy_provider::Provider::Provider;", "use alloy_provider::Provider;"),
+        ("use alloy_provider::Provider::ProviderBuilder;", "use alloy_provider::ProviderBuilder;"),
+        ("use alloy_provider::Provider::RootProvider;", "use alloy_provider::RootProvider;"),
+        ("use alloy_provider::Provider::IpcConnect;", "use alloy_provider::IpcConnect;"),
+        ("use alloy_provider::Provider::ext;", "use alloy_provider::ext;"),
     ];
 
     process_dir(root_dir, &mappings)?;
