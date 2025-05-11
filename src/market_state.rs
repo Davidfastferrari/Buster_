@@ -1,25 +1,25 @@
-use alloy_network::Network;
-use alloy_primitives::{address, Address, U256};
 use alloy::providers::{Provider, ProviderBuilder, RootProvider};
-use alloy_rpc_types::BlockNumberOrTag;
-use alloy_sol_types::{SolCall, SolValue};
 use alloy::transports::http::{Client, Http};
 use alloy::transports::Transport;
+use alloy_network::Network;
+use alloy_primitives::{address, Address, U256};
+use alloy_rpc_types::BlockNumberOrTag;
+use alloy_sol_types::{SolCall, SolValue};
 use anyhow::Result;
 use log::{debug, error, info};
 use pool_sync::Pool;
 use pool_sync::PoolInfo;
 use revm_context::keccak256;
+use revm_context::{Evm, TransactTo};
 use revm_state::{AccountInfo, Bytecode};
-use revm_context::{TransactTo, Evm};
 use std::collections::HashSet;
+use std::sync::atomic::AtomicBool;
+use std::sync::atomic::Ordering;
 use std::sync::mpsc::Sender;
 use std::sync::Arc;
 use std::sync::RwLock;
 use std::time::Instant;
 use tokio::sync::broadcast::Receiver;
-use std::sync::atomic::Ordering;
-use std::sync::atomic::AtomicBool;
 
 use crate::events::Event;
 use crate::gen_::ERC20Token;
@@ -51,7 +51,7 @@ where
         address_tx: Sender<Event>, // sender for touched addresses in a block
         last_synced_block: u64,    // the last block that was synced too
         provider: P,
-        caught_up: Arc<AtomicBool>
+        caught_up: Arc<AtomicBool>,
     ) -> Result<Arc<Self>> {
         debug!("Populating the db with {} pools", pools.len());
 
@@ -83,7 +83,7 @@ where
         mut block_rx: Receiver<Event>,
         address_tx: Sender<Event>,
         mut last_synced_block: u64,
-        caught_up: Arc<AtomicBool>
+        caught_up: Arc<AtomicBool>,
     ) {
         // setup a provider for tracing
         let http_url = std::env::var("FULL").unwrap().parse().unwrap();
@@ -231,23 +231,17 @@ where
             evm.transact_commit().unwrap();
 
             // Try to do the swap from input to output token
-            let is_v3 = if pool.is_v3() {
-                1
-            } else {
-                0
-            };
+            let is_v3 = if pool.is_v3() { 1 } else { 0 };
 
             let quote_path = FlashQuoter::SwapParams {
                 pools: vec![pool.address()],
                 poolVersions: vec![is_v3],
-                amountIn: *AMOUNT
+                amountIn: *AMOUNT,
             };
 
-            let quote_calldata = FlashQuoter::quoteArbitrageCall {
-                params: quote_path
-            }
-            .abi_encode()
-            .abi_encode();
+            let quote_calldata = FlashQuoter::quoteArbitrageCall { params: quote_path }
+                .abi_encode()
+                .abi_encode();
             evm.tx_mut().data = quote_calldata.into();
             evm.tx_mut().transact_to = TransactTo::Call(quoter);
 

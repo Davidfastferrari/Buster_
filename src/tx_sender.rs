@@ -1,17 +1,17 @@
 use crate::events::Event;
 use crate::gas_station::GasStation;
 use crate::gen_::FlashSwap;
-use alloy_eips::eip2718::Encodable2718;
 use alloy::hex;
-use alloy_network::{EthereumWallet, TransactionBuilder};
-use alloy_primitives::{Address, FixedBytes};
-use alloy_primitives::Bytes as AlloyBytes;
-use alloy_provider::Provider::{Provider, ProviderBuilder, RootProvider};
-use alloy_rpc_types::TransactionRequest;
 use alloy::signers::k256::SecretKey;
 use alloy::signers::local::PrivateKeySigner;
-use alloy_sol_types::SolCall;
 use alloy::transports::http::{Client as AlloyClient, Http};
+use alloy_eips::eip2718::Encodable2718;
+use alloy_network::{EthereumWallet, TransactionBuilder};
+use alloy_primitives::Bytes as AlloyBytes;
+use alloy_primitives::{Address, FixedBytes};
+use alloy_provider::Provider::{Provider, ProviderBuilder, RootProvider};
+use alloy_rpc_types::TransactionRequest;
+use alloy_sol_types::SolCall;
 use log::info;
 use reqwest::Client;
 use serde_json::Value;
@@ -19,7 +19,6 @@ use std::str::FromStr;
 use std::sync::mpsc::Receiver;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
-
 
 // Handles sending transactions
 pub struct TransactionSender {
@@ -83,18 +82,16 @@ impl TransactionSender {
         }
     }
 
-
     // Receive a path that has passed simulation to be sent to the sequencer
     pub async fn send_transactions(&mut self, tx_receiver: Receiver<Event>) {
         // wait for a new transaction that has passed simulation
-        while let Ok(Event::ValidPath((arb_path, profit, block_number))) = tx_receiver.recv()
-        {
+        while let Ok(Event::ValidPath((arb_path, profit, block_number))) = tx_receiver.recv() {
             info!("Sending path...");
 
             // Setup the calldata
             let converted_path: FlashSwap::SwapParams = arb_path.clone().into();
             let calldata = FlashSwap::executeArbitrageCall {
-                arb: converted_path
+                arb: converted_path,
             }
             .abi_encode();
 
@@ -127,7 +124,8 @@ impl TransactionSender {
             let start = Instant::now();
 
             // construct the request and send it
-            let req = self.client
+            let req = self
+                .client
                 .post("https://mainnet-sequencer.base.org")
                 .json(&tx_data)
                 .send()
@@ -135,11 +133,12 @@ impl TransactionSender {
                 .unwrap();
             let req_response: Value = req.json().await.unwrap();
             info!("Took {:?} to send tx and receive response", start.elapsed());
-            let tx_hash = FixedBytes::<32>::from_str(req_response["result"].as_str().unwrap()).unwrap();
+            let tx_hash =
+                FixedBytes::<32>::from_str(req_response["result"].as_str().unwrap()).unwrap();
 
             let provider = self.provider.clone();
             tokio::spawn(async move {
-                Self::send_and_monitor(provider,tx_hash, block_number).await;
+                Self::send_and_monitor(provider, tx_hash, block_number).await;
             });
         }
     }
@@ -156,42 +155,42 @@ impl TransactionSender {
             // try to fetch the receipt
             let receipt = provider.get_transaction_receipt(tx_hash).await;
             if let Ok(Some(inner)) = receipt {
-                info!("Send on block {:?}, Landed on block {:?}", block_number, inner.block_number.unwrap());
+                info!(
+                    "Send on block {:?}, Landed on block {:?}",
+                    block_number,
+                    inner.block_number.unwrap()
+                );
                 return;
             }
 
             tokio::time::sleep(Duration::from_secs(2)).await;
             attempts += 1;
         }
-
     }
 }
-
-
 
 // Test transaction sending functionality
 #[cfg(test)]
 mod tx_signing_tests {
+    use super::*;
+    use crate::gen_::FlashQuoter;
+    use crate::AMOUNT;
     use alloy_primitives::{address, U256};
     use alloy_provider::Provider::{Provider, ProviderBuilder};
     use env_logger;
-    use crate::gen_::FlashQuoter;
     use pool_sync::PoolType;
     use std::time::Instant;
-    use crate::AMOUNT;
-    use super::*;
 
     // Create mock swap params
-    fn dummy_swap_params() ->  FlashQuoter::SwapParams {
+    fn dummy_swap_params() -> FlashQuoter::SwapParams {
         let p1 = address!("4C36388bE6F416A29C8d8Eee81C771cE6bE14B18");
         let p2 = address!("9A834b70C07C81a9FCB695573D9008d0eF23A998");
         FlashQuoter::SwapParams {
             pools: vec![p1, p2],
             poolVersions: vec![0, 0],
-            amountIn: *AMOUNT
+            amountIn: *AMOUNT,
         }
     }
-
 
     // Test the time it takes to create a transaction
     #[tokio::test(flavor = "multi_thread")]
@@ -259,4 +258,3 @@ mod tx_signing_tests {
         tx_sender.send_transactions(rx).await;
     }
 }
-

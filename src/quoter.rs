@@ -1,9 +1,9 @@
+use alloy::transports::http::{Client, Http};
 use alloy_network::Ethereum;
 use alloy_primitives::{address, U256};
 use alloy_provider::RootProvider;
 use alloy_sol_types::SolCall;
 use alloy_sol_types::SolValue;
-use alloy::transports::http::{Client, Http};
 use anyhow::{anyhow, Result};
 use revm::primitives::ExecutionResult;
 use revm::primitives::TransactTo;
@@ -31,7 +31,7 @@ impl Quoter {
             TransactTo::Call(address!("0000000000000000000000000000000000001000"));
         // get read access to the db
         // setup the calldata
-        
+
         let quote_calldata = FlashQuoter::quoteArbitrageCall {
             params: quote_params,
         }
@@ -80,8 +80,8 @@ impl Quoter {
                     } else {
                         break;
                     }
-                } 
-                Err(_) => break
+                }
+                Err(_) => break,
             }
         }
         (best_input, best_output)

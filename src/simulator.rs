@@ -1,7 +1,7 @@
-use alloy_network::Ethereum;
-use alloy_provider::RootProvider;
 use alloy::transports::http::{Client, Http};
+use alloy_network::Ethereum;
 use alloy_primitives::U256;
+use alloy_provider::RootProvider;
 use log::{debug, info, warn};
 use std::collections::HashSet;
 use std::sync::mpsc::{Receiver, Sender};
@@ -64,15 +64,24 @@ pub async fn simulate_paths(
                             expected_out, block_number
                         );
 
-
-
                         // now optimize the input
-                        let optimized_amounts = Quoter::optimize_input(converted_path.clone(), *quote.last().unwrap(), market_state.clone());
-                        info!("Optimized input: {}. Optimized output: {}", optimized_amounts.0, optimized_amounts.1);
+                        let optimized_amounts = Quoter::optimize_input(
+                            converted_path.clone(),
+                            *quote.last().unwrap(),
+                            market_state.clone(),
+                        );
+                        info!(
+                            "Optimized input: {}. Optimized output: {}",
+                            optimized_amounts.0, optimized_amounts.1
+                        );
                         let profit = expected_out - *AMOUNT;
                         converted_path.amountIn = optimized_amounts.0;
 
-                        match tx_sender.send(Event::ValidPath((converted_path, profit, block_number))) {
+                        match tx_sender.send(Event::ValidPath((
+                            converted_path,
+                            profit,
+                            block_number,
+                        ))) {
                             Ok(_) => debug!("Simulator sent path to Tx Sender"),
                             Err(_) => warn!("Simulator: failed to send path to tx sender"),
                         }

@@ -1,15 +1,14 @@
+use alloy::transports::Transport;
 use alloy_network::Network;
 use alloy_primitives::Address;
 use alloy_provider::ext::DebugApi;
 use alloy_provider::Provider;
 use alloy_rpc_types::trace::common::TraceResult;
-use alloy_rpc_types::trace::geth::{
-    GethDebugBuiltInTracerType::PreStateTracer,
-    GethDebugTracerType::BuiltInTracer
-};
 use alloy_rpc_types::trace::geth::*;
+use alloy_rpc_types::trace::geth::{
+    GethDebugBuiltInTracerType::PreStateTracer, GethDebugTracerType::BuiltInTracer,
+};
 use alloy_rpc_types::BlockNumberOrTag;
-use alloy::transports::Transport;
 use log::warn;
 use std::collections::BTreeMap;
 use std::sync::Arc;

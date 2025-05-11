@@ -169,4 +169,3 @@ sol! {
         function tickSpacing() external view returns (int24);
     }
 }
-

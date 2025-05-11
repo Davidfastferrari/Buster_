@@ -1,7 +1,7 @@
+use alloy::transports::Transport;
 use alloy_network::Network;
 use alloy_primitives::{Address, U256};
 use alloy_provider::Provider;
-use alloy::transports::Transport;
 use pool_sync::PoolType;
 use std::collections::HashSet;
 use std::sync::Arc;
@@ -28,7 +28,6 @@ where
     N: Network,
     P: Provider<N>,
 {
-
     // construct a new calculator
     // contains the market state to access pool info and a cache for calculations
     pub fn new(market_state: Arc<MarketState<T, N, P>>) -> Self {
@@ -65,7 +64,7 @@ where
             }
 
             if amount == U256::ZERO {
-               return U256::ZERO;
+                return U256::ZERO;
             }
         }
 
@@ -94,14 +93,15 @@ where
         path_calc
     }
 
-    pub fn compute_pool_output(&self, pool_addr: Address, token_in: Address, protocol: PoolType, fee: u32, input: U256) -> U256 {
-        self.compute_amount_out(
-            input,
-            pool_addr,
-            token_in,
-            protocol,
-            fee
-        )
+    pub fn compute_pool_output(
+        &self,
+        pool_addr: Address,
+        token_in: Address,
+        protocol: PoolType,
+        fee: u32,
+        input: U256,
+    ) -> U256 {
+        self.compute_amount_out(input, pool_addr, token_in, protocol, fee)
     }
 
     // calculate the ratio for the pool
@@ -136,7 +136,7 @@ where
             PoolType::Aerodrome => self.aerodrome_out(input_amount, token_in, pool_address),
             PoolType::MaverickV1 | PoolType::MaverickV2 => todo!(),
             PoolType::BalancerV2 => todo!(),
-            PoolType::CurveTwoCrypto | PoolType::CurveTriCrypto => todo!()
+            PoolType::CurveTwoCrypto | PoolType::CurveTriCrypto => todo!(),
         }
     }
 

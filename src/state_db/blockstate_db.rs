@@ -1,22 +1,22 @@
+use alloy::transports::{Transport, TransportError};
 use alloy_network::primitives::HeaderResponse;
 use alloy_network::{BlockResponse, Network};
 use alloy_primitives::{Address, BlockNumber, B256, U256};
 use alloy_provider::Provider;
 use alloy_rpc_types::trace::geth::AccountState as GethAccountState;
 use alloy_rpc_types::BlockId;
-use alloy::transports::{Transport, TransportError};
 use anyhow::Result;
 use log::{debug, trace, warn};
 use pool_sync::PoolInfo;
+use revm_context::{Log, KECCAK_EMPTY};
 use revm_state::AccountState;
 use revm_state::{Account, AccountInfo, Bytecode};
-use revm_context::{KECCAK_EMPTY, Log};
 
+use pool_sync::Pool;
 use revm::{Database, DatabaseCommit, DatabaseRef};
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::future::IntoFuture;
-use pool_sync::Pool;
 use tokio::runtime::Handle;
 
 #[derive(Debug)]
@@ -91,11 +91,7 @@ impl<T: Transport + Clone, N: Network, P: Provider<N>> BlockStateDB<T, N, P> {
     }
 
     // Record a new pool in our working set
-    pub fn add_pool(
-        &mut self,
-        pool: Pool
-    ) {
-
+    pub fn add_pool(&mut self, pool: Pool) {
         let pool_address = pool.address();
         trace!("Adding pool {} to database", pool_address);
 
@@ -114,12 +110,10 @@ impl<T: Transport + Clone, N: Network, P: Provider<N>> BlockStateDB<T, N, P> {
         self.accounts.insert(pool_address, new_db_account);
     }
 
-
     // Get a pool corresponding to an address
     pub fn get_pool(&self, pool_address: &Address) -> &Pool {
         self.pool_info.get(pool_address).unwrap()
     }
-
 
     // Check if we are tracking the pool. This is our working set
     #[inline]
@@ -130,7 +124,9 @@ impl<T: Transport + Clone, N: Network, P: Provider<N>> BlockStateDB<T, N, P> {
     // Compute zero to one for amount out computations
     #[inline]
     pub fn zero_to_one(&self, pool: &Address, token_in: Address) -> Option<bool> {
-        self.pool_info.get(pool).map(|info| info.token0_address() == token_in)
+        self.pool_info
+            .get(pool)
+            .map(|info| info.token0_address() == token_in)
     }
 
     // Go through a block trace and update all relevant slots
@@ -149,7 +145,7 @@ impl<T: Transport + Clone, N: Network, P: Provider<N>> BlockStateDB<T, N, P> {
             if let Some(account) = self.accounts.get_mut(&address) {
                 let new_slot_val = BlockStateDBSlot {
                     value: value.into(),
-                    insertion_type: InsertionType::Custom
+                    insertion_type: InsertionType::Custom,
                 };
                 account.storage.insert(slot.into(), new_slot_val);
             }
@@ -157,8 +153,8 @@ impl<T: Transport + Clone, N: Network, P: Provider<N>> BlockStateDB<T, N, P> {
         Ok(())
     }
 
-      // Insert account information into the database
-      pub fn insert_account_info(
+    // Insert account information into the database
+    pub fn insert_account_info(
         &mut self,
         account_address: Address,
         account_info: AccountInfo,
@@ -203,7 +199,6 @@ impl<T: Transport + Clone, N: Network, P: Provider<N>> BlockStateDB<T, N, P> {
 
         Ok(())
     }
-
 }
 
 // Implement the database trait for the BlockStateDB
@@ -456,7 +451,12 @@ impl<T: Transport + Clone, N: Network, P: Provider<N>> DatabaseRef for BlockStat
         );
         let f = self.provider.get_storage_at(address, index);
         let slot_val = self.runtime.block_on(f.into_future())?;
-        trace!("Database Storage Ref: Fetched slot {} with value {} for account {} from provider", index, slot_val, address);
+        trace!(
+            "Database Storage Ref: Fetched slot {} with value {} for account {} from provider",
+            index,
+            slot_val,
+            address
+        );
         Ok(slot_val)
     }
 
@@ -475,9 +475,10 @@ impl<T: Transport + Clone, N: Network, P: Provider<N>> DatabaseRef for BlockStat
                     "Block hash not found in cache, fetching from provider for block number: {:?}",
                     number
                 );
-                let block = self
-                    .runtime
-                    .block_on(self.provider.get_block_by_number(number.into(), false.into()))?;
+                let block = self.runtime.block_on(
+                    self.provider
+                        .get_block_by_number(number.into(), false.into()),
+                )?;
                 match block {
                     Some(block_data) => {
                         let hash = B256::new(*block_data.header().hash());

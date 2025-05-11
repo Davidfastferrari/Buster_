@@ -1,15 +1,15 @@
 #[cfg(test)]
 pub mod offchain_quote {
-    use alloy_network::Ethereum;
-    use pool_sync::{Pool, PoolInfo};
-    use alloy_provider::RootProvider;
-    use alloy_primitives::U256;
     use alloy::transports::http::{Client, Http};
+    use alloy_network::Ethereum;
+    use alloy_primitives::U256;
+    use alloy_provider::RootProvider;
+    use pool_sync::{Pool, PoolInfo};
     use std::sync::Arc;
     use std::time::Instant;
 
-    use crate::market_state::MarketState;
     use crate::calculation::Calculator;
+    use crate::market_state::MarketState;
     use crate::AMOUNT;
 
     type Market = Arc<MarketState<Http<Client>, Ethereum, RootProvider<Http<Client>>>>;
@@ -22,7 +22,7 @@ pub mod offchain_quote {
             pool.address(),
             pool.token0_address(),
             pool.pool_type(),
-            pool.fee()
+            pool.fee(),
         );
         res
     }

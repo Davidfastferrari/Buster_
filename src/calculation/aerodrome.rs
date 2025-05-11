@@ -1,10 +1,10 @@
 use super::Calculator;
 use alloy::sol;
+use alloy::transports::Transport;
 use alloy_network::Network;
 use alloy_primitives::Address;
 use alloy_primitives::U256;
 use alloy_provider::Provider;
-use alloy::transports::Transport;
 
 sol! {
     #[sol(rpc)]
@@ -19,8 +19,6 @@ where
     N: Network,
     P: Provider<N>,
 {
-
-
     // Amount out calculation for aerodrome pools
     pub fn aerodrome_out(&self, amount_in: U256, token_in: Address, pool_address: Address) -> U256 {
         // get all of the state

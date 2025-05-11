@@ -5,20 +5,20 @@ use alloy_primitives::{address, Address, U160, U256};
 use alloy_sol_types::{SolCall, SolValue};
 use anyhow::Result;
 use lazy_static::lazy_static;
-use log::{info, debug};
+use log::{debug, info};
 use node_db::{InsertionType, NodeDB};
 use pool_sync::{Chain, Pool, PoolInfo, PoolType};
+use rayon::prelude::*;
 use reqwest::header::{HeaderMap, HeaderValue};
-use revm::primitives::{Bytes, TransactTo, ExecutionResult, FixedBytes};
+use revm::primitives::{Bytes, ExecutionResult, FixedBytes, TransactTo};
 use revm::{inspector_handle_register, Evm};
+use revm_inspectors::access_list::AccessListInspector;
 use serde::{Deserialize, Serialize};
+use std::collections::{HashMap, HashSet};
 use std::fs::{create_dir_all, File};
 use std::io::{BufReader, BufWriter};
 use std::path::Path;
 use std::str::FromStr;
-use std::collections::{HashSet, HashMap};
-use revm_inspectors::access_list::AccessListInspector;
-use rayon::prelude::*;
 
 // Blacklisted tokens we dont want to consider
 lazy_static! {
@@ -89,7 +89,6 @@ pub async fn filter_pools(pools: Vec<Pool>, num_results: usize, chain: Chain) ->
     debug!("Pool count after swap filter: {}", pools.len());
     pools
 }
-
 
 // ---------------------------------------------------
 // Helper functions to get all data and filter the pools
@@ -286,7 +285,7 @@ async fn filter_by_swap(pools: Vec<Pool>, slot_map: HashMap<Address, FixedBytes<
         };
         let t1_slot = match slot_map.get(&pool.token1_address()) {
             Some(slot) => *slot,
-            None => continue, 
+            None => continue,
         };
         nodedb
             .insert_account_storage(
@@ -478,27 +477,53 @@ fn setup_router_calldata(
     }
 }
 
-// For each token, determine the balance slot 
+// For each token, determine the balance slot
 fn construct_slot_map(pools: &Vec<Pool>) -> HashMap<Address, FixedBytes<32>> {
     // Known common slots with their semantic meaning
     let known_slots = [
-        FixedBytes::<32>::from_str("bbc70db1b6c7afd11e79c0fb0051300458f1a3acb8ee9789d9b6b26c61ad9bc7").unwrap(),
-        FixedBytes::<32>::from_str("3b19ce585aeabdba87215c3de2f24f560a092ab3ca77d32c61679d43ab8fcc47").unwrap(),
-        FixedBytes::<32>::from_str("8ba0ed1f62da1d3048614c2c1feb566f041c8467eb00fb8294776a9179dc1643").unwrap(),
-        FixedBytes::<32>::from_str("ad67d757c34507f157cacfa2e3153e9f260a2244f30428821be7be64587ac55f").unwrap(),
-        FixedBytes::<32>::from_str("1471eb6eb2c5e789fc3de43f8ce62938c7d1836ec861730447e2ada8fd81017b").unwrap(), // Most common balance slot
-        FixedBytes::<32>::from_str("a3f0ad74e5423aebfd80d3ef4346578335a9a72aeaee59ff6cb3582b35133d50").unwrap(), // Alternative balance slot
-        FixedBytes::<32>::from_str("10f6f77027d502f219862b0303542eb5dd005b06fa23ff4d1775aaa45bbf9477").unwrap(), // Another common balance slot
-        FixedBytes::<32>::from_str("cc69885fda6bcc1a4ace058b4a62bf5e179ea78fd58a1ccd71c22cc9b688792f").unwrap(), // Balance slot
+        FixedBytes::<32>::from_str(
+            "bbc70db1b6c7afd11e79c0fb0051300458f1a3acb8ee9789d9b6b26c61ad9bc7",
+        )
+        .unwrap(),
+        FixedBytes::<32>::from_str(
+            "3b19ce585aeabdba87215c3de2f24f560a092ab3ca77d32c61679d43ab8fcc47",
+        )
+        .unwrap(),
+        FixedBytes::<32>::from_str(
+            "8ba0ed1f62da1d3048614c2c1feb566f041c8467eb00fb8294776a9179dc1643",
+        )
+        .unwrap(),
+        FixedBytes::<32>::from_str(
+            "ad67d757c34507f157cacfa2e3153e9f260a2244f30428821be7be64587ac55f",
+        )
+        .unwrap(),
+        FixedBytes::<32>::from_str(
+            "1471eb6eb2c5e789fc3de43f8ce62938c7d1836ec861730447e2ada8fd81017b",
+        )
+        .unwrap(), // Most common balance slot
+        FixedBytes::<32>::from_str(
+            "a3f0ad74e5423aebfd80d3ef4346578335a9a72aeaee59ff6cb3582b35133d50",
+        )
+        .unwrap(), // Alternative balance slot
+        FixedBytes::<32>::from_str(
+            "10f6f77027d502f219862b0303542eb5dd005b06fa23ff4d1775aaa45bbf9477",
+        )
+        .unwrap(), // Another common balance slot
+        FixedBytes::<32>::from_str(
+            "cc69885fda6bcc1a4ace058b4a62bf5e179ea78fd58a1ccd71c22cc9b688792f",
+        )
+        .unwrap(), // Balance slot
     ];
 
     // Implementation slot - usually indicates proxy contracts
     let implementation_slot = FixedBytes::<32>::from_str(
-        "360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
-    ).unwrap();
+        "360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+    )
+    .unwrap();
 
     // get a list of all the tokens
-    let tokens: Vec<Address> = pools.iter()
+    let tokens: Vec<Address> = pools
+        .iter()
         .flat_map(|p| vec![p.token0_address(), p.token1_address()])
         .collect::<HashSet<_>>()
         .into_iter()
@@ -510,9 +535,7 @@ fn construct_slot_map(pools: &Vec<Pool>) -> HashMap<Address, FixedBytes<32>> {
 
     // dummy account w/ calldata
     let account = address!("0000000000000000000000000000000000000001");
-    let calldata = ERC20Token::balanceOfCall {
-        account
-    }.abi_encode();
+    let calldata = ERC20Token::balanceOfCall { account }.abi_encode();
 
     // get the balance slot for all tokens by simulating a balance of call with an access list
     let mut slot_map: HashMap<Address, FixedBytes<32>> = HashMap::new();
@@ -539,7 +562,8 @@ fn construct_slot_map(pools: &Vec<Pool>) -> HashMap<Address, FixedBytes<32>> {
         for item in &access_list {
             if item.address == token {
                 // Case 1: Single storage key that's not implementation slot
-                if item.storage_keys.len() == 1 && !item.storage_keys.contains(&implementation_slot) {
+                if item.storage_keys.len() == 1 && !item.storage_keys.contains(&implementation_slot)
+                {
                     slot_map.insert(token, item.storage_keys[0]);
                     break;
                 }
@@ -564,6 +588,6 @@ fn construct_slot_map(pools: &Vec<Pool>) -> HashMap<Address, FixedBytes<32>> {
             }
         }
     }
-    
+
     slot_map
 }

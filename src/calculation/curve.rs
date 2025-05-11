@@ -1,13 +1,13 @@
 use super::Calculator;
-use alloy_primitives::{Address, address};
 use alloy::sol;
-use alloy_primitives::U256;
-use revm::primitives::{ExecutionResult, TransactTo};
-use alloy_sol_types::{SolCall, SolValue};
-use revm::interpreter::Evm;
-use alloy_transport::Transport;
 use alloy_network::Network;
+use alloy_primitives::U256;
+use alloy_primitives::{address, Address};
 use alloy_provider::Provider;
+use alloy_sol_types::{SolCall, SolValue};
+use alloy_transport::Transport;
+use revm::interpreter::Evm;
+use revm::primitives::{ExecutionResult, TransactTo};
 
 sol!(
     #[sol(rpc)]
@@ -15,19 +15,26 @@ sol!(
         function get_dy(uint256 i, uint256 j, uint256 dx) external view returns (uint256);
     }
 );
-impl<T, N, P> Calculator<T, N, P> 
+impl<T, N, P> Calculator<T, N, P>
 where
     T: Transport + Clone,
     N: Network,
     P: Provider<N>,
 {
-    pub fn curve_out(&self, index_in: U256, index_out: U256, amount_in: U256, pool: Address) -> U256 {
+    pub fn curve_out(
+        &self,
+        index_in: U256,
+        index_out: U256,
+        amount_in: U256,
+        pool: Address,
+    ) -> U256 {
         // the function calldata
         let calldata = CurveOut::get_dyCall {
             i: index_in,
-            j: index_out, 
-            dx: amount_in
-        }.abi_encode();
+            j: index_out,
+            dx: amount_in,
+        }
+        .abi_encode();
 
         // get the db and construct our evm
         let mut db = self.db.write().unwrap();
@@ -35,8 +42,7 @@ where
             .with_db(&mut *db)
             .modify_tx_env(|tx| {
                 tx.caller = address!("0000000000000000000000000000000000000001");
-                tx.transact_to =
-                    TransactTo::Call(pool);
+                tx.transact_to = TransactTo::Call(pool);
                 tx.data = calldata.into();
                 tx.value = U256::ZERO;
             })
@@ -47,19 +53,15 @@ where
         let result = ref_tx.result;
         println!("{:#?}", result);
 
-
         match result {
-            ExecutionResult::Success {
-                output: value,
-                .. 
-            } => {
+            ExecutionResult::Success { output: value, .. } => {
                 let a = match <U256>::abi_decode(&value.data(), false) {
                     Ok(a) => a,
-                    Err(_) => U256::ZERO
+                    Err(_) => U256::ZERO,
                 };
                 a
             }
-            _=> U256::ZERO
+            _ => U256::ZERO,
         }
     }
 }

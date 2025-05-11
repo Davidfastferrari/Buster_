@@ -13,9 +13,9 @@ mod offchain_calculations {
     use alloy_provider::ProviderBuilder;
     use alloy_sol_types::{SolCall, SolValue};
     use pool_sync::PoolType;
+    use revm::interpreter::Evm;
     use revm::primitives::keccak256;
     use revm::primitives::{AccountInfo, Bytecode, TransactTo};
-    use revm::interpreter::Evm;
 
     // Test to make sure that the quoter contract works
     #[tokio::test(flavor = "multi_thread")]
@@ -85,7 +85,15 @@ mod offchain_calculations {
         let alienbase_v3 = (address!("0a13F0a67583dEFFf04b734c34975e6BDCF6736D"), 1);
 
         let pools = [
-            uni_v2, uni_v3, pancake_v2, pancake_v2, sushi_v2, sushi_v3, slipstream, alienbase_v3, alienbase_v2
+            uni_v2,
+            uni_v3,
+            pancake_v2,
+            pancake_v2,
+            sushi_v2,
+            sushi_v3,
+            slipstream,
+            alienbase_v3,
+            alienbase_v2,
         ];
 
         for i in 0..pools.len() {

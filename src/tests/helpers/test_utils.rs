@@ -1,20 +1,20 @@
 #[cfg(test)]
 pub mod utils {
+    use alloy::transports::http::{Client, Http};
     use alloy_network::Ethereum;
+    use alloy_primitives::Address;
     use alloy_provider::Provider::{ProviderBuilder, RootProvider};
     use alloy_sol_types::SolCall;
-    use alloy::transports::http::{Client, Http};
-    use pool_sync::*;
-    use std::sync::atomic::AtomicBool;
-    use std::sync::Arc;
     use alloy_sol_types::SolValue;
-    use std::collections::HashMap;
-    use tokio::sync::broadcast;
-    use std::sync::mpsc;
-    use alloy_primitives::Address;
-    use revm::primitives::{address, U256, keccak256, TransactTo};
+    use node_db::{InsertionType, NodeDB};
+    use pool_sync::*;
     use revm::interpreter::Evm;
-    use node_db::{NodeDB, InsertionType};
+    use revm::primitives::{address, keccak256, TransactTo, U256};
+    use std::collections::HashMap;
+    use std::sync::atomic::AtomicBool;
+    use std::sync::mpsc;
+    use std::sync::Arc;
+    use tokio::sync::broadcast;
 
     use super::super::contract_gen::ERC20;
     use crate::events::Event;
@@ -46,7 +46,10 @@ pub mod utils {
     }
 
     // Construct a new market from a set of pools
-    pub async fn construct_market(pools: Vec<Pool>, last_synced_block: u64) -> (
+    pub async fn construct_market(
+        pools: Vec<Pool>,
+        last_synced_block: u64,
+    ) -> (
         Arc<MarketState<Http<Client>, Ethereum, RootProvider<Http<Client>>>>,
         mpsc::Receiver<Event>,
     ) {
@@ -69,7 +72,7 @@ pub mod utils {
             address_sender,
             last_synced_block,
             provider,
-            is_caught_up.clone()
+            is_caught_up.clone(),
         )
         .await
         .unwrap();
@@ -78,21 +81,28 @@ pub mod utils {
         (market_state, address_receiver)
     }
 
-
     // setup an evnm instance with some weth and approve the router to spend it
-    pub fn evm_with_balance_and_approval(router: Address, token: Address) -> Evm<'static, (), NodeDB> {
+    pub fn evm_with_balance_and_approval(
+        router: Address,
+        token: Address,
+    ) -> Evm<'static, (), NodeDB> {
         // construct the db
         dotenv::dotenv().ok();
         let database_path = std::env::var("DB_PATH").unwrap();
         let mut node_db = NodeDB::new(database_path).unwrap();
-    
+
         let account = address!("18B06aaF27d44B756FCF16Ca20C1f183EB49111f");
         let balance_slot = U256::from(3);
         // give our test account some fake WETH and ETH
         let one_ether = U256::from(1_000_000_000_000_000_000u128);
         let hashed_acc_balance_slot = keccak256((account, balance_slot).abi_encode());
         node_db
-            .insert_account_storage(token, hashed_acc_balance_slot.into(), one_ether, InsertionType::OnChain)
+            .insert_account_storage(
+                token,
+                hashed_acc_balance_slot.into(),
+                one_ether,
+                InsertionType::OnChain,
+            )
             .unwrap();
 
         let mut evm = Evm::builder()
@@ -107,13 +117,11 @@ pub mod utils {
         let approve_calldata = ERC20::approveCall {
             spender: router,
             amount: U256::from(10e18),
-        }.abi_encode();
+        }
+        .abi_encode();
         evm.tx_mut().transact_to = TransactTo::Call(token);
         evm.tx_mut().data = approve_calldata.into();
         evm.transact_commit().unwrap();
         evm
     }
-
-   
-
 }

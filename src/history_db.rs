@@ -5,18 +5,18 @@ use reth::api::NodeTypesWithDBAdapter;
 use reth::providers::providers::StaticFileProvider;
 use reth::providers::AccountReader;
 use reth::providers::DatabaseProviderFactory;
-use reth::providers::StateProviderFactory;
 use reth::providers::HistoricalStateProvider;
 use reth::providers::StateProviderBox;
+use reth::providers::StateProviderFactory;
 use reth::providers::{BlockNumReader, ProviderFactory};
 use reth::utils::open_db_read_only;
 use reth_chainspec::ChainSpecBuilder;
 use reth_db::{mdbx::DatabaseArguments, ClientVersion, DatabaseEnv};
 use reth_node_ethereum::EthereumNode;
-use revm_database::db::AccountState;
 use revm::primitives::KECCAK_EMPTY;
 use revm::primitives::{Account, AccountInfo, Bytecode};
 use revm::{Database, DatabaseCommit, DatabaseRef};
+use revm_database::db::AccountState;
 use std::collections::HashMap;
 use std::path::Path;
 use std::sync::atomic::{AtomicU64, Ordering};
@@ -47,17 +47,16 @@ impl HistoryDB {
                 StaticFileProvider::read_only(db_path.join("static_files"), true)?,
             );
 
-
-        let provider = factory.history_by_block_number(block).expect("Unable to create provider");
-
+        let provider = factory
+            .history_by_block_number(block)
+            .expect("Unable to create provider");
 
         Ok(Self {
             db_provider: provider,
-            provider_factory: factory
+            provider_factory: factory,
         })
     }
 }
-
 
 impl Database for HistoryDB {
     type Error = eyre::Error;
@@ -83,7 +82,11 @@ impl DatabaseRef for HistoryDB {
     type Error = eyre::Error;
 
     fn basic_ref(&self, address: Address) -> Result<Option<AccountInfo>, Self::Error> {
-        let account = self.db_provider.basic_account(&address).unwrap_or_default().unwrap_or_default();
+        let account = self
+            .db_provider
+            .basic_account(&address)
+            .unwrap_or_default()
+            .unwrap_or_default();
         let code = self.db_provider.account_code(&address).unwrap_or_default();
         let account_info = if let Some(code) = code {
             AccountInfo::new(

@@ -1,14 +1,14 @@
 use super::BlockStateDB;
+use crate::state_db::blockstate_db::{BlockStateDBSlot, InsertionType};
+use alloy::transports::Transport;
 use alloy_network::Network;
 use alloy_primitives::{Address, U256};
 use alloy_provider::Provider;
-use alloy::transports::Transport;
 use lazy_static::lazy_static;
 use log::trace;
 use pool_sync::{Pool, PoolInfo};
 use revm::DatabaseRef;
 use zerocopy::IntoBytes;
-use crate::state_db::blockstate_db::{InsertionType, BlockStateDBSlot};
 
 lazy_static! {
     static ref U112_MASK: U256 = (U256::from(1) << 112) - U256::from(1);
@@ -31,12 +31,10 @@ where
         // track the pool
         self.add_pool(pool.clone());
 
-
         // get v2 info
         let v2_pool = pool.get_v2().unwrap();
         let reserve0 = U256::from(v2_pool.token0_reserves);
         let reserve1 = U256::from(v2_pool.token1_reserves);
-
 
         // create account and insert storage values
         self.insert_reserves(address, reserve0, reserve1);
@@ -77,7 +75,7 @@ where
         let account = self.accounts.get_mut(&pool).unwrap();
         let new_db_slot = BlockStateDBSlot {
             value: packed_reserves,
-            insertion_type: InsertionType::Custom
+            insertion_type: InsertionType::Custom,
         };
         account.storage.insert(U256::from(8), new_db_slot);
     }
@@ -90,11 +88,9 @@ where
         let account = self.accounts.get_mut(&pool).unwrap();
         let new_db_slot = BlockStateDBSlot {
             value: U256::from_be_bytes(bytes),
-            insertion_type: InsertionType::Custom
+            insertion_type: InsertionType::Custom,
         };
-        account
-            .storage
-            .insert(U256::from(6), new_db_slot);
+        account.storage.insert(U256::from(6), new_db_slot);
     }
 
     // insert token1 into the database
@@ -105,35 +101,33 @@ where
         let account = self.accounts.get_mut(&pool).unwrap();
         let new_db_slot = BlockStateDBSlot {
             value: U256::from_be_bytes(bytes),
-            insertion_type: InsertionType::Custom
+            insertion_type: InsertionType::Custom,
         };
-        account
-            .storage
-            .insert(U256::from(7), new_db_slot);
+        account.storage.insert(U256::from(7), new_db_slot);
     }
 }
 
 #[cfg(test)]
 mod test_db_v2 {
     use super::*;
+    use crate::gen::FlashQuoter::{self, SwapStep};
+    use alloy::sol;
+    use alloy::transports::http::{Client, Http};
     use alloy_network::Ethereum;
     use alloy_primitives::address;
     use alloy_provider::ProviderBuilder;
     use alloy_provider::RootProvider;
-    use alloy::sol;
     use alloy_sol_types::{SolCall, SolValue};
-    use alloy::transports::http::{Client, Http};
-    use node_db::{NodeDB, InsertionType};
+    use log::LevelFilter;
+    use node_db::{InsertionType, NodeDB};
+    use pool_sync::UniswapV2Pool;
+    use revm::primitives::keccak256;
     use revm::primitives::{AccountInfo, Bytecode, TransactTo};
     use revm_database::db::{AlloyDB, CacheDB};
-    use crate::gen::FlashQuoter::{self, SwapStep};
-    use log::LevelFilter;
-    use revm::primitives::keccak256;
-    use pool_sync::UniswapV2Pool;
 
     use revm::interpreter::Evm;
 
-    /* 
+    /*
     type QuoteEvm<'a> = Evm<
         'a,
         EthereumWiring<
@@ -143,7 +137,6 @@ mod test_db_v2 {
     >;
     */
     type AlloyCacheDB = CacheDB<AlloyDB<Http<Client>, Ethereum, RootProvider<Http<Client>>>>;
-
 
     fn uni_v2_weth_usdc() -> UniswapV2Pool {
         UniswapV2Pool {
@@ -223,16 +216,8 @@ mod test_db_v2 {
         // Fetch and assert token addresses
         let fetched_token1 = db.get_token1(pool_addr);
         let fetched_token0 = db.get_token0(pool_addr);
-        assert_eq!(
-            fetched_token0,
-            expected_token0,
-            "Token0 address mismatch"
-        );
-        assert_eq!(
-            fetched_token1,
-            expected_token1,
-            "Token1 address mismatch"
-        );
+        assert_eq!(fetched_token0, expected_token0, "Token0 address mismatch");
+        assert_eq!(fetched_token1, expected_token1, "Token1 address mismatch");
 
         // Fetch reserves
         let (reserve0, reserve1) = db.get_reserves(&pool_addr);
@@ -245,8 +230,7 @@ mod test_db_v2 {
         );
     }
 
-
-    // try a get amounts out call 
+    // try a get amounts out call
     #[tokio::test(flavor = "multi_thread")]
     async fn test_get_amounts_out() {
         sol!(
@@ -271,18 +255,20 @@ mod test_db_v2 {
         let calldata = Uniswap::getAmountsOutCall {
             amountIn: amount_in,
             path: vec![weth, usdc],
-        }.abi_encode();
+        }
+        .abi_encode();
 
         // Create EVM instance
         let mut evm = Evm::builder()
-        .with_db(db)
-        .modify_tx_env(|tx| {
-            tx.caller = address!("0000000000000000000000000000000000000001");
-            tx.transact_to = TransactTo::Call(address!("4752ba5DBc23f44D87826276BF6Fd6b1C372aD24"));
-            tx.data = calldata.into();
-            tx.value = U256::ZERO;
-        })
-        .build();
+            .with_db(db)
+            .modify_tx_env(|tx| {
+                tx.caller = address!("0000000000000000000000000000000000000001");
+                tx.transact_to =
+                    TransactTo::Call(address!("4752ba5DBc23f44D87826276BF6Fd6b1C372aD24"));
+                tx.data = calldata.into();
+                tx.value = U256::ZERO;
+            })
+            .build();
 
         let ref_tx = evm.transact().unwrap();
         let result = ref_tx.result;
@@ -318,7 +304,7 @@ mod test_db_v2 {
         let provider = ProviderBuilder::new().on_http(url);
         let mut db = BlockStateDB::new(provider.clone()).unwrap();
 
-        //insert some pools 
+        //insert some pools
         let uni_pool = uni_v2_weth_usdc();
         db.insert_v2(uni_pool);
         let sushi_pool = sushi_v2_weth_usdc();
@@ -331,7 +317,7 @@ mod test_db_v2 {
             weth,
             hashed_acc_balance_slot.into(),
             one_ether,
-            InsertionType::OnChain
+            InsertionType::OnChain,
         );
 
         // insert the quoter bytecode
@@ -390,20 +376,15 @@ mod test_db_v2 {
         }
         .abi_encode();
 
-        let mut evm = Evm::builder()
-            .with_db(&mut db)
-            .build();
+        let mut evm = Evm::builder().with_db(&mut db).build();
         evm.tx_mut().caller = account;
         evm.tx_mut().transact_to =
-        TransactTo::Call(address!("0000000000000000000000000000000000001000"));
+            TransactTo::Call(address!("0000000000000000000000000000000000001000"));
         evm.tx_mut().data = quote_calldata.into();
-
 
         // transact
         let ref_tx = evm.transact().unwrap();
         let result = ref_tx.result;
         println!("{:?}", result);
     }
-
-
 }

@@ -1,22 +1,22 @@
 use alloy_provider::ProviderBuilder;
 use log::info;
 use pool_sync::{Chain, Pool};
-use std::sync::mpsc;
-use std::thread;
-use std::sync::Arc;
 use std::sync::atomic::AtomicBool;
 use std::sync::atomic::Ordering::Relaxed;
+use std::sync::mpsc;
+use std::sync::Arc;
+use std::thread;
 
+use crate::estimator::Estimator;
 use crate::events::Event;
 use crate::filter::filter_pools;
+use crate::gas_station::GasStation;
 use crate::graph::ArbGraph;
 use crate::market_state::MarketState;
 use crate::searcher::Searchoor;
 use crate::simulator::simulate_paths;
 use crate::stream::stream_new_blocks;
 use crate::tx_sender::TransactionSender;
-use crate::gas_station::GasStation;
-use crate::estimator::Estimator;
 
 /// Start all of the workers
 pub async fn start_workers(pools: Vec<Pool>, last_synced_block: u64) {
@@ -36,13 +36,13 @@ pub async fn start_workers(pools: Vec<Pool>, last_synced_block: u64) {
 
     // Construct and start the gas station
     let gas_station = Arc::new(GasStation::new());
-    tokio::spawn( {
+    tokio::spawn({
         let gas_station = gas_station.clone();
         let block_rx = block_receiver.resubscribe();
         async move { gas_station.update_gas(block_rx).await }
     });
 
-    // Signal for if the blocks are caught up 
+    // Signal for if the blocks are caught up
     let caught_up = Arc::new(AtomicBool::new(false));
 
     // Initialize our market state, this is a wrapper over the REVM database with all our pool state
@@ -56,12 +56,12 @@ pub async fn start_workers(pools: Vec<Pool>, last_synced_block: u64) {
         address_sender,
         last_synced_block,
         provider,
-        caught_up.clone()
+        caught_up.clone(),
     )
     .await
     .unwrap();
     info!("Initialized market state!");
-        
+
     // Construct and populate the estimator
     // wait until we have caught up to all the blocks before we start estimating the rates
     info!("Calculating initial rates in estimator...");

@@ -1,10 +1,9 @@
 #[cfg(test)]
 mod state {
 
+    use super::super::utils::{construct_market, load_and_filter_pools};
     use alloy_provider::ProviderBuilder;
-    use super::super::utils::{load_and_filter_pools, construct_market};
     use pool_sync::PoolType;
-
 
     macro_rules! test_v2_state {
         ($test_name:ident, $pool_type:ident) => {
@@ -12,7 +11,8 @@ mod state {
             async fn test_name() {
                 dotenv::dotenv().ok();
                 //setup a provider
-                let provider = ProviderBuilder::new().on_http(std::env::var("FULL").unwrap().parse().unwrap());
+                let provider =
+                    ProviderBuilder::new().on_http(std::env::var("FULL").unwrap().parse().unwrap());
                 // load and filter pools
                 let (pools, last_synced_block) = load_and_filter_pools(PoolType::$pool_type).await;
                 // init a market state with the new relevant pools
@@ -29,7 +29,7 @@ mod state {
                     println!("Iteration finished");
                 }
             }
-        }
+        };
     }
 
     test_v2_state!(test_uniswapv2_state, UniswapV2);

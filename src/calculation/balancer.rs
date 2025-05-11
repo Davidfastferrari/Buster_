@@ -1,13 +1,12 @@
-use alloy_primitives::{U256, I256};
-use std::ops::Neg;
-use alloy_primitives::Address;
-use std::str::FromStr;
 use super::Calculator;
+use alloy_primitives::Address;
+use alloy_primitives::{I256, U256};
+use std::ops::Neg;
+use std::str::FromStr;
 
 impl Calculator {
-
     pub fn balancer_v2_out(
-        &self, 
+        &self,
         amount_in: U256,
         token_in: Address,
         token_out: Address,
@@ -24,7 +23,10 @@ impl Calculator {
 
         let scaling_factor = 18 - pool.token0_decimals as i8;
         let scaled_amount_in = Self::scale(amount_in, scaling_factor);
-        let scaled_amount_in_without_fees = Self::sub(scaled_amount_in, Self::mul_up(scaled_amount_in, swap_fee_percentage));
+        let scaled_amount_in_without_fees = Self::sub(
+            scaled_amount_in,
+            Self::mul_up(scaled_amount_in, swap_fee_percentage),
+        );
         let amount_in = Self::scale(scaled_amount_in_without_fees, scaling_factor);
 
         let denominator = Self::add(balance_in, amount_in);
@@ -115,44 +117,110 @@ impl Calculator {
 pub struct LogExpMath;
 impl LogExpMath {
     // Constants
-    fn one_18() -> I256 { I256::from_raw(U256::from(1e18)) }
-    fn one_20() -> I256 { I256::from_raw(U256::from(1e20)) }
-    fn one_36() -> I256 { I256::from_str("1000000000000000000000000000000000000").unwrap() }
+    fn one_18() -> I256 {
+        I256::from_raw(U256::from(1e18))
+    }
+    fn one_20() -> I256 {
+        I256::from_raw(U256::from(1e20))
+    }
+    fn one_36() -> I256 {
+        I256::from_str("1000000000000000000000000000000000000").unwrap()
+    }
 
-    fn max_natural_exponent() -> I256 { I256::from_raw(U256::from(130e18)) }
-    fn min_natural_exponent() -> I256 { -I256::from_raw(U256::from(41e18)) }
+    fn max_natural_exponent() -> I256 {
+        I256::from_raw(U256::from(130e18))
+    }
+    fn min_natural_exponent() -> I256 {
+        -I256::from_raw(U256::from(41e18))
+    }
 
-    fn ln_36_lower_bound() -> I256 { I256::from_raw(U256::from(1e18) - U256::from(1e17)) }
-    fn ln_36_upper_bound() -> I256 { I256::from_raw(U256::from(1e18) + U256::from(1e17)) }
+    fn ln_36_lower_bound() -> I256 {
+        I256::from_raw(U256::from(1e18) - U256::from(1e17))
+    }
+    fn ln_36_upper_bound() -> I256 {
+        I256::from_raw(U256::from(1e18) + U256::from(1e17))
+    }
 
-    fn mild_exponent_bound() -> U256 { U256::from(2).pow(U256::from(254)) / U256::from(1e20)}
+    fn mild_exponent_bound() -> U256 {
+        U256::from(2).pow(U256::from(254)) / U256::from(1e20)
+    }
 
-    fn x0() -> I256 { I256::from_raw(U256::from(128000000000000000000_u128)) }
-    fn a0() -> I256 { I256::from_raw(U256::from_str("38877084059945950922200000000000000000000000000000000000").unwrap()) }
-    fn x1() -> I256 { I256::from_raw(U256::from(64000000000000000000_u128)) }
-    fn a1() -> I256 { I256::from_raw(U256::from(6235149080811616882910000000_u128)) }
+    fn x0() -> I256 {
+        I256::from_raw(U256::from(128000000000000000000_u128))
+    }
+    fn a0() -> I256 {
+        I256::from_raw(
+            U256::from_str("38877084059945950922200000000000000000000000000000000000").unwrap(),
+        )
+    }
+    fn x1() -> I256 {
+        I256::from_raw(U256::from(64000000000000000000_u128))
+    }
+    fn a1() -> I256 {
+        I256::from_raw(U256::from(6235149080811616882910000000_u128))
+    }
 
     // 20 decimal constants
-    fn x2() -> I256 { I256::from_raw(U256::from(3200000000000000000000_u128)) }
-    fn a2() -> I256 { I256::from_raw(U256::from_str("7896296018268069516100000000000000").unwrap()) }
-    fn x3() -> I256 { I256::from_raw(U256::from(1600000000000000000000_u128)) }
-    fn a3() -> I256 { I256::from_raw(U256::from(888611052050787263676000000_u128)) }
-    fn x4() -> I256 { I256::from_raw(U256::from(800000000000000000000_u128)) }
-    fn a4() -> I256 { I256::from_raw(U256::from(298095798704172827474000_u128)) }
-    fn x5() -> I256 { I256::from_raw(U256::from(400000000000000000000_u128)) }
-    fn a5() -> I256 { I256::from_raw(U256::from(5459815003314423907810_u128)) }
-    fn x6() -> I256 { I256::from_raw(U256::from(200000000000000000000_u128)) }
-    fn a6() -> I256 { I256::from_raw(U256::from(738905609893065022723_u128)) }
-    fn x7() -> I256 { I256::from_raw(U256::from(100000000000000000000_u128)) }
-    fn a7() -> I256 { I256::from_raw(U256::from(271828182845904523536_u128)) }
-    fn x8() -> I256 { I256::from_raw(U256::from(50000000000000000000_u128)) }
-    fn a8() -> I256 { I256::from_raw(U256::from(164872127070012814685_u128)) }
-    fn x9() -> I256 { I256::from_raw(U256::from(25000000000000000000_u128)) }
-    fn a9() -> I256 { I256::from_raw(U256::from(128402541668774148407_u128)) }
-    fn x10() -> I256 { I256::from_raw(U256::from(12500000000000000000_u128)) }
-    fn a10() -> I256 { I256::from_raw(U256::from(113314845306682631683_u128)) }
-    fn x11() -> I256 { I256::from_raw(U256::from(6250000000000000000_u128)) }
-    fn a11() -> I256 { I256::from_raw(U256::from(106449445891785942956_u128)) }
+    fn x2() -> I256 {
+        I256::from_raw(U256::from(3200000000000000000000_u128))
+    }
+    fn a2() -> I256 {
+        I256::from_raw(U256::from_str("7896296018268069516100000000000000").unwrap())
+    }
+    fn x3() -> I256 {
+        I256::from_raw(U256::from(1600000000000000000000_u128))
+    }
+    fn a3() -> I256 {
+        I256::from_raw(U256::from(888611052050787263676000000_u128))
+    }
+    fn x4() -> I256 {
+        I256::from_raw(U256::from(800000000000000000000_u128))
+    }
+    fn a4() -> I256 {
+        I256::from_raw(U256::from(298095798704172827474000_u128))
+    }
+    fn x5() -> I256 {
+        I256::from_raw(U256::from(400000000000000000000_u128))
+    }
+    fn a5() -> I256 {
+        I256::from_raw(U256::from(5459815003314423907810_u128))
+    }
+    fn x6() -> I256 {
+        I256::from_raw(U256::from(200000000000000000000_u128))
+    }
+    fn a6() -> I256 {
+        I256::from_raw(U256::from(738905609893065022723_u128))
+    }
+    fn x7() -> I256 {
+        I256::from_raw(U256::from(100000000000000000000_u128))
+    }
+    fn a7() -> I256 {
+        I256::from_raw(U256::from(271828182845904523536_u128))
+    }
+    fn x8() -> I256 {
+        I256::from_raw(U256::from(50000000000000000000_u128))
+    }
+    fn a8() -> I256 {
+        I256::from_raw(U256::from(164872127070012814685_u128))
+    }
+    fn x9() -> I256 {
+        I256::from_raw(U256::from(25000000000000000000_u128))
+    }
+    fn a9() -> I256 {
+        I256::from_raw(U256::from(128402541668774148407_u128))
+    }
+    fn x10() -> I256 {
+        I256::from_raw(U256::from(12500000000000000000_u128))
+    }
+    fn a10() -> I256 {
+        I256::from_raw(U256::from(113314845306682631683_u128))
+    }
+    fn x11() -> I256 {
+        I256::from_raw(U256::from(6250000000000000000_u128))
+    }
+    fn a11() -> I256 {
+        I256::from_raw(U256::from(106449445891785942956_u128))
+    }
 
     pub fn pow(x: U256, y: U256) -> U256 {
         if y == U256::ZERO {
@@ -169,19 +237,21 @@ impl LogExpMath {
         assert!(y < Self::mild_exponent_bound(), "Y_OUT_OF_BOUNDS");
         let y_int256 = I256::from_raw(y);
 
-        let logx_times_y = if Self::ln_36_lower_bound() < x_int256 && x_int256 < Self::ln_36_upper_bound() {
-            let ln_36_x = Self::_ln_36(x_int256);
+        let logx_times_y =
+            if Self::ln_36_lower_bound() < x_int256 && x_int256 < Self::ln_36_upper_bound() {
+                let ln_36_x = Self::_ln_36(x_int256);
 
-
-            (ln_36_x / Self::one_18()) * y_int256 + ((ln_36_x % Self::one_18()) * y_int256) / Self::one_18()
-        } else {
-            Self::_ln(x_int256) * y_int256
-        };
+                (ln_36_x / Self::one_18()) * y_int256
+                    + ((ln_36_x % Self::one_18()) * y_int256) / Self::one_18()
+            } else {
+                Self::_ln(x_int256) * y_int256
+            };
         let logx_times_y = logx_times_y / Self::one_18();
 
         // Finally, we compute exp(y * ln(x)) to arrive at x^y
         assert!(
-            Self::min_natural_exponent() <= logx_times_y && logx_times_y <= Self::max_natural_exponent(),
+            Self::min_natural_exponent() <= logx_times_y
+                && logx_times_y <= Self::max_natural_exponent(),
             "PRODUCT_OUT_OF_BOUNDS"
         );
 
@@ -190,7 +260,10 @@ impl LogExpMath {
     }
 
     pub fn exp(x: I256) -> I256 {
-        assert!(x >= Self::min_natural_exponent() && x <= Self::max_natural_exponent(), "INVALID_EXPONENT");
+        assert!(
+            x >= Self::min_natural_exponent() && x <= Self::max_natural_exponent(),
+            "INVALID_EXPONENT"
+        );
 
         if x.is_negative() {
             // We only handle positive exponents: e^(-x) is computed as 1 / e^x. We can safely make x positive since it
@@ -346,7 +419,6 @@ impl LogExpMath {
         // All other a_n and x_n are stored as 20 digit fixed point numbers, so we convert the sum and a to this format.
         sum *= I256::from_raw(U256::from(100));
         a *= I256::from_raw(U256::from(100));
-
 
         // Because further a_n are  20 digit fixed point numbers, we multiply by ONE_20 when dividing by them.
 

@@ -30,7 +30,7 @@ impl From<FlashQuoter::SwapParams> for FlashSwap::SwapParams {
         FlashSwap::SwapParams {
             pools: params.pools,
             poolVersions: params.poolVersions,
-            amountIn: params.amountIn
+            amountIn: params.amountIn,
         }
     }
 }
@@ -51,9 +51,7 @@ impl From<SwapPath> for FlashQuoter::SwapParams {
         FlashQuoter::SwapParams {
             pools,
             poolVersions: protocol,
-            amountIn: *AMOUNT
+            amountIn: *AMOUNT,
         }
     }
 }
-
-

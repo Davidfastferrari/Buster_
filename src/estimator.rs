@@ -1,12 +1,12 @@
+use alloy::transports::Transport;
 use alloy_network::Network;
 use alloy_primitives::{Address, U256};
 use alloy_provider::Provider;
-use alloy::transports::Transport;
 use lazy_static::lazy_static;
+use log::debug;
 use pool_sync::{Pool, PoolInfo};
 use std::collections::{HashMap, HashSet};
 use std::sync::Arc;
-use log::debug;
 
 use crate::calculation::Calculator;
 use crate::market_state::MarketState;
@@ -209,7 +209,6 @@ where
         };
         alt_tokens.insert(alt);
 
-
         // get the output quote and then determine the rates
         let alt_output = self.calculator.compute_pool_output(
             pool_address,
@@ -223,18 +222,16 @@ where
         let weth_decimals = self.token_decimals.get(&weth).unwrap_or(&18);
         let alt_decimals = self.token_decimals.get(&alt).unwrap_or(&18);
 
-
         let other_output = self.calculator.compute_pool_output(
             pool_address,
             alt,
             pool.pool_type(),
             pool.fee(),
-            alt_output
+            alt_output,
         );
 
         // Calculate rates with proper scaling
-        let zero_one_rate =
-            self.calculate_rate(input, alt_output, *weth_decimals, *alt_decimals);
+        let zero_one_rate = self.calculate_rate(input, alt_output, *weth_decimals, *alt_decimals);
         let one_zero_rate =
             self.calculate_rate(alt_output, other_output, *alt_decimals, *weth_decimals);
 
@@ -247,7 +244,6 @@ where
             .entry(pool_address)
             .or_default()
             .insert(token1, one_zero_rate);
-
 
         // Update aggregated rate
         if weth == token0 {
@@ -306,17 +302,17 @@ where
 mod estimator_tests {
     use super::*;
     use crate::swap::SwapStep;
+    use alloy::transports::http::{Client, Http};
     use alloy_network::Ethereum;
     use alloy_primitives::address;
     use alloy_provider::Provider::{Provider, ProviderBuilder, RootProvider};
-    use alloy::transports::http::{Client, Http};
     use pool_sync::PoolType;
     use pool_sync::UniswapV2Pool;
-    use std::sync::mpsc;
-    use tokio::sync::broadcast;
-    use std::sync::Arc;
     use std::sync::atomic::AtomicBool;
     use std::sync::atomic::Ordering;
+    use std::sync::mpsc;
+    use std::sync::Arc;
+    use tokio::sync::broadcast;
 
     // Create mock uniswapv2 weth/usdc pool
     fn uni_v2_weth_usdc() -> Pool {
@@ -370,10 +366,16 @@ mod estimator_tests {
         let block = provider.get_block_number().await.unwrap();
 
         let is_caught_up = Arc::new(AtomicBool::new(false));
-        let market_state =
-            MarketState::init_state_and_start_stream(pools, block_rx, address_tx, block, provider, is_caught_up.clone())
-                .await
-                .unwrap();
+        let market_state = MarketState::init_state_and_start_stream(
+            pools,
+            block_rx,
+            address_tx,
+            block,
+            provider,
+            is_caught_up.clone(),
+        )
+        .await
+        .unwrap();
         while is_caught_up.load(Ordering::Relaxed) == false {}
         Estimator::new(market_state)
     }
@@ -462,5 +464,4 @@ mod estimator_tests {
         assert!(!no_profit);
         assert!(profit);
     }
-
 }

@@ -1,5 +1,10 @@
 // alloy::prelude removed, import manually::*;
-use alloy::{eips::{BlockId, BlockNumberOrTag}, primitives::U256, providers::Provider, rpc::types::{BlockTransactions, BlockTransactionsKind}};
+use alloy::{
+    eips::{BlockId, BlockNumberOrTag},
+    primitives::U256,
+    providers::Provider,
+    rpc::types::{BlockTransactions, BlockTransactionsKind},
+};
 use anyhow::Result;
 use ignition::start_workers;
 use lazy_static::lazy_static;
@@ -15,6 +20,7 @@ mod filter;
 mod gas_station;
 mod gen_;
 mod graph;
+mod history_db;
 mod ignition;
 mod market_state;
 mod quoter;
@@ -26,11 +32,10 @@ mod swap;
 mod tests;
 mod tracing;
 mod tx_sender;
-mod history_db;
 
 // initial amount we are trying to arb over
 lazy_static! {
-    pub static ref AMOUNT: U256 = U256::from(1e15); 
+    pub static ref AMOUNT: U256 = U256::from(1e15);
 }
 
 #[tokio::main]
@@ -55,7 +60,7 @@ async fn main() -> Result<()> {
             //PoolType::Aerodrome,
             PoolType::Slipstream,
             PoolType::AlienBaseV2,
-            PoolType::AlienBaseV3
+            PoolType::AlienBaseV3,
         ])
         .chain(Chain::Base)
         .rate_limit(1000)

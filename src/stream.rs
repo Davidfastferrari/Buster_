@@ -1,5 +1,5 @@
 use crate::events::Event;
-use alloy_provider::Provider::{Provider, ProviderBuilder, IpcConnect};
+use alloy_provider::Provider::{IpcConnect, Provider, ProviderBuilder};
 use futures::StreamExt;
 use log::{debug, warn};
 use tokio::sync::broadcast::Sender;

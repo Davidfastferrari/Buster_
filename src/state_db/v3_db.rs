@@ -1,16 +1,16 @@
 use super::BlockStateDB;
+use crate::state_db::blockstate_db::{BlockStateDBSlot, InsertionType};
+use alloy::sol;
+use alloy::transports::Transport;
 use alloy_network::Network;
 use alloy_primitives::{keccak256, Address, Signed, Uint, I256, U160, U256};
 use alloy_provider::Provider;
-use alloy::sol;
-use alloy::transports::Transport;
 use anyhow::Result;
 use lazy_static::lazy_static;
 use log::trace;
 use pool_sync::{Pool, PoolInfo};
 use revm::DatabaseRef;
 use std::ops::{BitAnd, Shl, Shr};
-use crate::state_db::blockstate_db::{InsertionType, BlockStateDBSlot};
 
 // Bitmasks for storage insertion
 lazy_static! {
@@ -61,7 +61,6 @@ where
         // extract the v3 pool
         let v3_pool = pool.get_v3().unwrap();
 
-
         // Insert slot, liquidity, tick spacing
         self.insert_slot0(address, U160::from(v3_pool.sqrt_price), v3_pool.tick)?;
         self.insert_liquidity(address, v3_pool.liquidity)?;
@@ -96,7 +95,7 @@ where
         let account = self.accounts.get_mut(&pool).unwrap();
         let new_db_slot = BlockStateDBSlot {
             value: bitmap,
-            insertion_type: InsertionType::Custom
+            insertion_type: InsertionType::Custom,
         };
         account
             .storage
@@ -110,7 +109,7 @@ where
         let account = self.accounts.get_mut(&pool).unwrap();
         let new_db_slot = BlockStateDBSlot {
             value: U256::from(liquidity),
-            insertion_type: InsertionType::Custom
+            insertion_type: InsertionType::Custom,
         };
         account.storage.insert(U256::from(4), new_db_slot);
         Ok(())
@@ -143,7 +142,7 @@ where
         let account = self.accounts.get_mut(&pool).unwrap();
         let new_db_slot = BlockStateDBSlot {
             value,
-            insertion_type: InsertionType::Custom
+            insertion_type: InsertionType::Custom,
         };
         account
             .storage
@@ -168,7 +167,7 @@ where
         let account = self.accounts.get_mut(&pool).unwrap();
         let new_db_slot = BlockStateDBSlot {
             value: slot0,
-            insertion_type: InsertionType::Custom
+            insertion_type: InsertionType::Custom,
         };
         account.storage.insert(U256::from(0), new_db_slot);
         Ok(())
@@ -181,7 +180,7 @@ where
         let account = self.accounts.get_mut(&pool).unwrap();
         let new_db_slot = BlockStateDBSlot {
             value: U256::from(tick_spacing),
-            insertion_type: InsertionType::Custom
+            insertion_type: InsertionType::Custom,
         };
         account.storage.insert(U256::from(14), new_db_slot);
         Ok(())
@@ -189,7 +188,13 @@ where
 
     #[inline]
     pub fn tick_spacing(&self, address: &Address) -> Result<i32> {
-        let data = self.accounts.get(address).unwrap().storage.get(&U256::from(14)).unwrap();
+        let data = self
+            .accounts
+            .get(address)
+            .unwrap()
+            .storage
+            .get(&U256::from(14))
+            .unwrap();
         let data = data.value;
         let tick_spacing: i32 = data.saturating_to();
         Ok(tick_spacing)
@@ -198,7 +203,13 @@ where
     // Get slot 0
     #[inline]
     pub fn slot0(&self, address: Address) -> Result<UniswapV3::slot0Return> {
-        let cell = *self.accounts.get(&address).unwrap().storage.get(&U256::from(0)).unwrap();
+        let cell = *self
+            .accounts
+            .get(&address)
+            .unwrap()
+            .storage
+            .get(&U256::from(0))
+            .unwrap();
         let cell = cell.value;
         let tick: Uint<24, 1> = ((Shr::<U256>::shr(cell, U256::from(160))) & *BITS24MASK).to();
         let tick: Signed<24, 1> = Signed::<24, 1>::from_raw(tick);
@@ -227,7 +238,13 @@ where
 
     #[inline]
     pub fn liquidity(&self, address: Address) -> Result<u128> {
-        let cell = self.accounts.get(&address).unwrap().storage.get(&U256::from(4)).unwrap();
+        let cell = self
+            .accounts
+            .get(&address)
+            .unwrap()
+            .storage
+            .get(&U256::from(4))
+            .unwrap();
         let cell = cell.value;
         let cell: u128 = cell.saturating_to();
         Ok(cell)
