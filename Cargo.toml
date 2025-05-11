@@ -62,8 +62,8 @@ itertools = "0.14"
 jsonrpsee = "^0.24"
 env_logger = "0.11.5"
 futures = { version = "0.3.31", features = ["executor"] }
-node-db = { path = "NodeDB" }
-pool-sync = { path = "PoolSync" }
+node-db = { git = "https://github.com/Zacholme7/NodeDB.git"}
+pool-sync = { git = "https://github.com/Zacholme7/PoolSync.git"}
 log = "0.4.22"
 petgraph = "0.8.1"
 rayon = "1.10.0"
