@@ -3,12 +3,6 @@ name = "Buster_"
 version = "0.1.0"
 edition = "2021"
 
-[workspace]
-members = [
-    "NodeDB",
-    "PoolSync",
-]
-
 [profile.release]
 debug = true
 
