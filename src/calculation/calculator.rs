@@ -16,7 +16,7 @@ pub struct Calculator<T, N, P>
 where
     T: Transport + Clone,
     N: Network,
-    P: Provider<T, N>,
+    P: Provider<N>,
 {
     pub market_state: Arc<MarketState<T, N, P>>,
     pub cache: Arc<Cache>,
@@ -26,8 +26,9 @@ impl<T, N, P> Calculator<T, N, P>
 where
     T: Transport + Clone,
     N: Network,
-    P: Provider<T, N>,
+    P: Provider<N>,
 {
+
     // construct a new calculator
     // contains the market state to access pool info and a cache for calculations
     pub fn new(market_state: Arc<MarketState<T, N, P>>) -> Self {
