@@ -5,9 +5,9 @@ use alloy_sol_types::SolCall;
 use alloy_sol_types::SolValue;
 use alloy::transports::http::{Client, Http};
 use anyhow::{anyhow, Result};
-use revm_context::result::ExecutionResult;
-use revm_context::TransactTo;
-use revm_context::Evm;
+use revm::primitives::ExecutionResult;
+use revm::primitives::TransactTo;
+use revm::EVM as Evm;
 use std::sync::Arc;
 
 use crate::gen_::FlashQuoter;
