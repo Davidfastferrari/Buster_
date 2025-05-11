@@ -1,6 +1,5 @@
 [package]
 name = "Buster_"
-version = "0.1.0"
 edition = "2021"
 
 
@@ -19,8 +18,7 @@ alloy-network = "=0.15.10"
 alloy-consensus = "=0.15.10"
 alloy-signer = "=0.15.10"
 alloy-rpc-types-eth = "=0.15.10"
-axum = "0.8.4"
-alloy-core = "=0.0.3"
+alloy-core = "=1.1.0"
 revm = { version = "=21.0.0", features = ["alloydb"] }
 revm-primitives = "=18.0.0"
 revm-inspectors = "=0.20.1"
