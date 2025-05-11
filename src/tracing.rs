@@ -15,7 +15,7 @@ use std::collections::BTreeMap;
 use std::sync::Arc;
 
 // Trace the block to get all addresses with storage changes
-pub async fn debug_trace_block<T: Transport + Clone, N: Network, P: Provider<T, N>>(
+pub async fn debug_trace_block<T: Transport + Clone, N: Network, P: Provider<T>>(
     client: Arc<P>,
     block_tag: BlockNumberOrTag,
     diff_mode: bool,

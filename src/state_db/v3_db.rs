@@ -48,7 +48,7 @@ impl<T, N, P> BlockStateDB<T, N, P>
 where
     T: Transport + Clone,
     N: Network,
-    P: Provider<T, N>,
+    P: Provider<T>,
 {
     // Insert a new uniswapv3 pool into the database
     pub fn insert_v3(&mut self, pool: Pool) -> Result<()> {
