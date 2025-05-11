@@ -1,6 +1,6 @@
 use alloy_network::Network;
 use alloy_primitives::{address, Address, U256};
-use alloy_provider::Provider::{Provider, ProviderBuilder, RootProvider};
+use alloy::providers::{Provider, ProviderBuilder, RootProvider};
 use alloy_rpc_types::BlockNumberOrTag;
 use alloy_sol_types::{SolCall, SolValue};
 use alloy::transports::http::{Client, Http};
@@ -9,9 +9,9 @@ use anyhow::Result;
 use log::{debug, error, info};
 use pool_sync::Pool;
 use pool_sync::PoolInfo;
-use revm::primitives::keccak256;
-use revm::primitives::{AccountInfo, Bytecode, TransactTo};
-use revm::interpreter::Evm;
+use revm_context::keccak256;
+use revm_state::{AccountInfo, Bytecode};
+use revm_context::{TransactTo, Evm};
 use std::collections::HashSet;
 use std::sync::mpsc::Sender;
 use std::sync::Arc;
@@ -33,7 +33,7 @@ pub struct MarketState<T, N, P>
 where
     T: Transport + Clone,
     N: Network,
-    P: Provider<T, N>,
+    P: Provider<N>,
 {
     pub db: RwLock<BlockStateDB<T, N, P>>,
 }
@@ -42,7 +42,7 @@ impl<T, N, P> MarketState<T, N, P>
 where
     T: Transport + Clone,
     N: Network + Clone,
-    P: Provider<T, N> + 'static + Clone,
+    P: Provider<N> + 'static + Clone,
 {
     // constuct the market state with a populated db
     pub async fn init_state_and_start_stream(

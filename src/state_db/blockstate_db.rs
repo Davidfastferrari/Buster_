@@ -8,8 +8,9 @@ use alloy::transports::{Transport, TransportError};
 use anyhow::Result;
 use log::{debug, trace, warn};
 use pool_sync::PoolInfo;
-use revm_database::db::AccountState;
-use revm::primitives::{Account, AccountInfo, Bytecode, Log, KECCAK_EMPTY};
+use revm_state::AccountState;
+use revm_state::{Account, AccountInfo, Bytecode};
+use revm_context::{KECCAK_EMPTY, Log};
 
 use revm::{Database, DatabaseCommit, DatabaseRef};
 use std::collections::HashMap;
@@ -38,7 +39,7 @@ impl HandleOrRuntime {
 }
 
 #[derive(Debug)]
-pub struct BlockStateDB<T: Transport + Clone, N: Network, P: Provider<T, N>> {
+pub struct BlockStateDB<T: Transport + Clone, N: Network, P: Provider<N>> {
     // All of the accounts
     pub accounts: HashMap<Address, BlockStateDBAccount>,
 
@@ -59,7 +60,7 @@ pub struct BlockStateDB<T: Transport + Clone, N: Network, P: Provider<T, N>> {
     _marker: std::marker::PhantomData<fn() -> (T, N)>,
 }
 
-impl<T: Transport + Clone, N: Network, P: Provider<T, N>> BlockStateDB<T, N, P> {
+impl<T: Transport + Clone, N: Network, P: Provider<N>> BlockStateDB<T, N, P> {
     // Construct a new BlockStateDB
     pub fn new(provider: P) -> Option<Self> {
         debug!("Creating new BlockStateDB");
@@ -206,7 +207,7 @@ impl<T: Transport + Clone, N: Network, P: Provider<T, N>> BlockStateDB<T, N, P> 
 }
 
 // Implement the database trait for the BlockStateDB
-impl<T: Transport + Clone, N: Network, P: Provider<T, N>> Database for BlockStateDB<T, N, P> {
+impl<T: Transport + Clone, N: Network, P: Provider<N>> Database for BlockStateDB<T, N, P> {
     type Error = TransportError;
 
     // Get basic account information
@@ -355,7 +356,7 @@ impl<T: Transport + Clone, N: Network, P: Provider<T, N>> Database for BlockStat
 }
 
 // Implement required DatabaseRef trait, read references to the database (fetch from provider)
-impl<T: Transport + Clone, N: Network, P: Provider<T, N>> DatabaseRef for BlockStateDB<T, N, P> {
+impl<T: Transport + Clone, N: Network, P: Provider<N>> DatabaseRef for BlockStateDB<T, N, P> {
     type Error = TransportError;
 
     // Get basic account information
@@ -496,7 +497,7 @@ impl<T: Transport + Clone, N: Network, P: Provider<T, N>> DatabaseRef for BlockS
     }
 }
 
-impl<T: Transport + Clone, N: Network, P: Provider<T, N>> DatabaseCommit for BlockStateDB<T, N, P> {
+impl<T: Transport + Clone, N: Network, P: Provider<N>> DatabaseCommit for BlockStateDB<T, N, P> {
     fn commit(&mut self, changes: HashMap<Address, Account, foldhash::fast::RandomState>) {
         for (address, mut account) in changes {
             if !account.is_touched() {

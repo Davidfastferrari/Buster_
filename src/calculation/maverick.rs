@@ -2,9 +2,13 @@ use super::Calculator;
 use alloy_primitives::{Address, address};
 use alloy::sol;
 use alloy_primitives::U256;
-use revm::primitives::{ExecutionResult, TransactTo};
+use revm_context::result::ExecutionResult;
+use revm_context::TransactTo;
 use alloy_sol_types::{SolCall, SolValue};
-use revm::interpreter::Evm;
+use revm_context::Evm;
+use alloy_transport::Transport;
+use alloy_network::Network;
+use alloy_provider::Provider;
 
 sol!(
     #[sol(rpc)]
@@ -19,7 +23,11 @@ sol!(
     }
 );
 
-impl Calculator {
+impl<T, N, P> Calculator<T, N, P> 
+where
+    T: Transport + Clone,
+    N: Network,
+    P: Provider<N> {
     pub fn maverick_v2_out(&self, amount_in: U256, pool: Address, zero_for_one: bool, tick_limit: i32) -> U256 {
         // the function calldata
         let calldata = MaverickOut::calculateSwapCall {

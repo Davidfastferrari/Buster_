@@ -2,9 +2,13 @@ use super::Calculator;
 use alloy_primitives::{Address, address};
 use alloy::sol;
 use alloy_primitives::U256;
-use revm_primitives::{ExecutionResult, TransactTo};
+use revm_context::result::ExecutionResult;
+use revm_context::TransactTo;
 use alloy_sol_types::{SolCall, SolValue};
-use revm_interpreter::Evm;
+use revm_context::Evm;
+use alloy_transport::Transport;
+use alloy_network::Network;
+use alloy_provider::Provider;
 
 sol!(
     #[sol(rpc)]
