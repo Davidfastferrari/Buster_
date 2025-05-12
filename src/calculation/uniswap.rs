@@ -1,8 +1,8 @@
 use super::Calculator;
 use alloy::transports::Transport;
 use alloy::network::Network;
-use alloy_primitives::Address;
-use alloy_primitives::{I256, U256};
+use alloy::primitives::Address;
+use alloy::primitives::{I256, U256};
 use alloy::providers::Provider;
 use anyhow::Result;
 use std::collections::HashMap;

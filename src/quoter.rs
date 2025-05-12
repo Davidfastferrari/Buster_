@@ -1,5 +1,5 @@
 use alloy::transports::http::{Client, Http};
-use alloy_primitives::{address, U256};
+use alloy::primitives::{address, U256};
 use alloy::providers::RootProvider;
 use alloy::sol_types::SolValue;
 use alloy::sol_types::SolCall;

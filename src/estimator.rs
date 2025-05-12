@@ -1,6 +1,6 @@
 use alloy::transports::Transport;
 use alloy::network::Network;
-use alloy_primitives::{Address, U256};
+use alloy::primitives::{Address, U256};
 use alloy::providers::Provider;
 use lazy_static::lazy_static;
 use log::debug;

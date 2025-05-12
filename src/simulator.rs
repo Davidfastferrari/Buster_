@@ -1,6 +1,6 @@
 use alloy::transports::http::{Client, Http};
 use alloy::network::Ethereum;
-use alloy_primitives::U256;
+use alloy::primitives::U256;
 use alloy::providers::RootProvider;
 use log::{debug, info, warn};
 use std::collections::HashSet;

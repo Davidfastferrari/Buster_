@@ -1,6 +1,6 @@
 use super::Calculator;
-use alloy_primitives::Address;
-use alloy_primitives::{I256, U256};
+use alloy::primitives::Address;
+use alloy::primitives::{I256, U256};
 use std::ops::Neg;
 use std::str::FromStr;
 

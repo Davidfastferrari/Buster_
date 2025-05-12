@@ -1,6 +1,6 @@
 use alloy::transports::Transport;
 use alloy::network::Network;
-use alloy_primitives::Address;
+use alloy::primitives::Address;
 use alloy::providers::ext::DebugApi;
 use alloy::providers::Provider;
 use alloy::rpc::types::trace::common::TraceResult;

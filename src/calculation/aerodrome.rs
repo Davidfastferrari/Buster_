@@ -2,8 +2,8 @@ use super::Calculator;
 use alloy::sol;
 use alloy::transports::Transport;
 use alloy::network::Network;
-use alloy_primitives::Address;
-use alloy_primitives::U256;
+use alloy::primitives::Address;
+use alloy::primitives::U256;
 use alloy::providers::Provider;
 
 sol! {

@@ -1,7 +1,7 @@
 use super::Calculator;
 use alloy::sol;
 use alloy::network::Network;
-use alloy_primitives::{address, Address, U256};
+use alloy::primitives::{address, Address, U256};
 use alloy::sol_types::SolValue;
 use alloy::sol_types::SolCall;
 use alloy::transports::Transport;

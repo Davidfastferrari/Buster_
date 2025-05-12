@@ -9,7 +9,7 @@ use alloy::transports::http::Http;
 use alloy::eips::Encodable2718;
 use alloy::network::EthereumWallet;
 use alloy::network::TransactionBuilder;
-use alloy_primitives::{Address, FixedBytes};
+use alloy::primitives::{Address, FixedBytes};
 use alloy::providers::Provider;
 use alloy::providers::ProviderBuilder;
 use alloy::providers::RootProvider;

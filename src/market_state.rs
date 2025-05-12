@@ -2,7 +2,7 @@ use alloy::providers::{Provider, ProviderBuilder, RootProvider};
 use alloy::transports::http::{Client, Http};
 use alloy::transports::Transport;
 use alloy::network::Network;
-use alloy_primitives::{address, Address, U256};
+use alloy::primitives::{address, Address, U256};
 use alloy::eips::BlockNumberOrTag;
 use alloy::sol_types::SolValue;
 use alloy::sol_types::SolCall;

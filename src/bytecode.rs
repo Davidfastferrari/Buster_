@@ -1,4 +1,4 @@
-use alloy_primitives::B256;
+use alloy::primitives::B256;
 use lazy_static::lazy_static;
 use revm::primitives::Bytes;
 use alloy::json_abi::ContractObject::Bytecode;
