@@ -1,6 +1,6 @@
 use super::Calculator;
 use alloy::transports::Transport;
-use alloy_network::Network;
+use alloy::network::Network;
 use alloy_primitives::Address;
 use alloy_primitives::{I256, U256};
 use alloy::providers::Provider;
