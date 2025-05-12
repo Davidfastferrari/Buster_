@@ -14,7 +14,7 @@ use reth_db::{mdbx::DatabaseArguments, ClientVersion, DatabaseEnv};
 use reth_node_ethereum::EthereumNode;
 use revm::primitives::KECCAK_EMPTY;
 use revm::{
-    primitives::{  keccak256},
+    primitives::{keccak256},
     state::{AccountInfo, Bytecode},
     Database,
     DatabaseCommit, DatabaseRef,
