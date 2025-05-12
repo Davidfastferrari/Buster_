@@ -13,13 +13,6 @@ verification = []
 [dependencies]
 tokio = { version = "1.40.0", features = ["full"] }
 alloy = { version = "=0.15.10", features = ["full", "node-bindings", "providers", "rpc-client", "rpc-client-ipc", "rpc-types-debug", "rpc-types-trace", "eips"] }
-alloy-primitives = "1.1.0"
-alloy-provider = "=0.15.10"
-alloy-network = "=0.15.10"
-alloy-consensus = "=0.15.10"
-alloy-signer = "=0.15.10"
-alloy-rpc-types-eth = "=0.15.10"
-alloy-core = "=1.1.0"
 revm = { version = "=21.0.0", features = ["alloydb"] }
 revm-primitives = "=18.0.0"
 revm-inspectors = "=0.20.1"
