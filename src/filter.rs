@@ -25,9 +25,8 @@ use revm::{
         EthPrecompiles, EvmTr,
     },
     database::InMemoryDB,
-    inspector::{inspect_instructions, InspectorEvmTr, JournalExt, Inspector, InspectorEvmTr, InspectorHandler},
+    inspector::{inspect_instructions, InspectorEvmTr, JournalExt, Inspector, InspectorHandler},
     interpreter::{interpreter::EthInterpreter, Interpreter, InterpreterTypes},
-    Inspector,
 };
 use revm_inspectors::access_list::AccessListInspector;
 use serde::{Deserialize, Serialize};

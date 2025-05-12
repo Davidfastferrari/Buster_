@@ -7,7 +7,7 @@ use alloy::sol_types::SolValue;
 use alloy::sol_types::SolCall;
 use alloy::transports::Transport;
 use alloy::providers::Provider;
-use alloy::dyn_abi::SolType::abi_decode;
+use alloy::dyn_abi::SolType;
 use revm::{
     context::{ ContextTr, Evm},
     context_interface::{
