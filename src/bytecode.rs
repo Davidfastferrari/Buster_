@@ -1,8 +1,9 @@
 use alloy_primitives::B256;
 use lazy_static::lazy_static;
 use revm::primitives::Bytes;
+use alloy::json_abi::ContractObject::Bytecode;
 use revm::{
-    state::{AccountInfo, Bytecode},
+    state::{AccountInfo},
 };
 use std::str::FromStr;
 

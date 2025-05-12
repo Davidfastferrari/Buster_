@@ -1,9 +1,9 @@
 use alloy::transports::http::{Client, Http};
-use alloy::network::Network;
 use alloy_primitives::{address, U256};
 use alloy::providers::RootProvider;
 use alloy::sol_types::SolValue;
 use alloy::sol_types::SolCall;
+use alloy::network::Ethereum;
 use alloy::contract::SolCallBuilder;
 use anyhow::{anyhow, Result};
 use revm::{

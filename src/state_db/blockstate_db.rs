@@ -1,4 +1,4 @@
-use alloy::transports::{Transport, TransportError};
+use alloy::transports::Transport;
 use alloy::network::primitives::HeaderResponse;
 use alloy::network::Network;
 use alloy::network::BlockResponse;
@@ -6,7 +6,7 @@ use alloy::primitives::{Address, BlockNumber, B256, U256};
 use alloy::providers::Provider;
 use alloy::rpc::types::trace::geth::AccountState;
 use alloy::rpc::types::AccountInfo;
-use alloy::providers::bindings::IMulticall3::BYTECODE;
+use alloy::json_abi::ContractObject::Bytecode;
 use alloy::transports::TransportError;
 use alloy::rpc::types::Block;
 use alloy::eips::BlockId;
@@ -29,7 +29,6 @@ use revm::{
     interpreter::{interpreter::EthInterpreter, Interpreter, InterpreterTypes},
     Inspector,
 };
-use alloy::primitives::{address,Address};
 use pool_sync::Pool;
 use revm::{DatabaseCommit, DatabaseRef};
 use std::collections::HashMap;
