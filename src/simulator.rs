@@ -1,5 +1,5 @@
 use alloy::transports::http::{Client, Http};
-use alloy::network::Network;
+use alloy::network::Ethereum;
 use alloy_primitives::U256;
 use alloy::providers::RootProvider;
 use log::{debug, info, warn};

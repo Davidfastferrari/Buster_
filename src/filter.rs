@@ -2,7 +2,10 @@ use crate::gen_::ERC20Token::{self, approveCall};
 use crate::gen_::{V2Aerodrome, V2Swap, V3Swap, V3SwapDeadline, V3SwapDeadlineTick};
 use crate::AMOUNT;
 use alloy_primitives::{address, Address, U160, U256};
-use alloy_sol_types::{SolCall, SolValue};
+use alloy::sol;
+use alloy::sol_types::SolValue;
+use alloy::sol_types::SolCall;
+use alloy::contract::SolCallBuilder;
 use anyhow::Result;
 use lazy_static::lazy_static;
 use log::{debug, info};
@@ -10,8 +13,22 @@ use node_db::{InsertionType, NodeDB};
 use pool_sync::{Chain, Pool, PoolInfo, PoolType};
 use rayon::prelude::*;
 use reqwest::header::{HeaderMap, HeaderValue};
-use revm::primitives::{Bytes, ExecutionResult, FixedBytes, TransactTo};
-use revm::{inspector_handle_register, Evm};
+use revm::{
+    context::{ContextSetters, ContextTr, Evm},
+     primitives::{FixedBytes, Bytes},
+    context_interface::{
+        result::{EVMError, ExecutionResult, ResultAndState},
+        TransactTo, Database, JournalTr,
+    },
+    handler::{
+        instructions::{EthInstructions, InstructionProvider},
+        EthPrecompiles, EvmTr,
+    },
+    database::InMemoryDB,
+    inspector::{inspect_instructions, InspectorEvmTr, JournalExt},
+    interpreter::{interpreter::EthInterpreter, Interpreter, InterpreterTypes},
+    Inspector,
+};
 use revm_inspectors::access_list::AccessListInspector;
 use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
