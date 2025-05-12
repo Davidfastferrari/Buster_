@@ -9,7 +9,7 @@ use anyhow::Result;
 use ignition::start_workers;
 use lazy_static::lazy_static;
 use log::{info, LevelFilter};
-use pool_sync::*;
+use pool_sync::PoolType;
 
 mod bytecode;
 mod cache;
