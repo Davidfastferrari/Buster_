@@ -14,8 +14,7 @@ lazy_static! {
     static ref U112_MASK: U256 = (U256::from(1) << 112) - U256::from(1);
 }
 
-/// uniswapv2 db read/write related methods
-impl<N> BlockStateDB< N>
+impl<T, N, P> BlockStateDB<T, N, P>
 where
     T: Transport + Clone,
     N: Network,

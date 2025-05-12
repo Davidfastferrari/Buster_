@@ -29,6 +29,7 @@ mod simulator;
 mod state_db;
 mod stream;
 mod swap;
+mod types;
 mod tracing;
 mod tx_sender;
 

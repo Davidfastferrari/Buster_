@@ -42,13 +42,12 @@ sol!(
     }
 );
 
-/// uniswapv3 db read/write related methods
-// UniswapV3 DB read and write related methods
+
 impl<T, N, P> BlockStateDB<T, N, P>
 where
     T: Transport + Clone,
     N: Network,
-    P: Provider<T>,
+    P: Provider<N>,
 {
     // Insert a new uniswapv3 pool into the database
     pub fn insert_v3(&mut self, pool: Pool) -> Result<()> {

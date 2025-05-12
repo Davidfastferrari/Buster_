@@ -36,10 +36,13 @@ use std::collections::HashSet;
 use std::future::IntoFuture;
 use tokio::runtime::Handle;
 
+ use crate::types::{IntoRevm, IntoAlloy};
+
 #[derive(Debug)]
 pub enum HandleOrRuntime {
     Handle(Handle),
 }
+
 
 impl HandleOrRuntime {
     #[inline]
@@ -77,7 +80,15 @@ pub struct BlockStateDB<T: Transport + Clone, N: Network, P: Provider<N>> {
     _marker: std::marker::PhantomData<fn() -> (T, N)>,
 }
 
-impl<T: Transport + Clone, N: Network, P: Provider<N>> BlockStateDB<T, N, P> {
+
+impl<T, N, P> Calculator<T, N, P> 
+where
+    T: Transport + Clone,
+    N: Network,
+    P: Provider<N>,
+
+// impl<T: Transport + Clone, N: Network, P: Provider<N>> BlockStateDB<T, N, P>
+ {
     // Construct a new BlockStateDB
     pub fn new(provider: P) -> Option<Self> {
         debug!("Creating new BlockStateDB");

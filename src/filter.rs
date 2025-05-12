@@ -25,7 +25,7 @@ use revm::{
         EthPrecompiles, EvmTr,
     },
     database::InMemoryDB,
-    inspector::{inspect_instructions, InspectorEvmTr, JournalExt},
+    inspector::{inspect_instructions, InspectorEvmTr, JournalExt, Inspector, InspectorEvmTr, InspectorHandler},
     interpreter::{interpreter::EthInterpreter, Interpreter, InterpreterTypes},
     Inspector,
 };

@@ -58,11 +58,12 @@ where
     pub db: RwLock<BlockStateDB<T, N, P>>,
 }
 
+
 impl<T, N, P> MarketState<T, N, P>
 where
     T: Transport + Clone,
-    N: Network + Clone,
-    P: Provider<N> + 'static + Clone,
+    N: Network,
+    P: Provider<N>,
 {
     // constuct the market state with a populated db
     pub async fn init_state_and_start_stream(
