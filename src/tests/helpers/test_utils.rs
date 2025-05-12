@@ -3,13 +3,22 @@ pub mod utils {
     use alloy::transports::http::{Client, Http};
     use alloy_network::Ethereum;
     use alloy_primitives::Address;
-    use alloy_provider::Provider::{ProviderBuilder, RootProvider};
-    use alloy_sol_types::SolCall;
-    use alloy_sol_types::SolValue;
+  
     use node_db::{InsertionType, NodeDB};
     use pool_sync::*;
-    use revm::interpreter::Evm;
-    use revm::primitives::{address, keccak256, TransactTo, U256};
+    use revm::primitives::{address, keccak256, U256};
+    use alloy::providers::{Provider, ProviderBuilder, RootProvider};
+    use alloy::sol_types::SolValue;
+use alloy::sol_types::SolCall;
+use alloy::contract::SolCallBuilder;
+    use pool_sync::{Pool, PoolInfo, PoolType, UniswapV2Pool, UniswapV3Pool};
+    use revm::{
+        context::{ContextSetters, ContextTr, Evm},
+    context_interface::{
+        TransactTo,
+    },
+};
+
     use std::collections::HashMap;
     use std::sync::atomic::AtomicBool;
     use std::sync::mpsc;

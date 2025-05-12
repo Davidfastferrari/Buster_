@@ -15,11 +15,11 @@ lazy_static! {
 }
 
 /// uniswapv2 db read/write related methods
-impl<T, N, P> BlockStateDB<T, N, P>
+impl<N, P> BlockStateDB< N, P>
 where
     T: Transport + Clone,
     N: Network,
-    P: Provider<T>,
+    P: Provider<N>,
 {
     // insert a new uniswapv2 pool into the database
     pub fn insert_v2(&mut self, pool: Pool) {

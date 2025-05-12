@@ -1,6 +1,6 @@
 use crate::events::Event;
-use alloy_eips::calc_next_block_base_fee;
-use alloy_eips::eip1559::BaseFeeParams;
+use alloy::eips::calc_next_block_base_fee;
+use alloy::eips::eip1559::BaseFeeParams;
 use alloy_primitives::U256;
 use std::sync::atomic::AtomicU64;
 use std::sync::atomic::Ordering;

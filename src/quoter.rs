@@ -2,12 +2,26 @@ use alloy::transports::http::{Client, Http};
 use alloy_network::Ethereum;
 use alloy_primitives::{address, U256};
 use alloy_provider::RootProvider;
-use alloy_sol_types::SolCall;
-use alloy_sol_types::SolValue;
+use alloy::sol_types::SolValue;
+use alloy::sol_types::SolCall;
+use alloy::contract::SolCallBuilder;
 use anyhow::{anyhow, Result};
-use revm::primitives::ExecutionResult;
-use revm::primitives::TransactTo;
-use revm::EVM as Evm;
+use revm::{
+    context::{ContextSetters, ContextTr, Evm},
+    context_interface::{
+        result::{EVMError, ExecutionResult, ResultAndState},
+        TransactTo, Database, JournalTr,
+    },
+    handler::{
+        instructions::{EthInstructions, InstructionProvider},
+        EthPrecompiles, EvmTr,
+    },
+    database::InMemoryDB,
+    inspector::{inspect_instructions, InspectorEvmTr, JournalExt},
+    interpreter::{interpreter::EthInterpreter, Interpreter, InterpreterTypes},
+    Inspector,
+};
+
 use std::sync::Arc;
 
 use crate::gen_::FlashQuoter;

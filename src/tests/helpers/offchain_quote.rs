@@ -15,7 +15,7 @@ pub mod offchain_quote {
     type Market = Arc<MarketState<Http<Client>, Ethereum, RootProvider<Http<Client>>>>;
 
     // Calcualte the output amount via offchain infra
-    pub fn offchain_quote(pool: &Pool, market: Market) -> U256 {
+    pub fn offchain_quote(pool: &Pool, market: MarketState) -> U256 {
         let calculator = Calculator::new(market);
         let res = calculator.compute_amount_out(
             *AMOUNT,

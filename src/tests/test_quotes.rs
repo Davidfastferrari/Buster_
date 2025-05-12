@@ -7,15 +7,22 @@ mod offchain_calculations {
         construct_market, construct_pool_map, load_and_filter_pools,
     };
     use crate::events::Event;
-    use crate::gen::{ERC20Token, FlashQuoter};
+    use crate::src::gen::{ERC20Token, FlashQuoter};
     use crate::state_db::{BlockStateDB, InsertionType};
     use alloy_primitives::{address, U256};
     use alloy_provider::ProviderBuilder;
-    use alloy_sol_types::{SolCall, SolValue};
     use pool_sync::PoolType;
-    use revm::interpreter::Evm;
-    use revm::primitives::keccak256;
-    use revm::primitives::{AccountInfo, Bytecode, TransactTo};
+     use alloy::providers::{Provider, ProviderBuilder, RootProvider};
+    use alloy::sol_types::SolValue;
+use alloy::sol_types::SolCall;
+use alloy::contract::SolCallBuilder;
+    use pool_sync::{Pool, PoolInfo, PoolType, UniswapV2Pool, UniswapV3Pool};
+    use revm::{
+        context::{ContextSetters, ContextTr, Evm},
+    context_interface::{
+        TransactTo,
+    },
+ };
 
     // Test to make sure that the quoter contract works
     #[tokio::test(flavor = "multi_thread")]

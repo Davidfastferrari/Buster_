@@ -4,16 +4,18 @@ use crate::gen_::FlashSwap;
 use alloy::hex;
 use alloy::signers::k256::SecretKey;
 use alloy::signers::local::PrivateKeySigner;
-use alloy::transports::http::{Client as AlloyClient, Http};
-use alloy_eips::eip2718::Encodable2718;
+use alloy::transports::http::Client;
+use alloy::transports::http::Http;
+use alloy::eips::Encodable2718;
 use alloy_network::{EthereumWallet, TransactionBuilder};
-use alloy_primitives::Bytes as AlloyBytes;
 use alloy_primitives::{Address, FixedBytes};
-use alloy_provider::Provider::{Provider, ProviderBuilder, RootProvider};
-use alloy_rpc_types::TransactionRequest;
-use alloy_sol_types::SolCall;
+use alloy::providers::Provider;
+use alloy::providers::ProviderBuilder;
+use alloy::providers::RootProvider;
+use alloy::rpc::types::TransactionRequest;
+use alloy::sol_types::SolCall;
 use log::info;
-use reqwest::Client;
+//use reqwest::Client;
 use serde_json::Value;
 use std::str::FromStr;
 use std::sync::mpsc::Receiver;
@@ -26,7 +28,7 @@ pub struct TransactionSender {
     gas_station: Arc<GasStation>,
     contract_address: Address,
     client: Arc<Client>,
-    provider: Arc<RootProvider<Http<AlloyClient>>>,
+    provider:  Http<Client>,
     nonce: u64,
 }
 
@@ -145,7 +147,7 @@ impl TransactionSender {
 
     // Send the transaction and monitor its status
     pub async fn send_and_monitor(
-        provider: Arc<RootProvider<Http<AlloyClient>>>,
+        provider: Arc<RootProvider<Http<Client>>>,
         tx_hash: FixedBytes<32>,
         block_number: u64,
     ) {

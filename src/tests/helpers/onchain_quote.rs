@@ -2,10 +2,16 @@
 pub mod onchain {
     use alloy::transports::http::{Client, Http};
     use alloy_primitives::{address, U160, U256};
-    use alloy_provider::Provider::{ProviderBuilder, RootProvider};
-    use alloy_sol_types::{SolCall, SolValue};
+    use alloy::providers::{Provider, ProviderBuilder, RootProvider};
+    use alloy::sol_types::SolValue;
+use alloy::sol_types::SolCall;
+use alloy::contract::SolCallBuilder;
     use pool_sync::{Pool, PoolInfo, PoolType, UniswapV2Pool, UniswapV3Pool};
-    use revm_primitives::TransactTo;
+    use revm::{
+    context_interface::{
+        TransactTo,
+    },
+};
 
     use super::super::contract_gen::*;
     use super::super::test_utils::utils::evm_with_balance_and_approval;

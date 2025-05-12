@@ -1,13 +1,29 @@
 use super::Calculator;
 use alloy::sol;
-use alloy_network::Network;
+use alloy::network::Network;
 use alloy_primitives::U256;
 use alloy_primitives::{address, Address};
-use alloy_provider::Provider;
-use alloy_sol_types::{SolCall, SolValue};
-use alloy_transport::Transport;
-use revm::interpreter::Evm;
-use revm::primitives::{ExecutionResult, TransactTo};
+use alloy::sol_types::SolValue;
+use alloy::sol_types::SolCall;
+use alloy::transports::Transport;
+use alloy::providers::Provider;
+use revm::{
+    context::{ ContextTr, Evm},
+    context_interface::{
+        result::{ ExecutionResult},
+        TransactTo, JournalTr,
+    },
+    primitives::{keccak256, KECCAK_EMPTY, Log},
+    handler::{
+        instructions::{EthInstructions, InstructionProvider},
+        EthPrecompiles, EvmTr,
+    },
+    database::InMemoryDB,
+    inspector::{inspect_instructions, InspectorEvmTr, JournalExt},
+    interpreter::{interpreter::EthInterpreter, Interpreter, InterpreterTypes},
+    Inspector,
+};
+
 
 sol!(
     #[sol(rpc)]

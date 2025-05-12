@@ -1,7 +1,6 @@
 #[cfg(test)]
 mod state {
-
-    use super::super::utils::{construct_market, load_and_filter_pools};
+    use crate::test_utils::utils::{construct_market, load_and_filter_pools};
     use alloy_provider::ProviderBuilder;
     use pool_sync::PoolType;
 

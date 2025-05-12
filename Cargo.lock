@@ -4,11 +4,11 @@ version = 4
 
 [[package]]
 name = "Buster_"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "alloy",
  "alloy-consensus 0.15.10",
- "alloy-core 0.0.3",
+ "alloy-core",
  "alloy-network 0.15.10",
  "alloy-primitives 1.1.0",
  "alloy-provider 0.15.10",
@@ -165,7 +165,7 @@ checksum = "3a0be470ab41e3aaed6c54dbb2b6224d3048de467d8009cf9d5d32a8b8957ef7"
 dependencies = [
  "alloy-consensus 0.15.10",
  "alloy-contract 0.15.10",
- "alloy-core 1.1.0",
+ "alloy-core",
  "alloy-eips 0.15.10",
  "alloy-genesis 0.15.10",
  "alloy-network 0.15.10",
@@ -381,19 +381,6 @@ dependencies = [
  "futures",
  "futures-util",
  "thiserror 2.0.12",
-]
-
-[[package]]
-name = "alloy-core"
-version = "0.0.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "14bad7b96d658ea021993a234e84f0fc483f715184dd414dda0b0630e2f686ed"
-dependencies = [
- "futures-core",
- "lazy_static",
- "serde",
- "serde_json",
- "tokio",
 ]
 
 [[package]]

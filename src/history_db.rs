@@ -14,9 +14,12 @@ use reth_chainspec::ChainSpecBuilder;
 use reth_db::{mdbx::DatabaseArguments, ClientVersion, DatabaseEnv};
 use reth_node_ethereum::EthereumNode;
 use revm::primitives::KECCAK_EMPTY;
-use revm::primitives::{Account, AccountInfo, Bytecode};
-use revm::{Database, DatabaseCommit, DatabaseRef};
-use revm_database::db::AccountState;
+use revm::{
+    primitives::{  keccak256},
+    state::{AccountInfo, Bytecode},
+    Database,
+    DatabaseCommit, DatabaseRef,
+};
 use std::collections::HashMap;
 use std::path::Path;
 use std::sync::atomic::{AtomicU64, Ordering};

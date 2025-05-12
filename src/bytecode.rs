@@ -1,7 +1,9 @@
 use alloy_primitives::B256;
 use lazy_static::lazy_static;
 use revm::primitives::Bytes;
-use revm_bytecode::Bytecode;
+use revm::{
+    state::{AccountInfo, Bytecode},
+};
 use std::str::FromStr;
 
 lazy_static! {

@@ -3,20 +3,40 @@ use alloy::transports::http::{Client, Http};
 use alloy::transports::Transport;
 use alloy_network::Network;
 use alloy_primitives::{address, Address, U256};
-use alloy_rpc_types::BlockNumberOrTag;
-use alloy_sol_types::{SolCall, SolValue};
+use alloy::eips::BlockNumberOrTag;
+use alloy::sol_types::SolValue;
+use alloy::sol_types::SolCall;
+use alloy::contract::SolCallBuilder;
 use anyhow::Result;
 use log::{debug, error, info};
 use pool_sync::Pool;
+use revm::{
+    context::{ContextSetters, ContextTr, Evm},
+    context_interface::{
+        result::{EVMError, ExecutionResult, ResultAndState},
+        TransactTo, Database, JournalTr,
+    },
+    handler::{
+        instructions::{EthInstructions, InstructionProvider},
+        EthPrecompiles, EvmTr,
+    },
+    database::InMemoryDB,
+    inspector::{inspect_instructions, InspectorEvmTr, JournalExt},
+    interpreter::{interpreter::EthInterpreter, Interpreter, InterpreterTypes},
+    Inspector,
+};
 use pool_sync::PoolInfo;
-use revm_context::keccak256;
-use revm_context::{Evm, TransactTo};
-use revm_state::{AccountInfo, Bytecode};
+
+use revm::{
+    primitives::{ B256, keccak256},
+    state::{AccountInfo, Bytecode},
+};
+use std::{error::Error as StdError, sync::Arc};
+
 use std::collections::HashSet;
 use std::sync::atomic::AtomicBool;
 use std::sync::atomic::Ordering;
 use std::sync::mpsc::Sender;
-use std::sync::Arc;
 use std::sync::RwLock;
 use std::time::Instant;
 use tokio::sync::broadcast::Receiver;

@@ -3,14 +3,28 @@ use alloy_network::primitives::HeaderResponse;
 use alloy_network::{BlockResponse, Network};
 use alloy_primitives::{Address, BlockNumber, B256, U256};
 use alloy_provider::Provider;
-use alloy_rpc_types::trace::geth::AccountState as GethAccountState;
-use alloy_rpc_types::BlockId;
+use alloy::rpc::types::trace::geth::AccountState;
+use alloy::rpc::types::Block;
+use alloy::eips::BlockId;
 use anyhow::Result;
 use log::{debug, trace, warn};
 use pool_sync::PoolInfo;
-use revm_context::{Log, KECCAK_EMPTY};
-use revm_state::AccountState;
-use revm_state::{Account, AccountInfo, Bytecode};
+use revm::{
+    context::{ContextSetters, ContextTr, Evm, Log},
+    context_interface::{
+        result::{EVMError, ExecutionResult, ResultAndState},
+        TransactTo, Database, JournalTr,
+    },
+    primitives::{keccak256, KECCAK_EMPTY},
+    handler::{
+        instructions::{EthInstructions, InstructionProvider},
+        EthPrecompiles, EvmTr,
+    },
+    database::InMemoryDB,
+    inspector::{inspect_instructions, InspectorEvmTr, JournalExt},
+    interpreter::{interpreter::EthInterpreter, Interpreter, InterpreterTypes},
+    Inspector,
+};
 
 use pool_sync::Pool;
 use revm::{Database, DatabaseCommit, DatabaseRef};

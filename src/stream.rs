@@ -1,10 +1,12 @@
 use crate::events::Event;
-use alloy_provider::Provider::{IpcConnect, Provider, ProviderBuilder};
+use alloy::providers::IpcConnect;
+use alloy::providers::Provider;
+use alloy::providers::ProviderBuilder;
 use futures::StreamExt;
 use log::{debug, warn};
 use tokio::sync::broadcast::Sender;
 
-// Stream in new blocks
+// Stream in new blocks on evm
 pub async fn stream_new_blocks(block_sender: Sender<Event>) {
     // Construct ipc provider
     let ipc_conn = IpcConnect::new(std::env::var("IPC").unwrap());

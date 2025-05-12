@@ -3,18 +3,17 @@ use alloy_network::Network;
 use alloy_primitives::Address;
 use alloy_provider::ext::DebugApi;
 use alloy_provider::Provider;
-use alloy_rpc_types::trace::common::TraceResult;
-use alloy_rpc_types::trace::geth::*;
-use alloy_rpc_types::trace::geth::{
-    GethDebugBuiltInTracerType::PreStateTracer, GethDebugTracerType::BuiltInTracer,
-};
-use alloy_rpc_types::BlockNumberOrTag;
+use alloy::rpc::types::trace::common::TraceResult;
+use alloy::rpc::types::trace::geth::*;
+use alloy::rpc::types::trace::geth::GethDebugBuiltInTracerType::PreStateTracer;
+use alloy::rpc::types::trace::geth::GethDebugTracerType::BuiltInTracer;
+use alloy::eips::BlockNumberOrTag;
 use log::warn;
 use std::collections::BTreeMap;
 use std::sync::Arc;
 
 // Trace the block to get all addresses with storage changes
-pub async fn debug_trace_block<T: Transport + Clone, N: Network, P: Provider<T>>(
+pub async fn debug_trace_block<T: Transport + Clone, N: Network, P: Provider<N>>(
     client: Arc<P>,
     block_tag: BlockNumberOrTag,
     diff_mode: bool,
