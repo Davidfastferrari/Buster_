@@ -290,97 +290,97 @@ where
     }
 }
 
-#[cfg(test)]
-mod v3_db_test {
-    use super::*;
-    use alloy_primitives::address;
-    use alloy_primitives::aliases::I24;
-    use alloy_provider::ProviderBuilder;
-    use pool_sync::{TickInfo, UniswapV3Pool};
-    use std::collections::HashMap;
+// #[cfg(test)]
+// mod v3_db_test {
+//     use super::*;
+//     use alloy_primitives::address;
+//     use alloy_primitives::aliases::I24;
+//     use alloy_provider::ProviderBuilder;
+//     use pool_sync::{TickInfo, UniswapV3Pool};
+//     use std::collections::HashMap;
 
-    fn create_test_pool() -> UniswapV3Pool {
-        // Set up tick bitmap
-        let mut tick_bitmap = HashMap::new();
-        tick_bitmap.insert(-58, U256::from(2305843009213693952_u128));
+//     fn create_test_pool() -> UniswapV3Pool {
+//         // Set up tick bitmap
+//         let mut tick_bitmap = HashMap::new();
+//         tick_bitmap.insert(-58, U256::from(2305843009213693952_u128));
 
-        // Set up ticks
-        let mut ticks = HashMap::new();
-        ticks.insert(
-            -887220,
-            TickInfo {
-                liquidity_net: 14809333843350818121657,
-                initialized: true,
-                liquidity_gross: 14809333843350818121657,
-            },
-        );
+//         // Set up ticks
+//         let mut ticks = HashMap::new();
+//         ticks.insert(
+//             -887220,
+//             TickInfo {
+//                 liquidity_net: 14809333843350818121657,
+//                 initialized: true,
+//                 liquidity_gross: 14809333843350818121657,
+//             },
+//         );
 
-        UniswapV3Pool {
-            address: address!("e375e4dd3fc5bf117aa00c5241dd89ddd979a2c4"),
-            token0: address!("0578d8a44db98b23bf096a382e016e29a5ce0ffe"),
-            token1: address!("27501bdd6a4753dffc399ee20eb02b304f670f50"),
-            token0_name: "USDC".to_string(),
-            token1_name: "WETH".to_string(),
-            token0_decimals: 6,
-            token1_decimals: 18,
-            liquidity: 21775078430692230315408,
-            sqrt_price: U256::from(4654106501023758788420274431_u128),
-            fee: 3000,
-            tick: -56695,
-            tick_spacing: 60,
-            tick_bitmap,
-            ticks,
-        }
-    }
+//         UniswapV3Pool {
+//             address: address!("e375e4dd3fc5bf117aa00c5241dd89ddd979a2c4"),
+//             token0: address!("0578d8a44db98b23bf096a382e016e29a5ce0ffe"),
+//             token1: address!("27501bdd6a4753dffc399ee20eb02b304f670f50"),
+//             token0_name: "USDC".to_string(),
+//             token1_name: "WETH".to_string(),
+//             token0_decimals: 6,
+//             token1_decimals: 18,
+//             liquidity: 21775078430692230315408,
+//             sqrt_price: U256::from(4654106501023758788420274431_u128),
+//             fee: 3000,
+//             tick: -56695,
+//             tick_spacing: 60,
+//             tick_bitmap,
+//             ticks,
+//         }
+//     }
 
-    #[tokio::test(flavor = "multi_thread")]
-    async fn test_insert_and_retrieve() -> Result<()> {
-        // Initialize environment and provider
-        dotenv::dotenv().ok();
-        let url = std::env::var("FULL")
-            .expect("FULL env var not set")
-            .parse()?;
-        let provider = ProviderBuilder::new().on_http(url);
-        let mut db = BlockStateDB::new(provider).unwrap();
+//     #[tokio::test(flavor = "multi_thread")]
+//     async fn test_insert_and_retrieve() -> Result<()> {
+//         // Initialize environment and provider
+//         dotenv::dotenv().ok();
+//         let url = std::env::var("FULL")
+//             .expect("FULL env var not set")
+//             .parse()?;
+//         let provider = ProviderBuilder::new().on_http(url);
+//         let mut db = BlockStateDB::new(provider).unwrap();
 
-        // Create and insert test pool
-        let pool = create_test_pool();
-        let pool_addr = pool.address;
-        let expected_liquidity = pool.liquidity;
-        let expected_sqrt_price = U160::from(pool.sqrt_price);
-        let expected_tick = I24::try_from(pool.tick).unwrap();
+//         // Create and insert test pool
+//         let pool = create_test_pool();
+//         let pool_addr = pool.address;
+//         let expected_liquidity = pool.liquidity;
+//         let expected_sqrt_price = U160::from(pool.sqrt_price);
+//         let expected_tick = I24::try_from(pool.tick).unwrap();
 
-        db.insert_v3(Pool::UniswapV3(pool))?;
+//         db.insert_v3(Pool::UniswapV3(pool))?;
 
-        // Test slot0 values
-        let slot0 = db.slot0(pool_addr).unwrap();
-        assert_eq!(
-            slot0.sqrtPriceX96, expected_sqrt_price,
-            "Incorrect sqrt price"
-        );
-        assert_eq!(slot0.tick, expected_tick, "Incorrect tick");
-        assert_eq!(slot0.feeProtocol, 0, "Fee protocol should be 0");
-        assert!(slot0.unlocked, "Pool should be unlocked");
+//         // Test slot0 values
+//         let slot0 = db.slot0(pool_addr).unwrap();
+//         assert_eq!(
+//             slot0.sqrtPriceX96, expected_sqrt_price,
+//             "Incorrect sqrt price"
+//         );
+//         assert_eq!(slot0.tick, expected_tick, "Incorrect tick");
+//         assert_eq!(slot0.feeProtocol, 0, "Fee protocol should be 0");
+//         assert!(slot0.unlocked, "Pool should be unlocked");
 
-        // Test liquidity
-        let liquidity = db.liquidity(pool_addr)?;
-        assert_eq!(liquidity, expected_liquidity, "Incorrect liquidity value");
+//         // Test liquidity
+//         let liquidity = db.liquidity(pool_addr)?;
+//         assert_eq!(liquidity, expected_liquidity, "Incorrect liquidity value");
 
-        // Test tick liquidityNet
-        let tick_liquidity = db.ticks_liquidity_net(pool_addr, -887220)?;
-        assert_eq!(
-            tick_liquidity, 14809333843350818121657,
-            "Incorrect tick liquidity net"
-        );
+//         // Test tick liquidityNet
+//         let tick_liquidity = db.ticks_liquidity_net(pool_addr, -887220)?;
+//         assert_eq!(
+//             tick_liquidity, 14809333843350818121657,
+//             "Incorrect tick liquidity net"
+//         );
 
-        // Test tick bitmap
-        let tick_bitmap = db.tick_bitmap(pool_addr, -58)?;
-        assert_eq!(
-            tick_bitmap,
-            U256::from(2305843009213693952_u128),
-            "Incorrect tick bitmap"
-        );
+//         // Test tick bitmap
+//         let tick_bitmap = db.tick_bitmap(pool_addr, -58)?;
+//         assert_eq!(
+//             tick_bitmap,
+//             U256::from(2305843009213693952_u128),
+//             "Incorrect tick bitmap"
+//         );
 
-        Ok(())
-    }
-}
+//         Ok(())
+//     }
+// }

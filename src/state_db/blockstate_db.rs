@@ -5,18 +5,21 @@ use alloy::network::BlockResponse;
 use alloy::primitives::{Address, BlockNumber, B256, U256};
 use alloy::providers::Provider;
 use alloy::rpc::types::trace::geth::AccountState;
+use alloy::rpc::types::AccountInfo;
+use alloy::providers::bindings::IMulticall3::BYTECODE;
+use alloy::transports::TransportError;
 use alloy::rpc::types::Block;
 use alloy::eips::BlockId;
 use anyhow::Result;
 use log::{debug, trace, warn};
 use pool_sync::PoolInfo;
 use revm::{
-    context::{ContextSetters, ContextTr, Evm, Log},
+    context::{ContextSetters, ContextTr, Evm},
     context_interface::{
         result::{EVMError, ExecutionResult, ResultAndState},
         TransactTo, Database, JournalTr,
     },
-    primitives::{keccak256, KECCAK_EMPTY},
+    primitives::{keccak256, KECCAK_EMPTY, Log},
     handler::{
         instructions::{EthInstructions, InstructionProvider},
         EthPrecompiles, EvmTr,
@@ -26,9 +29,9 @@ use revm::{
     interpreter::{interpreter::EthInterpreter, Interpreter, InterpreterTypes},
     Inspector,
 };
-
+use alloy::primitives::{address,Address};
 use pool_sync::Pool;
-use revm::{Database, DatabaseCommit, DatabaseRef};
+use revm::{DatabaseCommit, DatabaseRef};
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::future::IntoFuture;
@@ -149,7 +152,7 @@ impl<T: Transport + Clone, N: Network, P: Provider<N>> BlockStateDB<T, N, P> {
     pub fn update_all_slots(
         &mut self,
         address: Address,
-        account_state: GethAccountState,
+        account_state: AccountState,
     ) -> Result<()> {
         trace!(
             "Update all slots: updating all storage slots for adddress {}",
