@@ -1,8 +1,9 @@
 use alloy::transports::{Transport, TransportError};
-use alloy_network::primitives::HeaderResponse;
-use alloy_network::{BlockResponse, Network};
-use alloy_primitives::{Address, BlockNumber, B256, U256};
-use alloy_provider::Provider;
+use alloy::network::primitives::HeaderResponse;
+use alloy::network::Network;
+use alloy::network::BlockResponse;
+use alloy::primitives::{Address, BlockNumber, B256, U256};
+use alloy::providers::Provider;
 use alloy::rpc::types::trace::geth::AccountState;
 use alloy::rpc::types::Block;
 use alloy::eips::BlockId;

@@ -1,7 +1,7 @@
 use alloy::transports::http::{Client, Http};
-use alloy_network::Ethereum;
+use alloy::network::Network;
 use alloy_primitives::U256;
-use alloy_provider::RootProvider;
+use alloy::providers::RootProvider;
 use log::{debug, info, warn};
 use std::collections::HashSet;
 use std::sync::mpsc::{Receiver, Sender};

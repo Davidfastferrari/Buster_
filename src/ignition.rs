@@ -1,4 +1,4 @@
-use alloy_provider::ProviderBuilder;
+use alloy::providers::ProviderBuilder;
 use log::info;
 use pool_sync::{Chain, Pool};
 use std::sync::atomic::AtomicBool;

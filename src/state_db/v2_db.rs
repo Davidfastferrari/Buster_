@@ -1,9 +1,9 @@
 use super::BlockStateDB;
 use crate::state_db::blockstate_db::{BlockStateDBSlot, InsertionType};
 use alloy::transports::Transport;
-use alloy_network::Network;
-use alloy_primitives::{Address, U256};
-use alloy_provider::Provider;
+use alloy::network::Network;
+use alloy::primitives::{Address, U256};
+use alloy::providers::Provider;
 use lazy_static::lazy_static;
 use log::trace;
 use pool_sync::{Pool, PoolInfo};
