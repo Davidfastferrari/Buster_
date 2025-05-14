@@ -1,19 +1,17 @@
 use alloy::transports::Transport;
-// use alloy::network::primitives::HeaderResponse; // Unused In the state_db folder there are 4 rust files blockstae_db.rs,v2_db.rs,v3_db.rs,mod.rs reiew the logic in blockstae_db.rs and how it interacts with the other files in the state_db folder then fix the errors in blockstate_db.rs rust files without compromising its core logic and apply the revieved fixes in it
 use alloy::network::Network;
-// use alloy::network::BlockResponse; // Unused
 use alloy::primitives::{Address, BlockNumber, B256, U256};
 use alloy::providers::Provider;
 use pool_sync::Pool;
 use alloy::transports::TransportError;
-use alloy::rpc::types::Block; // Added to fix missing Block type
+use alloy::rpc::types::Block;
 use alloy::eips::BlockId;
 use anyhow::Result;
 use log::{debug, trace, warn};
-use pool_sync::PoolInfo; // Assuming this is the correct PoolInfo
+use pool_sync::PoolInfo;
 use reth::primitives::Bytecode;
 use reth::primitives::Account;
-use reth::rpc::types::AccountInfo;
+use alloy::rpc::types::AccountInfo;
 use alloy::rpc::types::trace::geth::AccountState;
 use revm::{
     primitives::{KECCAK_EMPTY, Log},
@@ -22,9 +20,9 @@ use revm::{
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::future::IntoFuture;
-use tokio::runtime::{Handle, Runtime}; // Added Runtime
+use tokio::runtime::{Handle, Runtime};
 
-use crate::traits::{IntoRevm, IntoAlloy}; // Added import for conversion traits
+use crate::traits::{IntoRevm, IntoAlloy};
 
 
 #[derive(Debug)]

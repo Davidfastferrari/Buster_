@@ -30,6 +30,7 @@ use revm::{
     state::{AccountInfo, Bytecode},
 };
 use std::{error::Error as StdError, sync::Arc};
+use crate::traits::{IntoRevm, IntoAlloy};
 
 use std::collections::HashSet;
 use std::sync::atomic::AtomicBool;

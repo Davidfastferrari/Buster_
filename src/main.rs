@@ -9,8 +9,7 @@ use anyhow::Result;
 use ignition::start_workers;
 use lazy_static::lazy_static;
 use log::{info, LevelFilter};
-use pool_sync::PoolType;
-use pool_sync::PoolSync;
+use pool_sync::{Chain, PoolType, PoolSync};
 
 mod bytecode;
 mod cache;
@@ -31,7 +30,9 @@ mod state_db;
 mod stream;
 mod swap;
 mod tracing;
+mod traits;
 mod tx_sender;
+mod types;
 
 // initial amount we are trying to arb over
 lazy_static! {
