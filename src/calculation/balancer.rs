@@ -3,8 +3,13 @@ use alloy::primitives::Address;
 use alloy::primitives::{I256, U256};
 use std::ops::Neg;
 use std::str::FromStr;
-
-impl Calculator {
+// in the calculation folder there are 5 files that implement the calcaculator traits. the balancer,aerodrome,maverick,uniswap and curve.rs some of files do not implement the expected generic trait of calculator <T, N, P> review the files and fix the type mismatch error
+impl<T, N, P> Calculator<T, N, P>
+where
+    T: crate::alloy::transports::Transport + Clone,
+    N: crate::alloy::network::Network,
+    P: crate::alloy::providers::Provider<N>,
+{
     pub fn balancer_v2_out(
         &self,
         amount_in: U256,
