@@ -337,9 +337,9 @@ async fn filter_by_swap(pools: Vec<Pool>, slot_map: HashMap<Address, FixedBytes<
         }
         .abi_encode();
         evm.tx_mut().data = approve_calldata.into();
-        evm.tx_mut().transact_to = TransactTo::Call(pool.token0_address());
+        evm.tx_mut().transact_to = TransactTo::Call(*pool.token0_address());
         evm.transact_commit().unwrap();
-        evm.tx_mut().transact_to = TransactTo::Call(pool.token1_address());
+        evm.tx_mut().transact_to = TransactTo::Call(*pool.token1_address());
         evm.transact_commit().unwrap();
 
         // we now have some of the input token and we have approved the router to spend it
@@ -568,7 +568,6 @@ fn construct_slot_map(pools: &Vec<Pool>) -> HashMap<Address, FixedBytes<32>> {
                 tx.transact_to = TransactTo::Call(token);
                 tx.data = calldata.clone().into();
             })
-            .append_handler_register(inspector_handle_register)
             .build();
         let _ = evm.transact();
         drop(evm);
