@@ -218,7 +218,7 @@ mod tx_signing_tests {
         let path: FlashSwap::SwapParams = dummy_swap_params().into();
 
         // benchmark tx construction
-        let gas = wallet_provider.estimate_eip1559_fees(None).await.unwrap();
+        let gas = wallet_provider.estimate_eip1559_fees().await.unwrap();
         let tx_time = Instant::now();
         let max_fee = gas.max_fee_per_gas * 5; // 3x the suggested max fee
         let priority_fee = gas.max_priority_fee_per_gas * 30; // 20x the suggested priority fee

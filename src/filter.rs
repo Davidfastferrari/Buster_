@@ -4,6 +4,8 @@ use crate::AMOUNT;
 use alloy::primitives::{address, Address, U160, U256};
 use alloy::sol_types::SolValue;
 use alloy::sol_types::SolCall;
+use eyre::Result;
+use eyre::Result;
 use lazy_static::lazy_static;
 use log::{debug, info};
 use node_db::{InsertionType, NodeDB};
@@ -120,7 +122,7 @@ async fn get_top_volume_tokens(chain: Chain, num_results: usize) -> Result<Vec<A
 
     // write tokens to file
     create_dir_all("cache").unwrap();
-    write_addresses_to_file(&&top_volume_tokens, &cache_file).unwrap();
+    write_addresses_to_file(&top_volume_tokens, &cache_file).unwrap();
 
     Ok(top_volume_tokens)
 }

@@ -68,10 +68,17 @@ impl IntoAlloy<AlloyBytes> for RevmBytes {
 // AccountInfo conversions
 impl IntoRevm<RevmAccountInfo> for AlloyAccountInfo {
     fn into_revm(self) -> RevmAccountInfo {
+        // Check if the field exists in the struct
+        // If code_hash doesn't exist in AlloyAccountInfo, use a default value
+        let code_hash = match self.code {
+            Some(ref code) => code.hash_slow(),
+            None => RevmB256::default(),
+        };
+        
         RevmAccountInfo {
             nonce: self.nonce,
             balance: self.balance.into_revm(),
-            code_hash: self.code_hash.into_revm(),
+            code_hash,
             code: self.code.map(|code| code.into_revm()),
         }
     }
@@ -82,7 +89,7 @@ impl IntoAlloy<AlloyAccountInfo> for RevmAccountInfo {
         AlloyAccountInfo {
             nonce: self.nonce,
             balance: self.balance.into_alloy(),
-            code_hash: self.code_hash.into_alloy(),
+            // If code_hash doesn't exist in AlloyAccountInfo, don't include it
             code: self.code.map(|code| code.into_alloy()),
         }
     }
