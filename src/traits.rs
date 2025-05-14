@@ -1,5 +1,3 @@
-/// Type conversion traits and implementations between alloy_primitives and revm types
-
 use alloy::primitives::{Address as AlloyAddress, B256 as AlloyB256, Bytes as AlloyBytes, U256 as AlloyU256};
 use alloy::rpc::types::AccountInfo as AlloyAccountInfo;
 use revm::primitives::{Address as RevmAddress, B256 as RevmB256, Bytes as RevmBytes, U256 as RevmU256};
