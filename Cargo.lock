@@ -7,13 +7,6 @@ name = "Buster_"
 version = "0.1.0"
 dependencies = [
  "alloy",
- "alloy-consensus 0.15.10",
- "alloy-core",
- "alloy-network 0.15.10",
- "alloy-primitives 1.1.0",
- "alloy-provider 0.15.10",
- "alloy-rpc-types-eth 0.15.10",
- "alloy-signer 0.15.10",
  "anyhow",
  "async-stream",
  "async-trait",

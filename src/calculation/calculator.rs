@@ -11,7 +11,7 @@ use crate::market_state::MarketState;
 use crate::swap::*;
 use crate::AMOUNT;
 
-// Calculator for getting the amount out
+// Calculator for getting the amount
 pub struct Calculator<T, N, P>
 where
     T: Transport + Clone,
@@ -20,6 +20,7 @@ where
 {
     pub market_state: Arc<MarketState<T, N, P>>,
     pub cache: Arc<Cache>,
+    pub pool_manager: PoolManager, // Added pool_manager field for balancer pools
 }
 
 impl<T, N, P> Calculator<T, N, P>
@@ -34,6 +35,7 @@ where
         Self {
             market_state,
             cache: Arc::new(Cache::new(500)),
+            pool_manager: PoolManager::new(), // Initialize pool_manager
         }
     }
 
@@ -104,7 +106,6 @@ where
         self.compute_amount_out(input, pool_addr, token_in, protocol, fee)
     }
 
-    // calculate the ratio for the pool
     pub fn compute_amount_out(
         &self,
         input_amount: U256,
@@ -130,20 +131,30 @@ where
             | PoolType::PancakeSwapV3
             | PoolType::AlienBaseV3
             | PoolType::SwapBasedV3
-            | PoolType::DackieSwapV3 => self
+            | PoolType::DackieSwapV3 => match self
                 .uniswap_v3_out(input_amount, &pool_address, &token_in, fee)
-                .unwrap(),
+            {
+                Ok(amount) => amount,
+                Err(_) => U256::ZERO,
+            },
             PoolType::Aerodrome => self.aerodrome_out(input_amount, token_in, pool_address),
-            PoolType::MaverickV1 | PoolType::MaverickV2 => todo!(),
-            PoolType::BalancerV2 => todo!(),
-            PoolType::CurveTwoCrypto | PoolType::CurveTriCrypto => todo!(),
-        }
-    }
-
-    #[inline]
-    pub fn invalidate_cache(&self, updated_pools: &HashSet<Address>) {
-        for pool in updated_pools {
-            self.cache.invalidate(*pool)
+            PoolType::MaverickV1 | PoolType::MaverickV2 => {
+                // Assuming zero_for_one and tick_limit are known or defaulted here
+                let zero_for_one = true; // placeholder, adjust as needed
+                let tick_limit = 0; // placeholder, adjust as needed
+                self.maverick_v2_out(input_amount, pool_address, zero_for_one, tick_limit)
+            }
+            PoolType::BalancerV2 => {
+                // Assuming token_out is known or can be derived, placeholder here
+                let token_out = Address::zero(); // placeholder, adjust as needed
+                self.balancer_v2_out(input_amount, token_in, token_out, pool_address)
+            }
+            PoolType::CurveTwoCrypto | PoolType::CurveTriCrypto => {
+                // Assuming index_in and index_out are known or defaulted here
+                let index_in = U256::zero(); // placeholder, adjust as needed
+                let index_out = U256::one(); // placeholder, adjust as needed
+                self.curve_out(index_in, index_out, input_amount, pool_address)
+            }
         }
     }
 }

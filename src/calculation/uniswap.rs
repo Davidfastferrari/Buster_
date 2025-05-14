@@ -38,9 +38,9 @@ impl<T, N, P> Calculator<T, N, P>
 where
     T: Transport + Clone,
     N: Network,
-    P: Provider<T, N>,
+    P: Provider<N>,
 {
-    // Calcualte the amount out for a uniswapv2 swap
+    // Calculate the amount out for a uniswapv2 swap
     #[inline]
     pub fn uniswap_v2_out(
         &self,

@@ -1,0 +1,147 @@
+
+2025-05-12T23:46:59.484247502Z stdout F error[E0277]: the trait bound `PoolType: Deserialize<'_>` is not satisfied
+2025-05-12T23:46:59.466798824Z stdout F error[E0277]: the trait bound `PoolType: Deserialize<'_>` is not satisfied
+2025-05-12T23:46:59.448789654Z stdout F error[E0277]: the trait bound `PoolType: Deserialize<'_>` is not satisfied
+2025-05-12T23:46:59.425096423Z stdout F error[E0277]: the trait bound `PoolType: Serialize` is not satisfied
+2025-05-12T23:46:59.384208717Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:59.305940901Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:59.257687711Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:59.178270129Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:59.084577765Z stdout F error[E0599]: no variant or associated item named `custom` found for enum `alloy::transports::RpcError` in the current scope
+2025-05-12T23:46:59.072524732Z stdout F error[E0599]: no method named `header` found for associated type `<N as Network>::BlockResponse` in the current scope
+2025-05-12T23:46:59.037195482Z stdout F error[E0061]: this method takes 1 argument but 2 arguments were supplied
+2025-05-12T23:46:58.950976073Z stdout F error[E0599]: no method named `into_revm` found for reference `&alloy::alloy_primitives::FixedBytes<32>` in the current scope
+2025-05-12T23:46:58.855880062Z stdout F error[E0599]: no variant or associated item named `custom` found for enum `alloy::transports::RpcError` in the current scope
+2025-05-12T23:46:58.845660425Z stdout F error[E0609]: no field `0` on type `alloy::alloy_primitives::Uint<256, 4>`
+2025-05-12T23:46:58.845022129Z stdout F error[E0599]: no method named `into_alloy` found for struct `alloy::alloy_primitives::Uint` in the current scope
+2025-05-12T23:46:58.8158129Z stdout F error[E0599]: no method named `into_alloy` found for struct `revm::revm_primitives::Address` in the current scope
+2025-05-12T23:46:58.765783189Z stdout F error[E0599]: no variant or associated item named `custom` found for enum `alloy::transports::RpcError` in the current scope
+2025-05-12T23:46:58.751895857Z stdout F error[E0599]: no variant or associated item named `custom` found for enum `alloy::transports::RpcError` in the current scope
+2025-05-12T23:46:58.741377184Z stdout F error[E0599]: no variant or associated item named `custom` found for enum `alloy::transports::RpcError` in the current scope
+2025-05-12T23:46:58.72394145Z stdout F error[E0599]: no method named `into_alloy` found for struct `revm::revm_primitives::Address` in the current scope
+2025-05-12T23:46:58.689095789Z stdout F error[E0599]: no method named `into_alloy` found for struct `revm::revm_primitives::FixedBytes<32>` in the current scope
+2025-05-12T23:46:58.656426803Z stdout F error[E0599]: no method named `into_revm` found for reference `&alloy::alloy_primitives::FixedBytes<32>` in the current scope
+2025-05-12T23:46:58.547122112Z stdout F error[E0599]: no method named `into_alloy` found for struct `revm::revm_primitives::Address` in the current scope
+2025-05-12T23:46:58.46353306Z stdout F error[E0599]: no method named `into_alloy` found for struct `revm::revm_state::AccountInfo` in the current scope
+2025-05-12T23:46:58.434316809Z stdout F error[E0599]: no method named `into_revm` found for struct `alloy::rpc::alloy_rpc_types::AccountInfo` in the current scope
+2025-05-12T23:46:58.340064575Z stdout F error[E0599]: no method named `into_alloy` found for struct `revm::revm_primitives::Address` in the current scope
+2025-05-12T23:46:58.282748185Z stdout F error[E0599]: no method named `into_alloy` found for struct `revm::revm_state::AccountInfo` in the current scope
+2025-05-12T23:46:58.2536271Z stdout F error[E0599]: no method named `into_revm` found for struct `alloy::alloy_primitives::Address` in the current scope
+2025-05-12T23:46:58.142712649Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:58.109562539Z stdout F error[E0599]: no method named `into_alloy` found for struct `revm::revm_state::AccountInfo` in the current scope
+2025-05-12T23:46:58.044433254Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:58.043219579Z stdout F error[E0277]: the trait bound `RootProvider<Http<Client>>: Provider` is not satisfied
+2025-05-12T23:46:58.041469547Z stdout F error[E0061]: this function takes 1 argument but 2 arguments were supplied
+2025-05-12T23:46:58.040072341Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:58.036388086Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:58.036223501Z stdout F error[E0277]: the trait bound `RootProvider<Http<Client>>: Provider` is not satisfied
+2025-05-12T23:46:58.036162277Z stdout F error[E0599]: no function or associated item named `builder` found for struct `Evm<_, _, _, _>` in the current scope
+2025-05-12T23:46:58.036005856Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:58.035840409Z stdout F error[E0277]: the trait bound `RootProvider<Http<Client>>: Provider` is not satisfied
+2025-05-12T23:46:58.027937155Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:58.016894699Z stdout F error[E0277]: the trait bound `RootProvider<Http<Client>>: Provider` is not satisfied
+2025-05-12T23:46:58.014395596Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:58.014272828Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:58.007098328Z stdout F error[E0599]: the function or associated item `builder` exists for struct `Evm<_, _, _, _>`, but its trait bounds were not satisfied
+2025-05-12T23:46:57.996396325Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:57.945328094Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:57.938104392Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:57.937302923Z stdout F error[E0308]: arguments to this method are incorrect
+2025-05-12T23:46:57.876716518Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:57.80835616Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:57.78372687Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:57.771830478Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:57.760109361Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:57.70378823Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:57.644342444Z stdout F error[E0277]: can't compare `alloy::alloy_primitives::FixedBytes<32>` with `revm::revm_primitives::FixedBytes<32>`
+2025-05-12T23:46:57.63535168Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:57.608933627Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:57.534845267Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:57.501193594Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:57.495682776Z stdout F error[E0599]: no function or associated item named `builder` found for struct `Evm<_, _, _, _>` in the current scope
+2025-05-12T23:46:57.485720647Z stdout F error[E0061]: this function takes 1 argument but 2 arguments were supplied
+2025-05-12T23:46:57.48036675Z stdout F error[E0061]: this function takes 1 argument but 2 arguments were supplied
+2025-05-12T23:46:57.445814294Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:57.439621849Z stdout F error[E0061]: this function takes 1 argument but 2 arguments were supplied
+2025-05-12T23:46:57.439495845Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:57.439405777Z stdout F error[E0599]: the function or associated item `builder` exists for struct `Evm<_, _, _, _>`, but its trait bounds were not satisfied
+2025-05-12T23:46:57.439370672Z stdout F error[E0609]: no field `db` on type `&Calculator<T, N, P>`
+2025-05-12T23:46:57.432413917Z stdout F error[E0061]: this function takes 1 argument but 2 arguments were supplied
+2025-05-12T23:46:57.42216232Z stdout F error[E0308]: mismatched types
+
+2025-05-12T23:46:57.414624976Z stdout F error[E0599]: the function or associated item `builder` exists for struct `Evm<_, _, _, _>`, but its trait bounds were not satisfied
+2025-05-12T23:46:57.403728682Z stdout F error[E0609]: no field `db` on type `&Calculator<T, N, P>`
+2025-05-12T23:46:57.3982649Z stdout F error[E0599]: no method named `set` found for struct `Arc<cache::Cache>` in the current scope
+2025-05-12T23:46:57.224791159Z stdout F error[E0599]: no method named `get_stable` found for struct `std::sync::RwLockReadGuard<'_, BlockStateDB<T, N, P>>` in the current scope
+2025-05-12T23:46:57.193241512Z stdout F error[E0599]: no method named `get_decimals` found for struct `std::sync::RwLockReadGuard<'_, BlockStateDB<T, N, P>>` in the current scope
+2025-05-12T23:46:57.164847859Z stdout F error[E0599]: no method named `get_fee` found for struct `std::sync::RwLockReadGuard<'_, BlockStateDB<T, N, P>>` in the current scope
+2025-05-12T23:46:57.106246983Z stdout F error[E0599]: the method `get_transaction_receipt` exists for struct `Arc<RootProvider<Http<Client>>>`, but its trait bounds were not satisfied
+2025-05-12T23:46:57.060929727Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:57.058652546Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:57.052759868Z stdout F error[E0433]: failed to resolve: use of undeclared type `AlloyBytes`
+2025-05-12T23:46:57.05172755Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:57.041672208Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:57.031579977Z stdout F error[E0277]: the trait bound `alloy::transports::RpcError<TransportErrorKind>: DBErrorMarker` is not satisfied
+2025-05-12T23:46:57.031140991Z stdout F error[E0277]: the trait bound `alloy::transports::RpcError<TransportErrorKind>: DBErrorMarker` is not satisfied
+2025-05-12T23:46:57.028161756Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:57.026260514Z stdout F error[E0277]: the trait bound `RootProvider<Http<Client>>: Provider` is not satisfied
+2025-05-12T23:46:57.023343865Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:57.02151114Z stdout F error[E0277]: the trait bound `RootProvider<Http<Client>>: Provider` is not satisfied
+2025-05-12T23:46:57.018938209Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:57.017102148Z stdout F error[E0277]: the trait bound `RootProvider<Http<Client>>: Provider` is not satisfied
+2025-05-12T23:46:57.012532698Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:57.011344491Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:57.00983716Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:57.005997356Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:56.949184412Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:56.939965223Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:56.935414579Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:56.849008833Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:56.848435548Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:56.848396616Z stdout F error[E0107]: trait takes at most 1 generic argument but 2 generic arguments were supplied
+2025-05-12T23:46:56.848360839Z stdout F error[E0107]: trait takes at most 1 generic argument but 2 generic arguments were supplied
+2025-05-12T23:46:56.844233471Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:56.843432974Z stdout F error[E0277]: the trait bound `RootProvider<Http<Client>>: Provider` is not satisfied
+2025-05-12T23:46:56.842930901Z stdout F error[E0599]: the method `debug_calculation` exists for struct `Calculator<Http<Client>, Ethereum, RootProvider<Http<Client>>>`, but its trait bounds were not satisfied
+2025-05-12T23:46:56.841766317Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:56.83456627Z stdout F error[E0277]: the trait bound `RootProvider<Http<Client>>: Provider` is not satisfied
+2025-05-12T23:46:56.830685891Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:56.830575586Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:56.827514398Z stdout F error[E0277]: the trait bound `RootProvider<Http<Client>>: Provider` is not satisfied
+2025-05-12T23:46:56.827514398Z stdout F error[E0277]: the trait bound `RootProvider<Http<Client>>: Provider` is not satisfied
+2025-05-12T23:46:56.820558675Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:56.81015216Z stdout F error[E0277]: the trait bound `RootProvider<Http<Client>>: Provider` is not satisfied
+2025-05-12T23:46:56.807354192Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:56.796870264Z stdout F error[E0277]: the trait bound `alloy::transports::alloy_transport_http::Http<reqwest::Client>: Network` is not satisfied
+2025-05-12T23:46:56.793808956Z stdout F error[E0277]: the trait bound `RootProvider<Http<Client>>: Provider` is not satisfied
+2025-05-12T23:46:56.771448131Z stdout F error[E0053]: method `block_hash_ref` has an incompatible type for trait
+2025-05-12T23:46:56.771287543Z stdout F error[E0053]: method `storage_ref` has an incompatible type for trait
+2025-05-12T23:46:56.771105565Z stdout F error[E0053]: method `code_by_hash_ref` has an incompatible type for trait
+2025-05-12T23:46:56.77099549Z stdout F error[E0053]: method `basic_ref` has an incompatible type for trait
+2025-05-12T23:46:56.770880827Z stdout F error[E0277]: the trait bound `ErrReport: DBErrorMarker` is not satisfied
+2025-05-12T23:46:56.768965739Z stdout F error[E0277]: the trait bound `ErrReport: StdError` is not satisfied
+2025-05-12T23:46:56.768155784Z stdout F error[E0053]: method `block_hash` has an incompatible type for trait
+2025-05-12T23:46:56.768113375Z stdout F error[E0053]: method `storage` has an incompatible type for trait
+2025-05-12T23:46:56.768066799Z stdout F error[E0053]: method `code_by_hash` has an incompatible type for trait
+2025-05-12T23:46:56.768017217Z stdout F error[E0053]: method `basic` has an incompatible type for trait
+2025-05-12T23:46:56.766310375Z stdout F error[E0277]: the trait bound `ErrReport: DBErrorMarker` is not satisfied
+2025-05-12T23:46:56.764211786Z stdout F error[E0277]: the trait bound `ErrReport: StdError` is not satisfied
+2025-05-12T23:46:56.71582101Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:56.713842584Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:56.712132457Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:56.708688549Z stdout F error[E0599]: no function or associated item named `builder` found for struct `Evm<_, _, _, _>` in the current scope
+2025-05-12T23:46:56.694409219Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:56.638926886Z stdout F error[E0308]: mismatched types
+2025-05-12T23:46:56.432659477Z stdout F error[E0107]: trait takes at most 1 generic argument but 2 generic arguments were supplied
+2025-05-12T23:46:56.431970437Z stdout F error[E0107]: trait takes at most 1 generic argument but 2 generic arguments were supplied
+2025-05-12T23:46:56.427595969Z stdout F error[E0107]: missing generics for struct `Calculator`
+2025-05-12T23:46:56.338556851Z stdout F error[E0107]: trait takes at most 1 generic argument but 2 generic arguments were supplied
+2025-05-12T23:46:56.294644656Z stdout F error[E0433]: failed to resolve: use of undeclared type `Chain`
+2025-05-12T23:46:56.293198208Z stdout F error[E0433]: failed to resolve: use of undeclared type `PoolSync`
+2025-05-12T23:46:56.290805813Z stdout F error[E0412]: cannot find type `Pool` in this scope
+2025-05-12T23:46:56.288432714Z stdout F error[E0412]: cannot find type `Pool` in this scope
+2025-05-12T23:46:56.28648738Z stdout F error[E0412]: cannot find type `Pool` in this scope
+2025-05-12T23:46:56.286180139Z stdout F error[E0425]: cannot find value `inspector_handle_register` in this scope
+2025-05-12T23:46:56.256785285Z stdout F error[E0432]: unresolved import `crate::types`
+2025-05-12T23:46:56.254206684Z stdout F error[E0432]: unresolved imports `revm::primitives::AccountInfo`, `revm::primitives::Bytecode`, `revm::primitives::Account`, `revm::primitives::AccountState`
+2025-05-12T23:46:56.248087035Z stdout F error[E0432]: unresolved import `alloy::json_abi::ContractObject`

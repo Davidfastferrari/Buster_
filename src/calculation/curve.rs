@@ -54,7 +54,7 @@ where
         .abi_encode();
 
         // get the db and construct our evm
-        let mut db = self.db.write().unwrap();
+        let mut db = self.market_state.db.write().unwrap();
         let mut evm = Evm::builder()
             .with_db(&mut *db)
             .modify_tx_env(|tx| {
