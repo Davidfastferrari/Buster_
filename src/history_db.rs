@@ -6,7 +6,7 @@ use reth::providers::AccountReader;
 use alloy::primitives::B256;
 use alloy::primitives::U256;
 use reth::providers::StateProviderBox;
-use alloy::primitives::Address;
+use alloy::primitives::Address as AlloyAddress;
 use reth::providers::{BlockNumReader, ProviderFactory};
 use reth::utils::open_db_read_only;
 use reth_chainspec::ChainSpecBuilder;
@@ -14,7 +14,7 @@ use reth_db::{mdbx::DatabaseArguments, ClientVersion, DatabaseEnv};
 use reth_node_ethereum::EthereumNode;
 use revm::primitives::KECCAK_EMPTY;
 use revm::{
-    primitives::{keccak256},
+    primitives::{keccak256, Address, B256 as RevmB256},
     state::{AccountInfo, Bytecode},
     Database,
     DatabaseCommit, DatabaseRef,
@@ -67,7 +67,7 @@ impl Database for HistoryDB {
         Self::basic_ref(self, address)
     }
 
-    fn code_by_hash(&mut self, _code_hash: B256) -> Result<Bytecode, Self::Error> {
+    fn code_by_hash(&mut self, _code_hash: RevmB256) -> Result<Bytecode, Self::Error> {
         panic!("This should not be called, as the code is already loaded");
     }
 
@@ -75,7 +75,7 @@ impl Database for HistoryDB {
         Self::storage_ref(self, address, index)
     }
 
-    fn block_hash(&mut self, number: u64) -> Result<B256, Self::Error> {
+    fn block_hash(&mut self, number: u64) -> Result<RevmB256, Self::Error> {
         Self::block_hash_ref(self, number)
     }
 }
@@ -84,12 +84,15 @@ impl DatabaseRef for HistoryDB {
     type Error = eyre::Error;
 
     fn basic_ref(&self, address: Address) -> Result<Option<AccountInfo>, Self::Error> {
+        // Convert revm Address to alloy Address for provider
+        let alloy_address = AlloyAddress::from_slice(address.as_slice());
+        
         let account = self
             .db_provider
-            .basic_account(&address)
+            .basic_account(&alloy_address)
             .unwrap_or_default()
             .unwrap_or_default();
-        let code = self.db_provider.account_code(&address).unwrap_or_default();
+        let code = self.db_provider.account_code(&alloy_address).unwrap_or_default();
         let account_info = if let Some(code) = code {
             AccountInfo::new(
                 account.balance,
@@ -108,21 +111,24 @@ impl DatabaseRef for HistoryDB {
         Ok(Some(account_info))
     }
 
-    fn code_by_hash_ref(&self, _code_hash: B256) -> Result<Bytecode, Self::Error> {
+    fn code_by_hash_ref(&self, _code_hash: RevmB256) -> Result<Bytecode, Self::Error> {
         panic!("This should not be called, as the code is already loaded");
     }
 
     fn storage_ref(&self, address: Address, index: U256) -> Result<U256, Self::Error> {
-        let value = self.db_provider.storage(address, StorageKey::from(index))?;
+        // Convert revm Address to alloy Address for provider
+        let alloy_address = AlloyAddress::from_slice(address.as_slice());
+        let value = self.db_provider.storage(alloy_address, StorageKey::from(index))?;
 
         Ok(value.unwrap_or_default())
     }
 
-    fn block_hash_ref(&self, number: u64) -> Result<B256, Self::Error> {
+    fn block_hash_ref(&self, number: u64) -> Result<RevmB256, Self::Error> {
         let blockhash = self.db_provider.block_hash(number).unwrap_or_default();
 
         if let Some(hash) = blockhash {
-            Ok(B256::new(hash.0))
+            // Convert alloy B256 to revm B256
+            Ok(RevmB256::from_slice(hash.as_slice()))
         } else {
             Ok(KECCAK_EMPTY)
         }
