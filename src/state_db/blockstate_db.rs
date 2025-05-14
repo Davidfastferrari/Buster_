@@ -1,12 +1,12 @@
 use alloy::transports::Transport;
-// use alloy::network::primitives::HeaderResponse; // Unused
+// use alloy::network::primitives::HeaderResponse; // Unused In the state_db folder there are 4 rust files blockstae_db.rs,v2_db.rs,v3_db.rs,mod.rs reiew the logic in blockstae_db.rs and how it interacts with the other files in the state_db folder then fix the errors in blockstate_db.rs rust files without compromising its core logic and apply the revieved fixes in it
 use alloy::network::Network;
 // use alloy::network::BlockResponse; // Unused
 use alloy::primitives::{Address, BlockNumber, B256, U256};
 use alloy::providers::Provider;
 use pool_sync::Pool;
 use alloy::transports::TransportError;
-// use alloy::rpc::types::Block; // Unused
+use alloy::rpc::types::Block; // Added to fix missing Block type
 use alloy::eips::BlockId;
 use anyhow::Result;
 use log::{debug, trace, warn};
@@ -24,7 +24,8 @@ use std::collections::HashSet;
 use std::future::IntoFuture;
 use tokio::runtime::{Handle, Runtime}; // Added Runtime
 
-// use crate::types::{IntoRevm, IntoAlloy}; // Crucial for conversions
+use crate::traits::{IntoRevm, IntoAlloy}; // Added import for conversion traits
+
 
 #[derive(Debug)]
 pub enum HandleOrRuntime {
@@ -238,7 +239,7 @@ impl<T: Transport + Clone, N: Network, P: Provider<N>> Database for BlockStateDB
 
     fn basic(&mut self, address: Address) -> Result<Option<AccountInfo>, Self::Error> {
         trace!("Database Basic: Looking for account {}", address);
-        let alloy_address = address.into_alloy(); // Convert to Address for HashMap lookup
+        let alloy_address = address.into_alloy(); // Convert to Alloy Address for HashMap lookup
 
         if let Some(account) = self.accounts.get(&alloy_address) {
             trace!("Database Basic: Account {} found in database cache", alloy_address);
@@ -373,7 +374,7 @@ impl<T: Transport + Clone, N: Network, P: Provider<N>> DatabaseRef for BlockStat
         // Returning empty bytecode or an error might be options.
         // For now, return empty to avoid panic, but this might hide issues.
         warn!("Database Code By Hash Ref: Code for hash {} not found. This might be an EOA or an error.", code_hash);
-        Ok(Bytecode::new()) // Or return an error: Err(TransportError::Custom(eyre!("Code not found")))
+        Ok(Bytecode::default()) // Changed from Bytecode::new() to Bytecode::default()
     }
 
     fn storage_ref(&self, address: Address, index: U256) -> Result<U256, Self::Error> {
