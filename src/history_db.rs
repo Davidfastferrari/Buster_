@@ -6,7 +6,7 @@ use reth::providers::AccountReader;
 use alloy::primitives::B256;
 use alloy::primitives::U256;
 use reth::providers::StateProviderBox;
-use alloy::primitives::{address, Address};
+use alloy::primitives::{Address, U256, B256};
 use reth::providers::{BlockNumReader, ProviderFactory};
 use reth::utils::open_db_read_only;
 use reth_chainspec::ChainSpecBuilder;

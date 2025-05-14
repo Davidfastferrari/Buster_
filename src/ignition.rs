@@ -1,4 +1,4 @@
-use alloy::providers::ProviderBuilder;
+use alloy::providers::{ProviderBuilder, Provider}; // Ensure Provider trait is in scope
 use log::info;
 use pool_sync::{Chain, Pool};
 use std::sync::atomic::AtomicBool;
@@ -20,7 +20,7 @@ use crate::tx_sender::TransactionSender;
 
 /// Start all of the workers
 pub async fn start_workers(pools: Vec<Pool>, last_synced_block: u64) {
-    // all of the sender and receiversb
+    // all of the sender and receivers
     let (block_sender, block_receiver) = tokio::sync::broadcast::channel::<Event>(100);
     let (address_sender, address_receiver) = mpsc::channel::<Event>();
     let (paths_sender, paths_receiver) = mpsc::channel::<Event>();
@@ -31,7 +31,7 @@ pub async fn start_workers(pools: Vec<Pool>, last_synced_block: u64) {
     let pools = filter_pools(pools, 4000, Chain::Base).await;
     info!("Pool count after filter {}", pools.len());
 
-    // start the block stream so we dont miss any blocks
+    // start the block stream so we don't miss any blocks
     tokio::spawn(stream_new_blocks(block_sender));
 
     // Construct and start the gas station
@@ -48,8 +48,12 @@ pub async fn start_workers(pools: Vec<Pool>, last_synced_block: u64) {
     // Initialize our market state, this is a wrapper over the REVM database with all our pool state
     // then start the updater
     info!("Initializing market state...");
-    let http_url = std::env::var("FULL").unwrap().parse().unwrap();
+    let http_url = std::env::var("FULL").expect("Environment variable FULL not set").parse().expect("Invalid URL");
     let provider = ProviderBuilder::new().on_http(http_url);
+
+    // Ensure the provider implements the necessary trait
+    // This check is conceptual; Rust does not support runtime trait checks
+    // Ensure at compile time that the provider type implements the Provider trait
     let market_state = MarketState::init_state_and_start_stream(
         pools.clone(),
         block_receiver,
@@ -59,14 +63,14 @@ pub async fn start_workers(pools: Vec<Pool>, last_synced_block: u64) {
         caught_up.clone(),
     )
     .await
-    .unwrap();
+    .expect("Failed to initialize market state");
     info!("Initialized market state!");
 
     // Construct and populate the estimator
     // wait until we have caught up to all the blocks before we start estimating the rates
     info!("Calculating initial rates in estimator...");
     let mut estimator = Estimator::new(market_state.clone());
-    // spin why we are not caught up, then calculate rates for the updates pools
+    // spin while we are not caught up, then calculate rates for the updated pools
     while !caught_up.load(Relaxed) {}
     estimator.process_pools(pools.clone());
     info!("Calculated initial rates!");

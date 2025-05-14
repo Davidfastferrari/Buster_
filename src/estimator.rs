@@ -1,7 +1,7 @@
 use alloy::transports::Transport;
 use alloy::network::Network;
 use alloy::primitives::{Address, U256};
-use alloy::providers::Provider;
+use alloy::providers::{Provider, ProviderBuilder, RootProvider};
 use lazy_static::lazy_static;
 use log::debug;
 use pool_sync::{Pool, PoolInfo};
@@ -25,7 +25,7 @@ pub struct Estimator<T, N, P>
 where
     T: Transport + Clone,
     N: Network,
-    P: Provider<T, N>,
+    P: Provider<N>,
 {
     // Mapping from pool address => token => rate
     rates: HashMap<Address, HashMap<Address, U256>>,
@@ -45,7 +45,7 @@ impl<T, N, P> Estimator<T, N, P>
 where
     T: Transport + Clone,
     N: Network,
-    P: Provider<T, N>,
+    P: Provider<N>,
 {
     // Construct a new estimator
     pub fn new(market_state: Arc<MarketState<T, N, P>>) -> Self {
@@ -303,9 +303,9 @@ mod estimator_tests {
     use super::*;
     use crate::swap::SwapStep;
     use alloy::transports::http::{Client, Http};
-    use alloy_network::Ethereum;
-    use alloy_primitives::address;
-    use alloy_provider::Provider::{Provider, ProviderBuilder, RootProvider};
+    use alloy::network::Ethereum;
+    use alloy::primitives::address;
+    use alloy::provider::Provider::{Provider, ProviderBuilder, RootProvider};
     use pool_sync::PoolType;
     use pool_sync::UniswapV2Pool;
     use std::sync::atomic::AtomicBool;

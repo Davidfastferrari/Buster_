@@ -6,14 +6,12 @@ use alloy::primitives::{address, Address, U256};
 use alloy::eips::BlockNumberOrTag;
 use alloy::sol_types::SolValue;
 use alloy::sol_types::SolCall;
-use alloy::contract::SolCallBuilder;
 use anyhow::Result;
 use log::{debug, error, info};
 use pool_sync::Pool;
 use revm::{
-    context::{ContextSetters, ContextTr, Evm},
+    context::{ ContextTr, Evm},
     context_interface::{
-        result::{EVMError, ExecutionResult, ResultAndState},
         TransactTo, Database, JournalTr,
     },
     handler::{

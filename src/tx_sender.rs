@@ -178,8 +178,9 @@ mod tx_signing_tests {
     use super::*;
     use crate::gen_::FlashQuoter;
     use crate::AMOUNT;
-    use alloy_primitives::{address, U256};
-    use alloy_provider::Provider::{Provider, ProviderBuilder};
+    use alloy::primitives::{address, U256};
+    use alloy::providers::{Provider, ProviderBuilder, RootProvider};
+
     use env_logger;
     use pool_sync::PoolType;
     use std::time::Instant;

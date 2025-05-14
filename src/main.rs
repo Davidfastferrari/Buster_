@@ -10,6 +10,7 @@ use ignition::start_workers;
 use lazy_static::lazy_static;
 use log::{info, LevelFilter};
 use pool_sync::PoolType;
+use pool_sync::PoolSync;
 
 mod bytecode;
 mod cache;
