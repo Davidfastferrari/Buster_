@@ -5,7 +5,6 @@ use alloy::primitives::{address, Address, U160, U256};
 use alloy::sol_types::SolValue;
 use alloy::sol_types::SolCall;
 use eyre::Result;
-use eyre::Result;
 use lazy_static::lazy_static;
 use log::{debug, info};
 use node_db::{InsertionType, NodeDB};
@@ -81,15 +80,16 @@ pub async fn filter_pools(pools: Vec<Pool>, num_results: usize, chain: Chain) ->
 
     // cross match top volume tokens to all pools, we want to only keep a pool if its pair exists
     // in the top volume tokens
+    let top_volume_tokens_ref = &top_volume_tokens; // Create a reference to avoid moving
     let pools: Vec<Pool> = pools
         .into_par_iter()
         .filter(|pool| {
             let token0 = pool.token0_address();
             let token1 = pool.token1_address();
-            top_volume_tokens.contains(&token0)
-                && top_volume_tokens.contains(&token1)
-                && !BLACKLIST.contains(&token0)
-                && !BLACKLIST.contains(&token1)
+            top_volume_tokens_ref.contains(token0)
+                && top_volume_tokens_ref.contains(token1)
+                && !BLACKLIST.contains(token0)
+                && !BLACKLIST.contains(token1)
         })
         .collect();
     info!("Pool count after token match filter: {}", pools.len());
