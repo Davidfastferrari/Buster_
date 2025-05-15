@@ -74,7 +74,7 @@ pub async fn filter_pools(pools: Vec<Pool>, num_results: usize, chain: Chain) ->
     info!("Initial pool count before filter: {}", pools.len());
 
     // get all of the top volume tokens from birdeye, we imply volume = volatility
-    let top_volume_tokens = get_top_volume_tokens(chain, num_results)
+    let top_volume_tokens: Vec<Address> = get_top_volume_tokens(chain, num_results)
         .await
         .expect("Failed to get top volume tokens");
 
@@ -118,17 +118,18 @@ async fn get_top_volume_tokens(chain: Chain, num_results: usize) -> Result<Vec<A
     }
 
     // cache for tokens does not exist, fetch them from birdeye
-    let top_volume_tokens = fetch_top_volume_tokens(num_results, chain).await;
+    let top_volume_tokens: Vec<Address> = fetch_top_volume_tokens(num_results, chain).await;
 
     // write tokens to file
     create_dir_all("cache").unwrap();
     write_addresses_to_file(&top_volume_tokens, &cache_file).unwrap();
 
+    // Explicitly wrap the Vec<Address> in Ok to match the Result<Vec<Address>> return type
     Ok(top_volume_tokens)
 }
 
 // write addresses to file
-fn write_addresses_to_file(addresses: &[Address], filename: &str) -> std::io::Result<()> {
+fn write_addresses_to_file(addresses: &Vec<Address>, filename: &str) -> std::io::Result<()> {
     let file = File::create(filename)?;
     let writer = BufWriter::new(file);
     let address_set = TopVolumeAddresses(addresses.to_vec());
@@ -501,7 +502,7 @@ fn setup_router_calldata(
 }
 
 // For each token, determine the balance slot
-fn construct_slot_map(pools: &Vec<Pool>) -> HashMap<Address, FixedBytes<32>> {
+fn construct_slot_map(pools: &[Pool]) -> HashMap<Address, FixedBytes<32>> {
     // Known common slots with their semantic meaning
     let known_slots = [
         FixedBytes::<32>::from_str(
