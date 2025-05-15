@@ -12,10 +12,11 @@ verification = []
 
 [dependencies]
 tokio = { version = "1.40.0", features = ["full"] }
-alloy = { version = "=0.15.10", features = ["full", "node-bindings", "providers", "rpc-client", "rpc-client-ipc", "rpc-types-debug", "rpc-types-trace", "eips"] }
-revm = { version = "=21.0.0", features = ["alloydb"] }
-revm-primitives = "=18.0.0"
-revm-inspectors = "=0.20.1"
+alloy = { version = "0.15.10", features = ["full", "node-bindings", "providers", "rpc-client", "rpc-client-ipc", "rpc-types-debug", "rpc-types-trace", "eips"] }
+revm = { version = "21.0.0", features = ["alloydb"] }
+revm-primitives = "18.0.0"
+revm-inspectors = "0.20.1"
+revm-database = "4.0.0"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 cast = "0.3.0"
