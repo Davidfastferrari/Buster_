@@ -1,7 +1,9 @@
 use alloy::primitives::{Address as AlloyAddress, B256 as AlloyB256, Bytes as AlloyBytes, U256 as AlloyU256};
 use alloy::rpc::types::AccountInfo as AlloyAccountInfo;
-use revm::primitives::{Address as RevmAddress, B256 as RevmB256, Bytes as RevmBytes, U256 as RevmU256};
-use revm::primitives::AccountInfo as RevmAccountInfo;
+// Fix the import path for AccountInfo
+use reth::rpc::types::{Address as RevmAddress, B256 as RevmB256, Bytes as RevmBytes, U256 as RevmU256};
+// Fix the import path for AccountInfo
+use reth::rpc::types::AccountInfo as RevmAccountInfo;
 
 /// Trait for types that can be converted to revm types
 pub trait IntoRevm<T> {

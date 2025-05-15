@@ -390,10 +390,18 @@ async fn filter_by_swap(pools: Vec<Pool>, slot_map: HashMap<Address, FixedBytes<
 // Swap returns are either an vec of u256, or final u256
 fn decode_swap_return(output: &Bytes, vec_ret: bool) -> U256 {
     if vec_ret {
-        let decoded_amount = <Vec<U256>>::abi_decode(output, false).unwrap();
+        let decoded_amount = <Vec<U256>>::abi_decode(output).unwrap();
         *decoded_amount.last().unwrap()
     } else {
-        <U256>::abi_decode(output, false).unwrap()
+        // Try to decode as a single U256 first
+        match <U256>::abi_decode(output) {
+            Ok(amount) => amount,
+            // If that fails, try to decode as a tuple and take the first element
+            Err(_) => {
+                let decoded_tuple = <(U256, U256)>::abi_decode(output).unwrap();
+                decoded_tuple.0
+            }
+        }
     }
 }
 

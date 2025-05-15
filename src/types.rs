@@ -1,14 +1,19 @@
 use alloy::primitives::{Address as AlloyAddress, B256 as AlloyB256, Bytes as AlloyBytes, U256 as AlloyU256, I256 as AlloyI256, StorageKey as AlloyStorageKey, FixedBytes as AlloyFixedBytes};
-use alloy::rpc::types::{AccountInfo as AlloyAccountInfo, BlockId, BlockNumberOrTag};
-use revm::primitives::{Address as RevmAddress, B256 as RevmB256, Bytes as RevmBytes, U256 as RevmU256, I256 as RevmI256};
-use revm::primitives::{AccountInfo as RevmAccountInfo, TransactTo, Log as RevmLog, StorageSlot};
+use alloy::rpc::types::AccountInfo as AlloyAccountInfo, BlockId, BlockNumberOrTag};
+// Fix imports for AccountInfoStorageSlot
+use reth::rpc::types::{Address as RevmAddress, B256 as RevmB256, Bytes as RevmBytes, U256 as RevmU256, I256 as RevmI256};
+// Fix imports for AccountInfo, TransactTo, and StorageSlot
+use reth::rpc::types::AccountInfo as RevmAccountInfo;
+use revm::context_interface::TransactTo;
+use revm::primitives::Log as RevmLog;
+use revm::db::StorageSlot;
 use revm::db::DatabaseRef;
 use revm::primitives::state::AccountState;
 use revm::primitives::SpecId;
 use alloy::network::EthereumChainId;
 use alloy::primitives::Log as AlloyLog;
 
-/// Trait for converting types from alloy to revm
+/// Trait for converting types from alloy to revmw1
 pub trait IntoRevm<T> {
     fn into_revm(self) -> T;
 }
