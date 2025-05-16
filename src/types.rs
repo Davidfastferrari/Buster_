@@ -3,14 +3,13 @@ use alloy::rpc::types::{AccountInfo as AlloyAccountInfo, BlockId, BlockNumberOrT
 // Fix imports for primitive types
 use revm_primitives::{Address as RevmAddress, B256 as RevmB256, Bytes as RevmBytes, U256 as RevmU256, I256 as RevmI256};
 // Fix imports for AccountInfo
-use cast::revm::interpreter::primitives::AccountInfo as RevmAccountInfo;
+use revm_state::AccountInfo as RevmAccountInfo;
 use revm::context_interface::TransactTo;
 use revm_primitives::Log as RevmLog;
-use reth::revm::db::StorageSlot;
-use reth::revm::db::DatabaseRef;
+use revm_database::states::plain_account::StorageSlot;
 // AccountState might be in a different location or renamed
 // // Commented out as it's causing an error - need to find the correct path
-// use revm::primitives::state::AccountState;
+use revm_state::AccountStatus as AccountState;
 use revm_primitives::hardfork::SpecId;
 use alloy::network::Network;
 use alloy::primitives::Log as AlloyLog;

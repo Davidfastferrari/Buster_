@@ -3,7 +3,6 @@ use eyre::Result;
 use reth::api::NodeTypesWithDBAdapter;
 use reth::providers::providers::StaticFileProvider;
 use reth::providers::AccountReader;
-use alloy::primitives::B256;
 use alloy::primitives::U256;
 use reth::providers::StateProviderBox;
 use alloy::primitives::Address as AlloyAddress;
@@ -19,7 +18,9 @@ use revm::{
     Database,
     DatabaseCommit, DatabaseRef,
 };
-//use std::collections::HashMap;
+use crate::traits::*;
+use crate::types::*;
+use std::collections::HashMap;
 use std::path::Path;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{Arc, RwLock};

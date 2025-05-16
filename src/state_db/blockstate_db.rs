@@ -13,6 +13,8 @@ use reth::primitives::Bytecode;
 use reth::primitives::Account;
 use alloy::rpc::types::AccountInfo;
 use alloy::rpc::types::trace::geth::AccountState;
+//use revm::db::AlloyDB;
+use reth::revm::db as AlloyDB;
 use revm::{
     primitives::{KECCAK_EMPTY, Log},
     Database, DatabaseCommit, DatabaseRef,

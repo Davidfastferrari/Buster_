@@ -1,4 +1,6 @@
 use super::Calculator;
+use crate::traits::*;
+use crate::types::*;
 use alloy::sol;
 use alloy::transports::Transport;
 use alloy::network::Network;

@@ -2,6 +2,7 @@ use super::BlockStateDB;
 use crate::state_db::blockstate_db::{BlockStateDBSlot, InsertionType};
 use alloy::transports::Transport;
 use alloy::network::Network;
+use revm::db::AlloyDB;
 use alloy::primitives::{Address, U256};
 use alloy::providers::Provider;
 use lazy_static::lazy_static;

@@ -1,6 +1,8 @@
 use crate::gen_::FlashQuoter;
 use crate::gen_::FlashSwap;
 use crate::AMOUNT;
+use crate::traits::*;
+use crate::types::*;
 use alloy::primitives::Address;
 use pool_sync::PoolType;
 use serde::{Deserialize, Serialize};

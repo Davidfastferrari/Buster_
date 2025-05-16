@@ -1,4 +1,6 @@
 use super::Calculator;
+use crate::traits::*;
+use crate::types::*;
 use alloy::transports::Transport;
 use alloy::network::Network;
 use alloy::primitives::Address;

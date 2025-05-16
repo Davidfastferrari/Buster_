@@ -1,7 +1,7 @@
 use alloy::transports::Transport;
 use alloy::network::Network;
 use alloy::primitives::{Address, U256};
-use alloy::providers::{Provider, ProviderBuilder, RootProvider};
+use alloy::providers::Provider;
 use lazy_static::lazy_static;
 use log::debug;
 use pool_sync::{Pool, PoolInfo};

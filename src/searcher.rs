@@ -9,6 +9,8 @@ use std::sync::mpsc::{Receiver, Sender};
 use std::sync::Arc;
 use std::time::Instant;
 
+use crate::traits::*;
+use crate::types::*;
 use crate::calculation::Calculator;
 use crate::estimator::Estimator;
 use crate::events::Event;

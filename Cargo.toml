@@ -15,6 +15,7 @@ tokio = { version = "1.40.0", features = ["full"] }
 alloy = { version = "0.15.10", features = ["full", "node-bindings", "providers", "rpc-client", "rpc-client-ipc", "rpc-types-debug", "rpc-types-trace", "eips"] }
 revm = { version = "21.0.0", features = ["alloydb"] }
 revm-primitives = "18.0.0"
+revm-state = "4.0.0"
 revm-inspectors = "0.20.1"
 revm-database = "4.0.0"
 serde = { version = "1", features = ["derive"] }
@@ -62,3 +63,4 @@ auto_impl = "1.2"
 pin-project = "1.1"
 ci_info = "0.14.14"
 uniswap_v3_math = "0.6.0"
+ra_ap_rust-analyzer = "0.0.279"

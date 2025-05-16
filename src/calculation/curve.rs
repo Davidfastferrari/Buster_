@@ -7,22 +7,13 @@ use alloy::sol_types::SolValue;
 use alloy::sol_types::SolCall;
 use alloy::transports::Transport;
 use alloy::providers::Provider;
-use alloy::dyn_abi::SolType;
 use revm::{
-    context::{ ContextTr, Evm},
+    context::{ Evm},
     context_interface::{
         result::{ ExecutionResult},
-        TransactTo, JournalTr,
+        TransactTo,
     },
-    primitives::{keccak256, KECCAK_EMPTY, Log},
-    handler::{
-        instructions::{EthInstructions, InstructionProvider},
-        EthPrecompiles, EvmTr,
-    },
-    database::InMemoryDB,
-    inspector::{inspect_instructions, InspectorEvmTr, JournalExt},
-    interpreter::{interpreter::EthInterpreter, Interpreter, InterpreterTypes},
-    Inspector,
+   
 };
 
 

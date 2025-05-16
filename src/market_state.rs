@@ -40,6 +40,8 @@ use std::sync::RwLock;
 use std::time::Instant;
 use tokio::sync::broadcast::Receiver;
 
+use crate::traits::*;
+use crate::types::*;
 use crate::events::Event;
 use crate::gen_::ERC20Token;
 use crate::gen_::FlashQuoter;

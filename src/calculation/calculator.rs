@@ -3,7 +3,6 @@ use alloy::network::Network;
 use alloy::primitives::{Address, U256};
 use alloy::providers::Provider;
 use pool_sync::PoolType;
-use std::collections::HashSet;
 use std::sync::Arc;
 
 use crate::cache::Cache;
