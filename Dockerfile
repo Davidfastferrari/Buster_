@@ -1,5 +1,6 @@
 # Use nightly Rust that supports edition2024
-FROM rustlang/rust:nightly AS builder
+# FROM rustlang/rust:nightly AS builder
+FROM 1.56.0 AS builder
 
 # Set working directory
 WORKDIR /usr/src/app

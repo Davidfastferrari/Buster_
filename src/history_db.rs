@@ -18,8 +18,7 @@ use revm::{
     Database,
     DatabaseCommit, DatabaseRef,
 };
-use crate::traits::*;
-use crate::types::*;
+
 use std::collections::HashMap;
 use std::path::Path;
 use std::sync::atomic::{AtomicU64, Ordering};
